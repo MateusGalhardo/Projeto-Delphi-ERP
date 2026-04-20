@@ -1,0 +1,16 @@
+object dtmConexao: TdtmConexao
+  OldCreateOrder = False
+  Height = 287
+  Width = 663
+  object ConexaoDB: TFDConnection
+    Params.Strings = (
+      'Server=DC-TR-07-VM\SQLEXPRESS'
+      'Database=vendas'
+      'OSAuthent=Yes'
+      'DriverID=MSSQL')
+    Connected = True
+    LoginPrompt = False
+    Left = 368
+    Top = 120
+  end
+end

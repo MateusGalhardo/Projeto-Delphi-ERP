@@ -1,0 +1,115 @@
+object DTMGrafico: TDTMGrafico
+  OldCreateOrder = False
+  Height = 377
+  Width = 550
+  object QryProdutoEstoque: TFDQuery
+    Active = True
+    Connection = dtmConexao.ConexaoDB
+    SQL.Strings = (
+      
+        'SELECT CONVERT(VARCHAR, produtoId) + '#39' - '#39'+nome AS label, Quanti' +
+        'dade AS value FROM produtos')
+    Left = 32
+    Top = 17
+    object f2QryProdutoEstoquelabel: TStringField
+      FieldName = 'label'
+      Origin = 'label'
+      ReadOnly = True
+      Size = 93
+    end
+    object fmtbcdfldQryProdutoEstoquevalue: TFMTBCDField
+      FieldName = 'value'
+      Origin = 'value'
+      Precision = 18
+      Size = 5
+    end
+  end
+  object dtsProdutoEstoque: TDataSource
+    DataSet = QryProdutoEstoque
+    Left = 88
+    Top = 17
+  end
+  object QryValorVendaPorCliente: TFDQuery
+    Active = True
+    Connection = dtmConexao.ConexaoDB
+    SQL.Strings = (
+      
+        'SELECT CONVERT(VARCHAR, vendas.clienteId) +'#39' - '#39'+ clientes.nome ' +
+        'AS Label,'
+      'SUM(vendas.totalVenda) AS Value'
+      'FROM Vendas'
+      'INNER JOIN clientes on clientes.clienteId = vendas.clienteId'#9
+      
+        'WHERE vendas.dataVenda BETWEEN CONVERT(DATE, GETDATE()-7) AND CO' +
+        'NVERT(DATE, GETDATE())'
+      'GROUP BY Vendas.clienteId, clientes.Nome')
+    Left = 32
+    Top = 120
+    object f2QryValorVendaPorClienteLabel: TStringField
+      FieldName = 'Label'
+      Origin = 'Label'
+      ReadOnly = True
+      Size = 93
+    end
+    object fmtbcdfldQryValorVendaPorClienteValue: TFMTBCDField
+      FieldName = 'Value'
+      Origin = 'Value'
+      ReadOnly = True
+      Precision = 38
+      Size = 5
+    end
+  end
+  object Qry10ProdutosMaisVendidos: TFDQuery
+    Active = True
+    Connection = dtmConexao.ConexaoDB
+    SQL.Strings = (
+      
+        'SELECT TOP 10 CONVERT (VARCHAR, vi.produtoId) + '#39'-'#39'+p.nome AS La' +
+        'bel,'
+      'SUM (vi.totalProduto) AS Value'
+      'FROM vendasItens as vi'
+      'INNER JOIN produtos AS P ON p.produtoId = vi.produtoId'
+      'GROUP BY vi.produtoId, p.nome'
+      'ORDER BY Label DESC')
+    Left = 184
+    Top = 120
+    object f2Qry10ProdutosMaisVendidosLabel: TStringField
+      FieldName = 'Label'
+      Origin = 'Label'
+      ReadOnly = True
+      Size = 91
+    end
+    object fmtbcdfldQry10ProdutosMaisVendidosValue: TFMTBCDField
+      FieldName = 'Value'
+      Origin = 'Value'
+      ReadOnly = True
+      Precision = 38
+      Size = 5
+    end
+  end
+  object QryVendasUltimasSemana: TFDQuery
+    Active = True
+    Connection = dtmConexao.ConexaoDB
+    SQL.Strings = (
+      'SELECT vendas.dataVenda AS Label,'
+      'SUM(vendas.totalVenda) AS Value'
+      'FROM Vendas'
+      
+        'WHERE vendas.dataVenda BETWEEN CONVERT(DATE, GETDATE()-7) AND CO' +
+        'NVERT(DATE, GETDATE())'
+      'GROUP BY Vendas.dataVenda')
+    Left = 328
+    Top = 120
+    object QryVendasUltimasSemanaLabel: TSQLTimeStampField
+      FieldName = 'Label'
+      Origin = 'Label'
+    end
+    object fmtbcdfldQryVendasUltimasSemanaValue: TFMTBCDField
+      FieldName = 'Value'
+      Origin = 'Value'
+      ReadOnly = True
+      Precision = 38
+      Size = 5
+    end
+  end
+end

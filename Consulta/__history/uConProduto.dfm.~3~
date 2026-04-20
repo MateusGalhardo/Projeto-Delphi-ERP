@@ -1,0 +1,68 @@
+inherited frmConProduto: TfrmConProduto
+  Caption = 'frmConProduto'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited pnl3: TPanel
+    inherited grdPesquisa: TDBGrid
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'produtoId'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'nome'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'valor'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'quantidade'
+          Visible = True
+        end>
+    end
+  end
+  inherited QryListagem: TFDQuery
+    Active = True
+    SQL.Strings = (
+      'select produtoId, nome, valor, quantidade from produtos')
+    Left = 724
+    Top = 280
+    object f1QryListagemprodutoId: TFDAutoIncField
+      DisplayLabel = 'C'#243'digo do Produto'
+      FieldName = 'produtoId'
+      Origin = 'produtoId'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object f2QryListagemnome: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'nome'
+      Origin = 'nome'
+      Size = 60
+    end
+    object fmtbcdfldQryListagemvalor: TFMTBCDField
+      DisplayLabel = 'Valor'
+      FieldName = 'valor'
+      Origin = 'valor'
+      Precision = 18
+      Size = 5
+    end
+    object fmtbcdfldQryListagemquantidade: TFMTBCDField
+      DisplayLabel = 'Quantidade'
+      FieldName = 'quantidade'
+      Origin = 'quantidade'
+      Precision = 18
+      Size = 5
+    end
+  end
+  inherited dtsListagem: TDataSource
+    Left = 723
+    Top = 192
+  end
+end

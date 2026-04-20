@@ -1,0 +1,102 @@
+unit uConCliente;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaHerancaConsulta, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
+  FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
+  Vcl.ExtCtrls, System.ImageList, Vcl.ImgList;
+
+type
+  TfrmConCliente = class(TfrmTelaHerancaConsulta)
+    f1QryListagemclienteId: TFDAutoIncField;
+    f2QryListagemnome: TStringField;
+    imagemStatus: TImageList;
+    intgrfldQryListagemIDSituacao: TIntegerField;
+    f2QryListagemobservacao: TStringField;
+    f2QryListagemdocumento: TStringField;
+    procedure FormCreate(Sender: TObject);
+    procedure grdPesquisaDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+      State: TGridDrawState);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmConCliente: TfrmConCliente;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmConCliente.FormCreate(Sender: TObject);
+begin
+
+  aCampoId :='clienteId';
+  IndiceAtual :='nome';
+
+  inherited;
+end;
+
+procedure TfrmConCliente.grdPesquisaDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+ var imgIndex, Linha: Integer;
+begin
+  begin
+  if (gdFixed in State) then
+  begin
+    grdPesquisa.Canvas.Brush.Color := clGray;
+    grdPesquisa.Canvas.FillRect(Rect);
+    Exit;
+  end;
+
+  Linha := grdPesquisa.DataSource.DataSet.RecNo;
+
+  if not (gdSelected in State) then
+  begin
+    if (Linha mod 2) = 0 then
+      grdPesquisa.Canvas.Brush.Color := clWebLightgrey
+    else
+      grdPesquisa.Canvas.Brush.Color := clWhite;
+  end
+  else
+  begin
+    grdPesquisa.Canvas.Brush.Color := clHighlight;
+    grdPesquisa.Canvas.Font.Color := clHighlightText;
+  end;
+
+  grdPesquisa.Canvas.FillRect(Rect);
+
+  if Column.Field.FieldName = 'StatusDoCliente' then
+  begin
+
+  end
+  else
+  begin
+    grdPesquisa.Canvas.TextOut(Rect.Left + 2, Rect.Top + 2, Column.Field.AsString);
+  end;
+end;
+
+  if Column.FieldName = 'IDSituacao' then
+  begin
+    case QryListagem.FieldByName('idSituacao').AsInteger of
+      1: imgIndex := 0;
+      2: imgIndex := 2;
+      3: imgIndex := 1;
+      4: imgIndex := 3;
+      5: imgIndex := 4;
+    else
+      Exit;
+    end;
+
+    imagemStatus.Draw(grdPesquisa.Canvas,
+      Rect.Left + (Rect.Width div 2) - 8,
+      Rect.Top + (Rect.Height div 2) - 8, imgIndex);
+  end
+end;
+
+end.

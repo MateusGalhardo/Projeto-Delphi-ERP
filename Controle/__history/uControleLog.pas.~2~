@@ -1,0 +1,75 @@
+unit uControleLog;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
+  Vcl.ComCtrls, Vcl.ExtCtrls, System.UITypes,
+  uDtmConexao, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uEnum,
+  RxToolEdit, RxCurrEdit, System.IniFiles;
+
+type
+  TfrmLog = class(TForm)
+    pnl1: TPanel;
+    pnl2: TPanel;
+    grd1: TDBGrid;
+    QryLog: TFDQuery;
+    dsLog: TDataSource;
+    f1QryLogID: TFDAutoIncField;
+    QryLogDATA_HORA: TSQLTimeStampField;
+    f2QryLogUSUARIO: TStringField;
+    f2QryLogACAO: TStringField;
+    f2QryLogTELA: TStringField;
+    f2QryLogDESCRICAO: TStringField;
+    edtPesquisar: TMaskEdit;
+    lblIndice: TLabel;
+    btnPesquisar: TBitBtn;
+    procedure edtPesquisarChange(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    IndiceAtual:string;
+  end;
+
+var
+  frmLog: TfrmLog;
+
+implementation
+
+uses
+  uDTMconexao;
+
+{$R *.dfm}
+
+procedure TfrmLog.edtPesquisarChange(Sender: TObject);
+var Date:TDateTime; Texto, N: string; poscursor: Integer;
+begin
+  if(trim(TMaskEdit(Sender).Text) = '')then
+    Exit;
+
+  if(QryLog.FieldByName(IndiceAtual).DataType in [ftString, ftWideString] )then
+  begin
+    QryLog.Locate(IndiceAtual, TMaskEdit(Sender).Text, [loPartialKey])
+  end
+  else if(QryLog.FieldByName(IndiceAtual).DataType in [ftFloat, ftCurrency, ftFMTBcd] )then
+  begin
+   try
+     QryLog.Locate(IndiceAtual, TMaskEdit(Sender).Text, [])
+   except
+
+   end;
+  end
+  else if(QryLog.FieldByName(IndiceAtual).DataType in [ftDate, ftDateTime, ftTimeStamp] )then
+  begin
+   if TryStrToDate(TMaskEdit(Sender).Text, Date) then
+   begin
+     QryLog.Locate(IndiceAtual, Date, []);
+   end
+  end
+  else
+     QryLog.Locate(IndiceAtual, TMaskEdit(Sender).Text, [])
+
+end.

@@ -1,0 +1,106 @@
+inherited frmTelaHerancaFornecedor: TfrmTelaHerancaFornecedor
+  Caption = 'Consulta de Fornecedores'
+  ClientHeight = 547
+  ClientWidth = 1012
+  ExplicitWidth = 1018
+  ExplicitHeight = 576
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited pnl1: TPanel
+    Width = 1012
+    inherited edtPesquisa: TMaskEdit
+      Width = 1010
+    end
+  end
+  inherited pnl2: TPanel
+    Top = 506
+    Width = 1012
+    inherited btnFechar: TBitBtn
+      Left = 933
+    end
+  end
+  inherited pnl3: TPanel
+    Width = 1012
+    Height = 457
+    inherited grdPesquisa: TDBGrid
+      Width = 1010
+      Height = 455
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'fornId'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'nome'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'cnpj'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'endereco'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'telefone'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'email'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'observacao'
+          Visible = True
+        end>
+    end
+  end
+  inherited QryListagem: TFDQuery
+    SQL.Strings = (
+      'select * from fornecedor')
+    object f1QryListagemfornId: TFDAutoIncField
+      FieldName = 'fornId'
+      Origin = 'fornId'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object f2QryListagemnome: TStringField
+      FieldName = 'nome'
+      Origin = 'nome'
+      Size = 50
+    end
+    object f2QryListagemcnpj: TStringField
+      FieldName = 'cnpj'
+      Origin = 'cnpj'
+      Size = 18
+    end
+    object f2QryListagemendereco: TStringField
+      FieldName = 'endereco'
+      Origin = 'endereco'
+      Size = 50
+    end
+    object f2QryListagemtelefone: TStringField
+      FieldName = 'telefone'
+      Origin = 'telefone'
+      Size = 15
+    end
+    object f2QryListagememail: TStringField
+      FieldName = 'email'
+      Origin = 'email'
+      Size = 50
+    end
+    object f2QryListagemobservacao: TStringField
+      FieldName = 'observacao'
+      Origin = 'observacao'
+      Size = 100
+    end
+  end
+end
