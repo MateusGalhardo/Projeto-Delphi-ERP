@@ -1,4 +1,4 @@
-unit uCadProduto;
+﻿unit uCadProduto;
 
 interface
 
@@ -71,6 +71,7 @@ type
     oProduto:TProduto;
     function Apagar:Boolean; override;
     function Gravar(EstadoDoCadastro:TEstadoDoCadastro):Boolean; override;
+    function GetDesc: string; override;
   public
     { Public declarations }
   end;
@@ -80,7 +81,7 @@ var
 
 implementation
 
-uses uPrincipal;
+uses uPrincipal, uDTMVenda, uProVenda;
 
 {$R *.dfm}
 
@@ -137,12 +138,18 @@ begin
   QryCategoria.Refresh;
 end;
 
+function TfrmCadProduto.GetDesc: string;
+begin
+  result := oProduto.nome;
+end;
+
 procedure TfrmCadProduto.btnIncluirFornecedorClick(Sender: TObject);
 begin
   inherited;
   TFuncao.CriarForm(TfrmFornecedor, oUsuarioLogado, dtmConexao.ConexaoDB);
   QryFornecedor.Refresh;
 end;
+
 
 procedure TfrmCadProduto.btnAlterarClick(Sender: TObject);
 begin

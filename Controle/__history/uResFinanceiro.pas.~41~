@@ -1,0 +1,153 @@
+unit uResFinanceiro;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
+  FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, Vcl.StdCtrls, Vcl.ExtCtrls, VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs,
+  VCLTee.Chart, VCLTee.DBChart, Vcl.Grids;
+
+type
+  TfrmResFinanceiro = class(TForm)
+    pnl1: TPanel;
+    pnl2: TPanel;
+    lbl1: TLabel;
+    pnl3: TPanel;
+    lbl2: TLabel;
+    lblprodutos: TLabel;
+    lbl4: TLabel;
+    lbltotalProduto: TLabel;
+    lbl6: TLabel;
+    pnl4: TPanel;
+    lbl7: TLabel;
+    lblVenda: TLabel;
+    lbl9: TLabel;
+    lblTotalVenda: TLabel;
+    lbl11: TLabel;
+    lbl12: TLabel;
+    lbl13: TLabel;
+    QryTotais: TFDQuery;
+    QryVendas: TFDQuery;
+    dsGrafico: TDataSource;
+    pnl5: TPanel;
+    lbl10: TLabel;
+    lbllucro: TLabel;
+    lbl16: TLabel;
+    spl1: TSplitter;
+    fmtbcdfldQryProdutostotalproduto: TFMTBCDField;
+    fmtbcdfldQryProdutostotalvendas: TFMTBCDField;
+    fmtbcdfldQryVendasqntprodutos: TFMTBCDField;
+    intgrfldQryVendasqntvendas: TIntegerField;
+    QryBalanco: TFDQuery;
+    dbcBalanco: TDBChart;
+    fstlnsrsSeries1: TFastLineSeries;
+    fmtbcdfldQryBalancobalanco: TFMTBCDField;
+    QryGrafico: TFDQuery;
+    QryGraficoAnoMes: TWideStringField;
+    fmtbcdfldQryGraficoTotalVendas: TFMTBCDField;
+    QryProduto: TFDQuery;
+    dsProduto: TDataSource;
+    QryProdutoDataMes: TDateField;
+    fmtbcdfldQryProdutoTotalMes: TFMTBCDField;
+    fstlnsrsSeries2: TFastLineSeries;
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure dbcBalancoClickLegend(Sender: TCustomChart; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmResFinanceiro: TfrmResFinanceiro;
+
+implementation
+
+uses
+  uDTMconexao, uDTMGrafico;
+
+{$R *.dfm}
+
+
+
+
+procedure TfrmResFinanceiro.dbcBalancoClickLegend(Sender: TCustomChart; Button: TMouseButton; Shift: TShiftState; X,
+  Y: Integer);
+var legenda: Integer; altura: Integer;
+begin
+  altura := Sender.Canvas.TextHeight('W') + 2;
+
+  legenda := (Y - Sender.Legend.Top) div altura;
+
+  if (legenda >= 0) and (legenda < Sender.SeriesCount) then
+    Sender.Series[legenda].Marks.Visible :=
+      not Sender.Series[legenda].Marks.Visible;
+end;
+
+procedure TfrmResFinanceiro.FormCreate(Sender: TObject);
+var  Tlucro:Double;
+begin
+  QryTotais.Open();
+  QryVendas.Open();
+  QryBalanco.Open();
+
+  // vendas
+  lblVenda.Caption:= QryVendas.FieldByName('qntvendas').AsString;
+  lblTotalVenda.Caption :=FormatFloat('R$ ,0.00', QryTotais.FieldByName('totalvendas').AsFloat);
+
+  // produtos
+  lblprodutos.Caption:= QryVendas.FieldByName('qntprodutos').AsString;
+  lbltotalProduto.Caption :=FormatFloat('R$ ,0.00', QryTotais.FieldByName('totalproduto').AsFloat);
+
+  lbllucro.Caption :=FormatFloat(' R$ ,0.00', QryBalanco.FieldByName('Balanco').AsFloat);
+
+  Tlucro:= QryBalanco.FieldByName('Balanco').AsFloat;
+
+  if Tlucro < 0 then begin
+    lbllucro.Font.Color:= clRed;
+  end
+  else if Tlucro > 0 then begin
+    lbllucro.font.Color:=clGreen;
+  end;
+
+
+  QryVendas.Close;
+  QryTotais.Close;
+  QryBalanco.Close;
+end;
+
+procedure TfrmResFinanceiro.FormShow(Sender: TObject);
+begin
+  QryGrafico.Close;
+  QryGrafico.Open;
+  QryProduto.Close;
+  QryProduto.Open;
+  fstlnsrsSeries1.Marks.Style := smsValue;
+  fstlnsrsSeries1.ValueFormat := 'R$ #,##0.00';
+  fstlnsrsSeries2.Marks.Style := smsValue;
+  fstlnsrsSeries2.ValueFormat := 'R$ #,##0.00';
+  dbcBalanco.Series[0].Clear;
+
+  while not QryGrafico.Eof do
+  begin
+    dbcBalanco.Series[0].Add(
+    QryGrafico.FieldByName('totalVendas').AsFloat,
+    QryGrafico.FieldByName('AnoMes').AsString);
+    QryGrafico.Next;
+  end;
+
+  dbcBalanco.Series[1].Clear;
+
+  while not QryProduto.Eof do
+  begin
+    dbcBalanco.Series[1].Add(
+    QryProduto.FieldByName('TotalMes').AsFloat,
+    QryProduto.FieldByName('DataMes').AsString);
+    QryProduto.Next;
+  end;
+end;
+
+end.

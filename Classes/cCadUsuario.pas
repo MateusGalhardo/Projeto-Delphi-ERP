@@ -15,9 +15,9 @@ type
        F_UsuarioId:Integer;
        F_Nome:string;
        F_Senha:string;
+       F_perfilId: Integer;
        function getSenha: string;
        procedure setSenha (const value: string);
-
 
     public
        constructor Create (aConexao:TFDConnection);
@@ -34,6 +34,7 @@ type
        property codigo      :Integer     read F_UsuarioId     write F_UsuarioId;
        property nome        :String      read F_Nome          write F_Nome;
        property senha       :String      read getSenha        write setSenha;
+       property perfilId    :Integer     read F_perfilId      write F_perfilId;
   end;
 implementation
 
@@ -99,10 +100,12 @@ begin
     Qry.SQL.Clear;
     Qry.SQL.Add('UPDATE usuarios '+
                 '   SET nome           =:nome '+
+                '        ,perfilId      =:perfilId '+
                 '       ,senha         =:senha '+
                 ' WHERE usuarioId=:usuarioId ');
     Qry.ParamByName('usuarioId').AsInteger       :=Self.F_usuarioId;
     Qry.ParamByName('nome').AsString             :=Self.F_nome;
+    Qry.ParamByName('perfilId').AsInteger        :=Self.F_perfilId;
     Qry.ParamByName('senha').AsString            :=Self.F_Senha;
 
     Try
@@ -131,12 +134,13 @@ begin
     ConexaoDB.StartTransaction;
 
     Qry.SQL.Text :=
-      'INSERT INTO usuarios (nome, senha) '+
+      'INSERT INTO usuarios (nome, senha, perfilId) '+
       'OUTPUT INSERTED.usuarioId '+
-      'VALUES (:nome, :senha)';
+      'VALUES (:nome, :senha, :perfilId)';
 
     Qry.ParamByName('nome').AsString := Self.F_nome;
     Qry.ParamByName('senha').AsString := Self.F_Senha;
+    Qry.ParamByName('perfilId').AsInteger := Self.F_perfilId;
 
     Qry.Open;
 
@@ -163,6 +167,7 @@ begin
     Qry.SQL.Clear;
     Qry.SQL.Add('SELECT usuarioId,'+
                 '       nome, '+
+                '       perfilId, '+
                 '       senha '+
                 '  FROM usuarios '+
                 ' WHERE usuarioId=:usuarioId');
@@ -172,7 +177,8 @@ begin
 
       Self.F_usuarioId     := Qry.FieldByName('usuarioId').AsInteger;
       Self.F_nome          := Qry.FieldByName('nome').AsString;
-      Self.F_Senha         := Qry.FieldByName('senha').AsString;;
+      Self.F_senha         := Qry.FieldByName('senha').AsString;
+      Self.F_perfilId      := Qry.FieldByName('perfilId').AsInteger;;
     Except
       Result:=false;
     End;

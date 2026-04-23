@@ -3,6 +3,8 @@ inherited frmControleLog: TfrmControleLog
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnl1: TPanel
+    ExplicitLeft = 8
+    ExplicitTop = -5
     inherited lblIndice: TLabel
       Left = 5
       Top = 10
@@ -54,38 +56,32 @@ inherited frmControleLog: TfrmControleLog
     object f1QryListagemID: TFDAutoIncField
       DisplayLabel = 'C'#243'digo'
       FieldName = 'ID'
-      Origin = 'ID'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
     object f2QryListagemUSUARIO: TStringField
       DisplayLabel = 'Usu'#225'rio'
       FieldName = 'USUARIO'
-      Origin = 'USUARIO'
       Size = 50
     end
     object f2QryListagemACAO: TStringField
       DisplayLabel = 'A'#231#227'o'
       FieldName = 'ACAO'
-      Origin = 'ACAO'
       Size = 50
     end
     object f2QryListagemTELA: TStringField
       DisplayLabel = 'Tela'
       FieldName = 'TELA'
-      Origin = 'TELA'
       Size = 50
     end
     object f2QryListagemDESCRICAO: TStringField
       DisplayLabel = 'Descri'#231#227'o'
       FieldName = 'DESCRICAO'
-      Origin = 'DESCRICAO'
       Size = 255
     end
     object QryListagemDATA_HORA: TSQLTimeStampField
       DisplayLabel = 'Data/Hora'
       FieldName = 'DATA_HORA'
-      Origin = 'DATA_HORA'
     end
   end
   inherited dtsListagem: TDataSource

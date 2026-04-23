@@ -165,13 +165,13 @@ begin
                 '                      descricao, '+
                 '                      valor,  '+
                 '                      quantidade,  '+
-                '                      categoriaId, '+
+                '                      categoriaId, DataProduto, '+
                 '                      foto ) '+
                 ' VALUES              (:nome, '+
                 '                      :descricao, '+
                 '                      :valor,  '+
                 '                      :quantidade,  '+
-                '                      :categoriaId, '+
+                '                      :categoriaId, :DataProduto, '+
                 '                      :foto ) ');
 
     Qry.ParamByName('nome').AsString             :=Self.F_nome;
@@ -179,6 +179,7 @@ begin
     Qry.ParamByName('valor').AsFloat             :=Self.F_valor;
     Qry.ParamByName('quantidade').AsFloat        :=Self.F_quantidade;
     Qry.ParamByName('categoriaId').AsInteger     :=Self.F_categoriaId;
+    Qry.ParamByName('DataProduto').AsDateTime    := TDateTime(Now);
 
     if (Self.F_foto = nil) or Self.F_foto.Empty then
     begin

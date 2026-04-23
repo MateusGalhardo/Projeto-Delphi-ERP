@@ -19,6 +19,17 @@ object frmPrincipal: TfrmPrincipal
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object btn1: TSpeedButton
+    Left = 0
+    Top = 0
+    Width = 1128
+    Height = 519
+    Align = alClient
+    ExplicitLeft = 33
+    ExplicitTop = -8
+    ExplicitWidth = 279
+    ExplicitHeight = 22
+  end
   object StbPrincipal: TStatusBar
     Left = 0
     Top = 519
@@ -124,6 +135,7 @@ object frmPrincipal: TfrmPrincipal
       Height = 258
       Title.Text.Strings = (
         'Valor de venda por cliente na '#250'ltima semana')
+      Legend.TextStyle = ltsLeftPercent
       View3DOptions.Elevation = 315
       View3DOptions.Orthogonal = False
       View3DOptions.Perspective = 0
@@ -155,6 +167,7 @@ object frmPrincipal: TfrmPrincipal
         Marks.Font.Style = [fsBold, fsItalic]
         Marks.Frame.Color = 33023
         Marks.RoundSize = 14
+        Marks.Visible = False
         Marks.Style = smsLabelPercentTotal
         Marks.Callout.Length = 20
         DataSource = DTMGrafico.QryValorVendaPorCliente
@@ -164,8 +177,8 @@ object frmPrincipal: TfrmPrincipal
         YValues.Name = 'Pie'
         YValues.Order = loNone
         YValues.ValueSource = 'Value'
-        CustomXRadius = 80
-        CustomYRadius = 75
+        CustomXRadius = 150
+        CustomYRadius = 120
         Frame.InnerBrush.BackColor = clRed
         Frame.InnerBrush.Gradient.EndColor = clGray
         Frame.InnerBrush.Gradient.MidColor = clWhite
@@ -191,17 +204,21 @@ object frmPrincipal: TfrmPrincipal
       Width = 563
       Height = 259
       Title.Text.Strings = (
-        'TDBChart')
+        'Vendas da '#250'ltima semana')
       Align = alClient
       TabOrder = 2
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 13
       object Series4: TFastLineSeries
+        DataSource = DTMGrafico.QryVendasUltimasSemana
+        Title = 'VendasDaUltimaSemana'
+        XLabelsSource = 'Label'
         LinePen.Color = 10708548
         XValues.Name = 'X'
         XValues.Order = loAscending
         YValues.Name = 'Y'
         YValues.Order = loNone
+        YValues.ValueSource = 'Value'
       end
     end
     object dbcht4: TDBChart
@@ -210,7 +227,7 @@ object frmPrincipal: TfrmPrincipal
       Width = 563
       Height = 259
       Title.Text.Strings = (
-        'TDBChart')
+        '10 produtos mais vendidos')
       View3DOptions.Elevation = 315
       View3DOptions.Orthogonal = False
       View3DOptions.Perspective = 0
@@ -220,9 +237,15 @@ object frmPrincipal: TfrmPrincipal
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 13
       object Series3: TPieSeries
+        DataSource = DTMGrafico.Qry10ProdutosMaisVendidos
+        Title = '10ProdutosMaisVendidos'
+        XLabelsSource = 'Label'
         XValues.Order = loAscending
         YValues.Name = 'Pie'
         YValues.Order = loNone
+        YValues.ValueSource = 'Value'
+        CustomXRadius = 150
+        CustomYRadius = 120
         Frame.InnerBrush.BackColor = clRed
         Frame.InnerBrush.Gradient.EndColor = clGray
         Frame.InnerBrush.Gradient.MidColor = clWhite
@@ -244,7 +267,8 @@ object frmPrincipal: TfrmPrincipal
     end
   end
   object mainPrincipal: TMainMenu
-    Left = 880
+    Left = 576
+    Top = 24
     object cadastro1: TMenuItem
       Caption = 'Cadastro'
       object cliente1: TMenuItem
@@ -349,8 +373,12 @@ object frmPrincipal: TfrmPrincipal
     object mniControle1: TMenuItem
       Caption = 'Controle'
       object mniLog1: TMenuItem
-        Caption = 'Log'
+        Caption = 'Auditoria'
         OnClick = mniLog1Click
+      end
+      object mniFinanceiro1: TMenuItem
+        Caption = 'Resumo Financeiro'
+        OnClick = mniFinanceiro1Click
       end
     end
   end

@@ -8,7 +8,8 @@ uses
    cUsuarioLogado, Vcl.ComCtrls, cAtualizacaoBancoDeDados, cArquivoIni, uCadAcaoAcesso, cAcaoAcesso, RLReport,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.StdCtrls,
-  Vcl.ExtCtrls, VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart, VCLTee.DBChart, cFuncao;
+  Vcl.ExtCtrls, VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart, VCLTee.DBChart, cFuncao,
+  Vcl.Buttons;
 
 type
   TfrmPrincipal = class(TForm)
@@ -27,6 +28,7 @@ type
     Produto2: TMenuItem;
     N4: TMenuItem;
     Vendapordata1: TMenuItem;
+    mniControle1: TMenuItem;
     StbPrincipal: TStatusBar;
     GridPanel1: TGridPanel;
     dbcht1: TDBChart;
@@ -37,6 +39,8 @@ type
     Series2: TPieSeries;
     Series3: TPieSeries;
     Series4: TFastLineSeries;
+    btn1: TSpeedButton;
+    mniFinanceiro1: TMenuItem;
     procedure mnuFecharClick(Sender: TObject);
     procedure categoria1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -60,6 +64,7 @@ type
     procedure mnirocarsuario1Click(Sender: TObject);
     procedure mniFornecedor1Click(Sender: TObject);
     procedure mniLog1Click(Sender: TObject);
+    procedure mniFinanceiro1Click(Sender: TObject);
   private
     { Private declarations }
     TeclaEnter: TMREnter;
@@ -82,7 +87,7 @@ implementation
 {$R *.dfm}
 
 uses uCadCategoria, uCadCliente, uCadProduto, uProVenda, uRelCategoria, uRelCadCliente, uRelCadClienteFicha, uRelCadProduto, uSelecionarData,
-uRelCadProdutoComGrupoCategoria, uRelVendaPorData, uAlterarSenha, uUsuarioVsAcoes, uTelaHeranca, uFornecedor, uDTMGrafico, uControleLog;
+uRelCadProdutoComGrupoCategoria, uRelVendaPorData, uAlterarSenha, uUsuarioVsAcoes, uTelaHeranca, uFornecedor, uDTMGrafico, uControleLog, uDTMVenda, uResFinanceiro;
 
 procedure TfrmPrincipal.categoria1Click(Sender: TObject);
 begin
@@ -138,6 +143,7 @@ begin
   TAcaoAcesso.CriarAcoes(TfrmUsuarioVsAcoes, dtmConexao.ConexaoDB);
   TAcaoAcesso.CriarAcoes(TfrmFornecedor, dtmConexao.ConexaoDB);
   TAcaoAcesso.CriarAcoes(TfrmControleLog, dtmConexao.ConexaoDB);
+  TAcaoAcesso.CriarAcoes(TfrmResFinanceiro, dtmConexao.ConexaoDB);
   TAcaoAcesso.PreencherUsuariosVsAcoes(dtmConexao.ConexaoDB);
 
 
@@ -180,6 +186,12 @@ end;
 procedure TfrmPrincipal.mniFichadeCliente1Click(Sender: TObject);
 begin
   TFuncao.CriarRelatorio(TfrmRelCadClienteFicha, oUsuarioLogado, dtmConexao.ConexaoDB);
+end;
+
+
+procedure TfrmPrincipal.mniFinanceiro1Click(Sender: TObject);
+begin
+ TFuncao.CriarForm(TfrmResFinanceiro, oUsuarioLogado, dtmConexao.ConexaoDB);
 end;
 
 procedure TfrmPrincipal.mniFornecedor1Click(Sender: TObject);

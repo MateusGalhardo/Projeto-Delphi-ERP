@@ -5,10 +5,6 @@ inherited frmCadUsuario: TfrmCadUsuario
   inherited pgcPrincipal: TPageControl
     ActivePage = tabManutencao
     inherited tabListagem: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 882
-      ExplicitHeight = 457
       inherited grdListagem: TDBGrid
         Columns = <
           item
@@ -24,10 +20,6 @@ inherited frmCadUsuario: TfrmCadUsuario
       end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 882
-      ExplicitHeight = 457
       object btnExibir: TSpeedButton
         Left = 231
         Top = 176
@@ -133,7 +125,8 @@ inherited frmCadUsuario: TfrmCadUsuario
     SQL.Strings = (
       'select usuarioID,'
       'nome,'
-      'senha'
+      'senha,'
+      'perfilId'
       'from usuarios')
     object f1ListagemusuarioID: TFDAutoIncField
       DisplayLabel = 'C'#243'digo'
@@ -153,6 +146,10 @@ inherited frmCadUsuario: TfrmCadUsuario
       Origin = 'senha'
       Required = True
       Size = 40
+    end
+    object intgrfldListagemperfilId: TIntegerField
+      FieldName = 'perfilId'
+      Origin = 'perfilId'
     end
   end
   inherited dsListagem: TDataSource

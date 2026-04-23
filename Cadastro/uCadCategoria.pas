@@ -25,6 +25,7 @@ type
   private
     { Private declarations }
     oCategoria:TCategoria;
+    function GetDesc: string; override;
   public
     { Public declarations }
     function Apagar:Boolean; override;
@@ -79,7 +80,11 @@ begin
      Abort
   end;
   inherited;
+end;
 
+function TfrmCadCategoria.GetDesc: string;
+begin
+  result := oCategoria.descricao;
 end;
 
 procedure TfrmCadCategoria.btnGravarClick(Sender: TObject);

@@ -40,6 +40,7 @@ type
     function Apagar:Boolean; override;
     function Gravar(EstadoDoCadastro: TEstadoDoCadastro):Boolean; override;
     procedure CarregarItensSelecionados;
+    function GetDesc: string; override;
   public
     { Public declarations }
     procedure LimparComponenteItem;
@@ -64,6 +65,11 @@ begin
   for I:= 1 to Length(Texto) do
     if Texto[I] in ['0'..'9'] then
     Result:= Result+Texto[I];
+end;
+
+function TfrmFornecedor.GetDesc: string;
+begin
+  result := oFornecedor.nome;
 end;
 
 function TfrmFornecedor.Apagar: Boolean;

@@ -51,7 +51,7 @@ type
     SelectOriginal:string;
     procedure ControlarBotoes(btnNovo, btnAlterar, btnCancelar, btnGravar, btnApagar:TbitBtn;
               Navegador:TDBNavigator; pgcPrincipal: TPageControl; Flag:Boolean);
-    procedure ControlarIndiceTab(pgcPrincipal: TPageControl; Indice: Integer);
+
     function RetornarCampoTraduzido(Campo: string): string;
     procedure ExibirLabelIndice(Campo: string; aLabel: TLabel);
     function ExisteCampoObrigatorio: Boolean;
@@ -65,6 +65,7 @@ type
     EstadoDoCadastro:TEstadoDoCadastro;
     IndiceAtual:string;
     function GetDesc: string; virtual;
+    procedure ControlarIndiceTab(pgcPrincipal: TPageControl; Indice: Integer);
     function Apagar:Boolean; virtual;
     function Gravar(EstadoDoCadastro:TEstadoDoCadastro):Boolean; virtual;
     procedure BloqueiaCTRL_DEL_DBGrid(var Key: Word; Shift: TShiftState);

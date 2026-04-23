@@ -363,7 +363,7 @@ inherited frmCadProduto: TfrmCadProduto
         'ia'#10'FROM produtos AS p'#10'LEFT JOIN categorias AS c '#10'       ON c.cat' +
         'egoriaId = p.categoriaId'#10'LEFT JOIN fornecedor AS f'#10'       ON f.f' +
         'ornId = p.fornId')
-    Left = 451
+    Left = 584
     object f1ListagemprodutoId: TFDAutoIncField
       DisplayLabel = 'C'#243'digo do Produto'
       FieldName = 'produtoId'
@@ -422,14 +422,14 @@ inherited frmCadProduto: TfrmCadProduto
   end
   inherited dsListagem: TDataSource
     OnDataChange = dsListagemDataChange
-    Left = 524
+    Left = 657
     Top = 24
   end
   object QryCategoria: TFDQuery
     Connection = dtmConexao.ConexaoDB
     SQL.Strings = (
       'Select categoriaId, descricao from categorias')
-    Left = 308
+    Left = 341
     Top = 144
     object f1QryCategoriacategoriaId: TFDAutoIncField
       DisplayLabel = 'C'#243'digo'
@@ -447,7 +447,7 @@ inherited frmCadProduto: TfrmCadProduto
   end
   object dtsCategoria: TDataSource
     DataSet = QryCategoria
-    Left = 388
+    Left = 421
     Top = 144
   end
   object ppmImagem: TPopupMenu
@@ -467,7 +467,7 @@ inherited frmCadProduto: TfrmCadProduto
     Connection = dtmConexao.ConexaoDB
     SQL.Strings = (
       'Select fornId, nome from fornecedor')
-    Left = 540
+    Left = 573
     Top = 144
     object f1QryFornecedorfornId: TFDAutoIncField
       FieldName = 'fornId'
@@ -483,7 +483,7 @@ inherited frmCadProduto: TfrmCadProduto
   end
   object dsFornecedor: TDataSource
     DataSet = QryFornecedor
-    Left = 620
+    Left = 653
     Top = 144
   end
 end

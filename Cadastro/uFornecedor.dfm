@@ -10,9 +10,12 @@ inherited frmFornecedor: TfrmFornecedor
     Width = 1131
     Height = 537
     ActivePage = tabManutencao
+    ExplicitWidth = 1131
+    ExplicitHeight = 537
     inherited tabListagem: TTabSheet
       inherited pnlListagemTopo: TPanel
         Width = 1123
+        ExplicitWidth = 1123
       end
       inherited grdListagem: TDBGrid
         Width = 1123
@@ -60,8 +63,8 @@ inherited frmFornecedor: TfrmFornecedor
       end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitLeft = 11
-      ExplicitTop = 22
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 1123
       ExplicitHeight = 509
       object lblTelefone: TLabel
@@ -162,11 +165,14 @@ inherited frmFornecedor: TfrmFornecedor
   inherited pnlRodape: TPanel
     Top = 537
     Width = 1131
+    ExplicitTop = 537
+    ExplicitWidth = 1131
     inherited dbnvgrNavigator: TDBNavigator
       Hints.Strings = ()
     end
     inherited btnFechar: TBitBtn
       Left = 1041
+      ExplicitLeft = 1041
     end
   end
   inherited fdqryListagem: TFDQuery

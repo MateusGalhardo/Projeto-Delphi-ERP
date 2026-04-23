@@ -244,6 +244,10 @@
             <Form>frmControleLog</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Controle\uResFinanceiro.pas">
+            <Form>frmResFinanceiro</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

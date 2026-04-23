@@ -3,11 +3,14 @@
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaHeranca, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
-  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
-  Vcl.ExtCtrls, Vcl.ComCtrls, cCadUsuario, uEnum, uDTMconexao, cAcaoAcesso;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  uTelaHeranca, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls,
+  Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, cCadUsuario, uEnum,
+  uDTMconexao, cAcaoAcesso;
 
 type
   TfrmCadUsuario = class(TfrmTelaHeranca)
@@ -26,6 +29,7 @@ type
     f1QryFuncaoperfilId: TFDAutoIncField;
     f2QryFuncaodescricao: TStringField;
     lbl2: TLabel;
+    intgrfldListagemperfilId: TIntegerField;
     procedure btnAlterarClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
     procedure btnNovoClick(Sender: TObject);
@@ -33,13 +37,16 @@ type
     procedure FormCreate(Sender: TObject);
     procedure btnAleatorioClick(Sender: TObject);
     procedure btnExibirClick(Sender: TObject);
+    procedure grdListagemDblClick(Sender: TObject);
   private
     { Private declarations }
-    oUsuario:TUsuario;
-    function Gravar(EstadoDoCadastro:TEstadoDoCadastro):Boolean; override;
-    function Apagar:Boolean; override;
+    oUsuario: TUsuario;
+    function Gravar(EstadoDoCadastro: TEstadoDoCadastro): Boolean; override;
+    function Apagar: Boolean; override;
+    function GetDesc: string; override;
     function GerarSenha(Tamanho: Integer): string;
     procedure AplicarFuncoes(AUsuarioId, APerfilId: Integer);
+    procedure RetornarInfos;
   public
     { Public declarations }
   end;
@@ -49,26 +56,37 @@ var
 
 implementation
 
+uses
+  uPrincipal, uFuncaoCriptografia;
+
 {$R *.dfm}
 
 { TfrmCadUsuario }
 
 function TfrmCadUsuario.Apagar: Boolean;
 begin
-  if oUsuario.Selecionar(fdqryListagem.FieldByName('usuarioID').AsInteger) then begin
-     result:=oUsuario.Apagar;
+  if oUsuario.Selecionar(fdqryListagem.FieldByName('usuarioID').AsInteger) then
+  begin
+    result := oUsuario.Apagar;
   end;
+end;
+
+function TfrmCadUsuario.GetDesc: string;
+begin
+  result := oUsuario.nome;
 end;
 
 procedure TfrmCadUsuario.btnAleatorioClick(Sender: TObject);
 begin
   inherited;
-   edtSenha.Text := GerarSenha(10);
+  edtSenha.Text := GerarSenha(10);
 end;
 
 function TfrmCadUsuario.GerarSenha(Tamanho: Integer): string;
-const Caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*';
-var i, Posicao: Integer;
+const
+  Caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*';
+var
+  i, Posicao: Integer;
 begin
   Result := '';
   for i := 1 to Tamanho do
@@ -80,16 +98,23 @@ end;
 
 procedure TfrmCadUsuario.btnAlterarClick(Sender: TObject);
 begin
-  if oUsuario.Selecionar(fdqryListagem.FieldByName('usuarioID').AsInteger) then begin
-     edtUsuarioId.Text:=IntToStr(oUsuario.codigo);
-     edtNome.Text     :=oUsuario.nome;
-     edtSenha.Text    :=oUsuario.senha;
+  if oUsuario.Selecionar(fdqryListagem.FieldByName('usuarioID').AsInteger) then
+  begin
+    edtUsuarioId.Text := IntToStr(oUsuario.codigo);
+    edtNome.Text := oUsuario.nome;
+    edtSenha.Text := oUsuario.senha;
+    oUsuario.senha := edtSenha.Text;
+
   end
-  else begin
+  else
+  begin
     btnCancelar.Click;
     Abort;
   end;
 
+  RetornarInfos;
+  EstadoDoCadastro := ecAlterar;
+  fdqryListagem.Refresh;
   inherited;
 
 end;
@@ -97,49 +122,49 @@ end;
 procedure TfrmCadUsuario.btnExibirClick(Sender: TObject);
 begin
   inherited;
-  if edtSenha.PasswordChar = '*' then begin
-    edtSenha.PasswordChar:= #0;
+  if edtSenha.PasswordChar = '*' then
+  begin
+    edtSenha.PasswordChar := #0;
     btnExibir.Caption := '🔓'
   end
-  else begin
-       edtSenha.PasswordChar:= '*';
-       btnExibir.Caption := '🔒'
+  else
+  begin
+    edtSenha.PasswordChar := '*';
+    btnExibir.Caption := '🔒'
   end;
 end;
 
 procedure TfrmCadUsuario.btnGravarClick(Sender: TObject);
-var PerfilId: Integer;
+var
+  PerfilId: Integer;
 begin
-  if oUsuario.UsuarioExiste(edtNome.Text) then begin
-     MessageDlg('Usuário ja cadastrado', mtInformation, [mbok],0);
-     edtNome.SetFocus;
-     Abort;
+  if (EstadoDoCadastro = ecInserir) and oUsuario.UsuarioExiste(edtNome.Text) then
+  begin
+    MessageDlg('Usuário ja cadastrado', mtInformation, [mbok], 0);
+    edtNome.SetFocus;
+    Abort;
   end;
 
-  if edtUsuarioId.Text <>EmptyStr then
-     oUsuario.codigo:=StrToInt(edtUsuarioId.Text)
+  if edtUsuarioId.Text <> EmptyStr then
+    oUsuario.codigo := StrToInt(edtUsuarioId.Text)
   else
-     oUsuario.codigo:= 0;
+    oUsuario.codigo := 0;
 
-    oUsuario.nome := edtNome.Text;
-    oUsuario.senha:= edtSenha.Text;
+  oUsuario.nome := edtNome.Text;
+  oUsuario.senha := edtSenha.Text;
+  oUsuario.perfilId := lkpFuncao.KeyValue;
 
-  inherited;
+  if VarIsNull(lkpFuncao.KeyValue) then
+    PerfilId := 0
+  else
+    PerfilId := lkpFuncao.KeyValue;
 
-    AplicarFuncoes(oUsuario.codigo, lkpFuncao.KeyValue);
-
-    if VarIsNull(lkpFuncao.KeyValue) then
-      PerfilId := 0
-    else
-      PerfilId := lkpFuncao.KeyValue;
-
-    if PerfilId > 0 then
-      AplicarFuncoes(oUsuario.codigo, PerfilId);
-
+    inherited;
 end;
 
 procedure TfrmCadUsuario.AplicarFuncoes(AUsuarioId, APerfilId: Integer);
-var Qry: TFDQuery;
+var
+  Qry: TFDQuery;
 begin
   Qry := TFDQuery.Create(nil);
   try
@@ -147,34 +172,26 @@ begin
 
     dtmConexao.ConexaoDB.StartTransaction;
     try
-      if APerfilId = 1 then begin
-      Qry.SQL.Text :=
-        'INSERT INTO usuariosAcaoAcesso (usuarioId, acaoAcessoId, ativo) '+
-        'SELECT :usuarioId, acaoAcessoId, ativo '+
-        'FROM usuariosAcaoAcesso '+
-        'WHERE usuarioId = 18';
+      if APerfilId = 1 then
+      begin
+        Qry.SQL.Text := 'DELETE FROM usuariosAcaoAcesso WHERE usuarioId = :usuarioId; ' +
+                        ' INSERT INTO usuariosAcaoAcesso (usuarioId, acaoAcessoId, ativo) ' + 'SELECT :usuarioId, acaoAcessoId, ativo ' + 'FROM usuariosAcaoAcesso ' + 'WHERE usuarioId = 18';
 
-      Qry.ParamByName('usuarioId').AsInteger := AUsuarioId;
+        Qry.ParamByName('usuarioId').AsInteger := AUsuarioId;
       end;
 
-      if APerfilId = 2 then begin
-      Qry.SQL.Text :=
-        'INSERT INTO usuariosAcaoAcesso (usuarioId, acaoAcessoId, ativo) '+
-        'SELECT :usuarioId, acaoAcessoId, ativo '+
-        'FROM usuariosAcaoAcesso '+
-        'WHERE usuarioId = 26';
+      if APerfilId = 2 then
+      begin
+        Qry.SQL.Text := 'DELETE FROM usuariosAcaoAcesso WHERE usuarioId = :usuarioId; ' +'INSERT INTO usuariosAcaoAcesso (usuarioId, acaoAcessoId, ativo) ' + 'SELECT :usuarioId, acaoAcessoId, ativo ' + 'FROM usuariosAcaoAcesso ' + 'WHERE usuarioId = 26';
 
-      Qry.ParamByName('usuarioId').AsInteger := AUsuarioId;
+        Qry.ParamByName('usuarioId').AsInteger := AUsuarioId;
       end;
 
-      if APerfilId = 3 then begin
-      Qry.SQL.Text :=
-        'INSERT INTO usuariosAcaoAcesso (usuarioId, acaoAcessoId, ativo) '+
-        'SELECT :usuarioId, acaoAcessoId, ativo '+
-        'FROM usuariosAcaoAcesso '+
-        'WHERE usuarioId = 13';
+      if APerfilId = 3 then
+      begin
+        Qry.SQL.Text := 'DELETE FROM usuariosAcaoAcesso WHERE usuarioId = :usuarioId; ' + 'INSERT INTO usuariosAcaoAcesso (usuarioId, acaoAcessoId, ativo) ' + 'SELECT :usuarioId, acaoAcessoId, ativo ' + 'FROM usuariosAcaoAcesso ' + 'WHERE usuarioId = 13';
 
-      Qry.ParamByName('usuarioId').AsInteger := AUsuarioId;
+        Qry.ParamByName('usuarioId').AsInteger := AUsuarioId;
       end;
 
       Qry.ExecSQL;
@@ -190,6 +207,15 @@ begin
   end;
 end;
 
+procedure TfrmCadUsuario.RetornarInfos;
+begin
+  edtUsuarioId.Text := fdqryListagem.FieldByName('usuarioId').AsString;
+  edtNome.Text := fdqryListagem.FieldByName('nome').AsString;
+  edtSenha.Text := Descriptografar(fdqryListagem.FieldByName('senha').AsString);
+  lkpFuncao.KeyValue := fdqryListagem.FieldByName('perfilId').AsInteger;
+  oUsuario.perfilId := fdqryListagem.FieldByName('perfilId').AsInteger;
+end;
+
 procedure TfrmCadUsuario.btnNovoClick(Sender: TObject);
 begin
   inherited;
@@ -199,36 +225,45 @@ end;
 procedure TfrmCadUsuario.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   inherited;
-  if Assigned (oUsuario) then
-     FreeAndNil(oUsuario);
+  if Assigned(oUsuario) then
+    FreeAndNil(oUsuario);
 end;
 
 procedure TfrmCadUsuario.FormCreate(Sender: TObject);
 begin
   inherited;
-  oUsuario:=TUsuario.Create(dtmConexao.ConexaoDB);
-  IndiceAtual:='nome';
+  oUsuario := TUsuario.Create(dtmConexao.ConexaoDB);
+  IndiceAtual := 'nome';
 end;
 
 function TfrmCadUsuario.Gravar(EstadoDoCadastro: TEstadoDoCadastro): Boolean;
 var perfilId: Integer;
 begin
-  if EstadoDoCadastro=ecInserir then
-     Result:=oUsuario.Inserir
-  else if EstadoDoCadastro=ecAlterar then
-     result:=oUsuario.Atualizar;
+  Result := False;
 
-  AplicarFuncoes(oUsuario.codigo, lkpFuncao.KeyValue);
+  if EstadoDoCadastro = ecInserir then
+    Result := oUsuario.Inserir
+  else if EstadoDoCadastro = ecAlterar then
+    Result := oUsuario.Atualizar
+  else
+    Exit;
 
   if VarIsNull(lkpFuncao.KeyValue) then
-      PerfilId := 0
-    else
-      PerfilId := lkpFuncao.KeyValue;
+    perfilId := 0
+  else
+    perfilId := lkpFuncao.KeyValue;
 
-    if PerfilId > 0 then
-      AplicarFuncoes(oUsuario.codigo, PerfilId);
+  if perfilId > 0 then
+    AplicarFuncoes(oUsuario.codigo, perfilId);
 
   TAcaoAcesso.PreencherUsuariosVsAcoes(dtmConexao.ConexaoDB);
 end;
 
+procedure TfrmCadUsuario.grdListagemDblClick(Sender: TObject);
+begin
+  RetornarInfos;
+  inherited;
+end;
+
 end.
+

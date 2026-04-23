@@ -2,6 +2,7 @@ inherited frmCadCliente: TfrmCadCliente
   Caption = 'Cadastro de Cliente'
   ClientHeight = 604
   ClientWidth = 1336
+  ExplicitTop = -46
   ExplicitWidth = 1342
   ExplicitHeight = 633
   PixelsPerInch = 96
@@ -13,8 +14,6 @@ inherited frmCadCliente: TfrmCadCliente
     ExplicitWidth = 1336
     ExplicitHeight = 560
     inherited tabListagem: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 1328
       ExplicitHeight = 532
       inherited pnlListagemTopo: TPanel
@@ -248,8 +247,6 @@ inherited frmCadCliente: TfrmCadCliente
       end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 1328
       ExplicitHeight = 532
       object lbl1: TLabel

@@ -1,2 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<BorlandProject/>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2026/04/20 14:11:07.000.037,=C:\Projeto Delphi\Unit1.pas</Transaction>
+    <Transaction>2026/04/20 14:26:44.000.219,C:\Projeto Delphi\Controle\uResFinanceiro.pas=C:\Projeto Delphi\Unit1.pas</Transaction>
+    <Transaction>2026/04/20 14:26:44.000.219,C:\Projeto Delphi\Controle\uResFinanceiro.dfm=C:\Projeto Delphi\Unit1.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaHeranca, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
-  Vcl.ExtCtrls, Vcl.ComCtrls, uDTMconexao, uDTMVenda, RxToolEdit, RxCurrEdit, uEnum, cProVenda, Data.SqlTimSt, cFuncao, System.IniFiles;
+  Vcl.ExtCtrls, Vcl.ComCtrls, uDTMconexao, uDTMVenda, RxToolEdit, RxCurrEdit, uEnum, cProVenda, Data.SqlTimSt, cFuncao, System.IniFiles, math;
 
 type
   TfrmProVenda = class(TfrmTelaHeranca)
@@ -35,7 +35,6 @@ type
     edtDataVenda: TDateEdit;
     btn1: TSpeedButton;
     btn2: TSpeedButton;
-    btn3: TSpeedButton;
     btn4: TSpeedButton;
     f1ListagemvendaId: TFDAutoIncField;
     intgrfldListagemclienteId: TIntegerField;
@@ -191,6 +190,7 @@ begin
   inherited;
   if TDBLookupComboBox(Sender).KeyValue<>Null then begin
      edtValorUnitario.Value:=dtmVenda.QryProdutos.FieldByName('valor').AsFloat;
+     edtValorUnitario.value:= Ceil(edtValorUnitario.Value / 0.45);
      edtQuantidade.Value:=1;
      edtTotalProduto.Value:=TotalizarProduto(edtValorUnitario.Value, edtQuantidade.Value);
   end;
@@ -217,7 +217,11 @@ begin
   end;
 
   inherited;
+end;
 
+function TfrmProVenda.GetDesc: string;
+begin
+  result := IntToStr(oVenda.VendaId);
 end;
 
 procedure TfrmProVenda.btnApagarItemClick(Sender: TObject);
@@ -273,11 +277,6 @@ begin
 
   inherited;
   LimparCds;
-end;
-
-function TfrmProVenda.GetDesc: string;
-begin
-  Result := IntToStr(oVenda.vendaId);
 end;
 
 procedure TfrmProVenda.btn1Click(Sender: TObject);

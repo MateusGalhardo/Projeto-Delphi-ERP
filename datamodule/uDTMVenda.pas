@@ -22,13 +22,13 @@ type
     cdsItensVendavalorTotalProduto: TFloatField;
     f1QryProdutosprodutoId: TFDAutoIncField;
     f2QryProdutosnome: TStringField;
-    QryProdutosvalor: TFMTBCDField;
     QryProdutosquantidade: TFMTBCDField;
     f1QryClienteclienteId: TFDAutoIncField;
     f2QryClientenome: TStringField;
     intgrfldQryClienteIDSituacao: TIntegerField;
     f2QryClienteobservacao: TStringField;
     QryUpdate: TFDQuery;
+    fmtbcdfldQryProdutosvalor: TFMTBCDField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private

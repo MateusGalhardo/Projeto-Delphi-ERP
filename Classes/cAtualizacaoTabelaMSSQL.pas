@@ -211,8 +211,30 @@ begin
 
   try
     oUsuario:=TUsuario.Create(ConexaoDB);
-    oUsuario.nome:='ADMIN';
-    oUsuario.senha:='mudar@123';
+    oUsuario.nome:='Administrador';
+    oUsuario.senha:='123';
+    if not oUsuario.UsuarioExiste(oUsuario.nome) then
+       oUsuario.Inserir;
+  finally
+    if Assigned(oUsuario) then
+       FreeAndNil(oUsuario);
+  end;
+
+  try
+    oUsuario:=TUsuario.Create(ConexaoDB);
+    oUsuario.nome:='Estoquista';
+    oUsuario.senha:='123';
+    if not oUsuario.UsuarioExiste(oUsuario.nome) then
+       oUsuario.Inserir;
+  finally
+    if Assigned(oUsuario) then
+       FreeAndNil(oUsuario);
+  end;
+
+  try
+    oUsuario:=TUsuario.Create(ConexaoDB);
+    oUsuario.nome:='Vendedor';
+    oUsuario.senha:='123';
     if not oUsuario.UsuarioExiste(oUsuario.nome) then
        oUsuario.Inserir;
   finally
