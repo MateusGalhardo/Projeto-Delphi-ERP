@@ -1,10 +1,11 @@
 inherited frmControleLog: TfrmControleLog
   Caption = 'Auditoria'
+  ClientWidth = 1016
+  ExplicitWidth = 1022
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnl1: TPanel
-    ExplicitLeft = 8
-    ExplicitTop = -5
+    Width = 1016
     inherited lblIndice: TLabel
       Left = 5
       Top = 10
@@ -12,8 +13,17 @@ inherited frmControleLog: TfrmControleLog
       ExplicitTop = 10
     end
   end
+  inherited pnl2: TPanel
+    Width = 1016
+    inherited btnFechar: TBitBtn
+      Left = 937
+    end
+  end
   inherited pnl3: TPanel
+    Width = 1016
     inherited grdPesquisa: TDBGrid
+      Width = 1014
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
       Columns = <
         item
           Expanded = False

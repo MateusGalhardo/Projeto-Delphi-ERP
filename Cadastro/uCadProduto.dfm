@@ -5,10 +5,6 @@ inherited frmCadProduto: TfrmCadProduto
   TextHeight = 13
   inherited pgcPrincipal: TPageControl
     inherited tabListagem: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 882
-      ExplicitHeight = 457
       inherited grdListagem: TDBGrid
         Width = 697
         Columns = <
@@ -67,10 +63,6 @@ inherited frmCadProduto: TfrmCadProduto
       end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 882
-      ExplicitHeight = 457
       object lbl1: TLabel
         Left = 11
         Top = 141
@@ -289,14 +281,14 @@ inherited frmCadProduto: TfrmCadProduto
         Lines.Strings = (
           'edtDescricao')
         MaxLength = 255
-        TabOrder = 3
+        TabOrder = 4
       end
       object edtValor: TCurrencyEdit
         Left = 11
         Top = 298
         Width = 121
         Height = 21
-        TabOrder = 4
+        TabOrder = 5
       end
       object edtQuantidade: TCurrencyEdit
         Left = 155
@@ -304,7 +296,7 @@ inherited frmCadProduto: TfrmCadProduto
         Width = 121
         Height = 21
         DisplayFormat = ',0.00;- ,0.00'
-        TabOrder = 5
+        TabOrder = 6
       end
       object lkpCategoria: TDBLookupComboBox
         Left = 286
@@ -321,7 +313,7 @@ inherited frmCadProduto: TfrmCadProduto
         Top = 21
         Width = 151
         Height = 133
-        TabOrder = 6
+        TabOrder = 7
         object imgImagem: TImage
           Left = 1
           Top = 1
@@ -345,7 +337,7 @@ inherited frmCadProduto: TfrmCadProduto
         KeyField = 'fornId'
         ListField = 'nome'
         ListSource = dsFornecedor
-        TabOrder = 7
+        TabOrder = 3
       end
     end
   end
@@ -367,7 +359,6 @@ inherited frmCadProduto: TfrmCadProduto
     object f1ListagemprodutoId: TFDAutoIncField
       DisplayLabel = 'C'#243'digo do Produto'
       FieldName = 'produtoId'
-      Origin = 'produtoId'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
@@ -380,13 +371,11 @@ inherited frmCadProduto: TfrmCadProduto
     object f2Listagemdescricao: TStringField
       DisplayLabel = 'Descri'#231#227'o'
       FieldName = 'descricao'
-      Origin = 'descricao'
       Size = 255
     end
     object fmtbcdfldListagemvalor: TFMTBCDField
       DisplayLabel = 'Valor'
       FieldName = 'valor'
-      Origin = 'valor'
       currency = True
       Precision = 18
       Size = 5
@@ -394,19 +383,16 @@ inherited frmCadProduto: TfrmCadProduto
     object fmtbcdfldListagemquantidade: TFMTBCDField
       DisplayLabel = 'Quantidade'
       FieldName = 'quantidade'
-      Origin = 'quantidade'
       Precision = 18
       Size = 5
     end
     object intgrfldListagemcategoriaId: TIntegerField
       DisplayLabel = 'C'#243'digo de Categoria'
       FieldName = 'categoriaId'
-      Origin = 'categoriaId'
     end
     object fdqryListagemfoto: TBlobField
       DisplayLabel = 'Foto'
       FieldName = 'foto'
-      Origin = 'foto'
       Size = 2147483647
     end
     object intgrfldListagemfornId: TIntegerField
@@ -416,7 +402,7 @@ inherited frmCadProduto: TfrmCadProduto
     object f2ListagemDescricaoCategoria: TStringField
       DisplayLabel = 'Descri'#231#227'o da Categoria'
       FieldName = 'DescricaoCategoria'
-      Origin = 'DescricaoCategoria'
+      Origin = 'c.descricao'
       Size = 30
     end
   end

@@ -3,7 +3,6 @@ inherited frmCadUsuario: TfrmCadUsuario
   PixelsPerInch = 96
   TextHeight = 13
   inherited pgcPrincipal: TPageControl
-    ActivePage = tabManutencao
     inherited tabListagem: TTabSheet
       inherited grdListagem: TDBGrid
         Columns = <
@@ -101,7 +100,7 @@ inherited frmCadUsuario: TfrmCadUsuario
         EditLabel.Caption = 'Senha'
         MaxLength = 40
         PasswordChar = '*'
-        TabOrder = 2
+        TabOrder = 3
       end
       object lkpFuncao: TDBLookupComboBox
         Left = 312
@@ -111,7 +110,7 @@ inherited frmCadUsuario: TfrmCadUsuario
         KeyField = 'perfilId'
         ListField = 'descricao'
         ListSource = dsFuncao
-        TabOrder = 3
+        TabOrder = 2
       end
     end
   end

@@ -90,7 +90,7 @@ begin
 
   else if (TipoCampo in [ftDate, ftDateTime, ftdate, ftTimeStamp]) then
   begin
-      CondicaoSQL := WhereOrAnd+' '+' CAST '+'('+NomeCampo +' as date)' + '='+QuotedStr(mskPesquisar.Text)
+      CondicaoSQL := WhereOrAnd + ' CAST(' + NomeCampo + ' as date) = :Data';
   end
 
 
@@ -104,6 +104,7 @@ begin
   QryListagem.SQL.Clear;
   QryListagem.SQL.Add(SelectOriginal);
   QryListagem.SQL.Add(CondicaoSQL);
+  QryListagem.ParamByName('Data').AsDate := StrToDate(mskPesquisar.Text);
   QryListagem.Open;
 
   mskPesquisar.Text:='';
@@ -154,6 +155,7 @@ end;
 
 procedure TfrmControleLog.mskPesquisarChange(Sender: TObject);
 var Date:TDateTime;
+s: string;
 begin
   if(trim(TMaskEdit(Sender).Text) = '')then
     Exit;
@@ -179,7 +181,27 @@ begin
          QryListagem.Locate(IndiceAtual, Date, []);
        end
      end
-       else QryListagem.Locate(IndiceAtual, TMaskEdit(Sender).Text, [])
+       else QryListagem.Locate(IndiceAtual, TMaskEdit(Sender).Text, []);
+
+
+
+
+
+  s := StringReplace(mskPesquisar.Text, '/', '', [rfReplaceAll]);
+
+  if Length(s) <= 2 then begin
+
+  if Length(s) > 2 then
+    Insert('/', s, 3);
+
+  if Length(s) > 5 then
+    Insert('/', s, 6);
+
+  mskPesquisar.OnChange := nil;
+  mskPesquisar.Text := s;
+  mskPesquisar.SelStart := Length(s);
+  mskPesquisar.OnChange := mskPesquisarChange;
+  end;
 end;
 
 end.

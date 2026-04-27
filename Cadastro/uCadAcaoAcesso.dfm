@@ -78,21 +78,18 @@ inherited frmCadAcaoAcesso: TfrmCadAcaoAcesso
     object f1ListagemacaoAcessoId: TFDAutoIncField
       DisplayLabel = 'C'#243'digo'
       FieldName = 'acaoAcessoId'
-      Origin = 'acaoAcessoId'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
     object f2Listagemdescricao: TStringField
       DisplayLabel = 'Descri'#231#227'o'
       FieldName = 'descricao'
-      Origin = 'descricao'
       Required = True
       Size = 100
     end
     object f2Listagemchave: TStringField
       DisplayLabel = 'Chave'
       FieldName = 'chave'
-      Origin = 'chave'
       Required = True
       Size = 60
     end

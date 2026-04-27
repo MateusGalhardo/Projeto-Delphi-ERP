@@ -34,6 +34,7 @@ type
     procedure btnGravarClick(Sender: TObject);
     procedure edtCnpjChange(Sender: TObject);
     procedure edtTelefoneChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     oFornecedor: TFornecedor;
@@ -52,7 +53,7 @@ var
 
 implementation
 
-uses uCadCliente;
+uses uCadCliente, uCadProduto;
 
 {$R *.dfm}
 
@@ -102,6 +103,12 @@ begin
   inherited;
     oFornecedor:=TFornecedor.Create(dtmConexao.ConexaoDB);
     IndiceAtual:='nome';
+end;
+
+procedure TfrmFornecedor.FormShow(Sender: TObject);
+begin
+  inherited;
+  fdqryListagem.Open;
 end;
 
 function TfrmFornecedor.Gravar(EstadoDoCadastro: TEstadoDoCadastro): Boolean;

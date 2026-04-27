@@ -464,6 +464,28 @@ begin
 
   dbGridItensVenda.Canvas.FillRect(Rect);
   dbGridItensVenda.Canvas.TextOut(Rect.Left + 2, Rect.Top + 2, Column.Field.AsString);
+
+  if Column.FieldName = 'valorUnitario' then
+  begin
+    dbGridItensVenda.Canvas.FillRect(Rect);
+
+    dbGridItensVenda.Canvas.TextOut(
+      Rect.Left + 2,
+      Rect.Top + 2,
+      FormatFloat('R$ #,##0.00', Column.Field.AsFloat)
+    );
+  end;
+
+  if Column.FieldName = 'valorTotalProduto' then
+  begin
+    dbGridItensVenda.Canvas.FillRect(Rect);
+
+    dbGridItensVenda.Canvas.TextOut(
+      Rect.Left + 2,
+      Rect.Top + 2,
+      FormatFloat('R$ #,##0.00', Column.Field.AsFloat)
+    );
+  end;
 end;
 
 procedure TfrmProVenda.dbGridItensVendaKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -476,6 +498,7 @@ procedure TfrmProVenda.edtQuantidadeEnter(Sender: TObject);
 begin
   inherited;
   edtTotalProduto.Value:=TotalizarProduto(edtValorUnitario.Value, edtQuantidade.Value);
+
 end;
 
 procedure TfrmProVenda.edtQuantidadeExit(Sender: TObject);

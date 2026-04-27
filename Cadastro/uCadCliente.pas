@@ -75,6 +75,7 @@ type
     procedure edtEmailExit(Sender: TObject);
     procedure mskPesquisarChange(Sender: TObject);
     procedure dtpDataNascimentoExit(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
   private
     { Private declarations }
     oCliente:TCliente;
@@ -84,6 +85,7 @@ type
     function Gravar(EstadoDoCadastro: TEstadoDoCadastro):Boolean; override;
     procedure LimparComponenteItem;
     procedure PreencherEndereco(const CEP: string);
+    procedure DefinirTipoPessoaPeloDocumento(const ADoc: string);
   public
     { Public declarations }
   end;
@@ -94,7 +96,7 @@ var
 implementation
 
 uses
-  cUsuarioLogado, cFuncao, uAlterarSenha, uLogin, uPrincipal;
+  cUsuarioLogado, cFuncao, uAlterarSenha, uLogin, uPrincipal, uCadUsuario;
 
 {$R *.dfm}
 
@@ -240,6 +242,12 @@ begin
   if oCliente.Selecionar(fdqryListagem.FieldByName('clienteId').AsInteger) then begin
      edtClienteId.Text:=IntToStr(oCliente.codigo);
      edtNome.Text     :=oCliente.nome;
+
+     DefinirTipoPessoaPeloDocumento(oCliente.documento);
+     if cbbPessoa.Text = 'Física' then
+        lblDoc.Caption := 'CPF'
+     else lblDoc.Caption := 'CNPJ';
+
      edtDoc.Text      :=oCliente.documento;
      lkpStatus.KeyValue:=oCliente.IDSituacao;
      edtCEP.Text      :=oCliente.cep;
@@ -272,9 +280,25 @@ begin
   inherited;
 end;
 
+procedure TfrmCadCliente.btnCancelarClick(Sender: TObject);
+begin
+  inherited;
+  LimparComponenteItem;
+end;
+
+procedure TfrmCadCliente.DefinirTipoPessoaPeloDocumento(const ADoc: string);
+var DocLimpo: string;
+begin
+  DocLimpo := SomenteNumeros(ADoc);
+
+  if Length(DocLimpo) > 11 then
+    cbbPessoa.ItemIndex := cbbPessoa.Items.IndexOf('Jurídica')
+  else if Length(DocLimpo) > 0 then
+    cbbPessoa.ItemIndex := cbbPessoa.Items.IndexOf('Física');
+end;
+
 procedure TfrmCadCliente.btnGravarClick(Sender: TObject);
 var Qry: TFDQuery;
-novocliente: Integer;
 begin
   if cbbPessoa.Text = 'Física' then
  begin
@@ -457,7 +481,7 @@ begin
       else
         T.Text := TextoLimpo;
     end
-    else
+    else if cbbPessoa.Text = 'Jurídica' then
     begin
       if Length(TextoLimpo) > 14 then
         TextoLimpo := Copy(TextoLimpo, 1, 14);

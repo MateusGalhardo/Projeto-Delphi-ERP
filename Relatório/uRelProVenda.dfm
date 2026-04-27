@@ -413,6 +413,7 @@ object frmRelProVenda: TfrmRelProVenda
     end
   end
   object QryVendas: TFDQuery
+    Active = True
     Connection = dtmConexao.ConexaoDB
     SQL.Strings = (
       'SELECT vendas.vendaId,'
@@ -450,7 +451,7 @@ object frmRelProVenda: TfrmRelProVenda
     object bcdfldQryVendastotalVenda: TBCDField
       FieldName = 'totalVenda'
       ReadOnly = True
-      DisplayFormat = '##,##0.000'
+      DisplayFormat = 'R$ #,##0.00'
       Precision = 18
       Size = 3
     end
@@ -479,6 +480,7 @@ object frmRelProVenda: TfrmRelProVenda
     Top = 408
   end
   object QryVendasItens: TFDQuery
+    Active = True
     Connection = dtmConexao.ConexaoDB
     SQL.Strings = (
       'SELECT vendasItens.vendaId,'
@@ -516,16 +518,19 @@ object frmRelProVenda: TfrmRelProVenda
     end
     object fmtbcdfldQryVendasItensquantidade: TFMTBCDField
       FieldName = 'quantidade'
+      DisplayFormat = '#0.00'
       Precision = 18
       Size = 5
     end
     object fmtbcdfldQryVendasItensvalorUnitario: TFMTBCDField
       FieldName = 'valorUnitario'
+      DisplayFormat = 'R$ #,##0.00'
       Precision = 18
       Size = 5
     end
     object fmtbcdfldQryVendasItenstotalProduto: TFMTBCDField
       FieldName = 'totalProduto'
+      DisplayFormat = 'R$ #,##0.00'
       Precision = 18
       Size = 5
     end

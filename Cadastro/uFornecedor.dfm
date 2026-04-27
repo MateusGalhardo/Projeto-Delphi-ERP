@@ -9,10 +9,11 @@ inherited frmFornecedor: TfrmFornecedor
   inherited pgcPrincipal: TPageControl
     Width = 1131
     Height = 537
-    ActivePage = tabManutencao
     ExplicitWidth = 1131
     ExplicitHeight = 537
     inherited tabListagem: TTabSheet
+      ExplicitWidth = 1123
+      ExplicitHeight = 509
       inherited pnlListagemTopo: TPanel
         Width = 1123
         ExplicitWidth = 1123
@@ -63,8 +64,6 @@ inherited frmFornecedor: TfrmFornecedor
       end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 1123
       ExplicitHeight = 509
       object lblTelefone: TLabel
@@ -77,9 +76,9 @@ inherited frmFornecedor: TfrmFornecedor
       object lblCnpj: TLabel
         Left = 629
         Top = 124
-        Width = 22
-        Height = 13
-        Caption = 'Cnpj'
+        Width = 25
+        Height = 26
+        Caption = 'CNPJ'#13#10
       end
       object lblObservacao: TLabel
         Left = 56
@@ -98,7 +97,7 @@ inherited frmFornecedor: TfrmFornecedor
         EditLabel.Height = 13
         EditLabel.Caption = 'Nome'
         MaxLength = 60
-        TabOrder = 0
+        TabOrder = 1
       end
       object edtEndereco: TLabeledEdit
         Left = 56
@@ -109,14 +108,14 @@ inherited frmFornecedor: TfrmFornecedor
         EditLabel.Height = 13
         EditLabel.Caption = 'Endere'#231'o'
         MaxLength = 60
-        TabOrder = 1
+        TabOrder = 3
       end
       object edtTelefone: TEdit
         Left = 629
         Top = 216
         Width = 254
         Height = 21
-        TabOrder = 2
+        TabOrder = 4
         OnChange = edtTelefoneChange
       end
       object edtEmail: TLabeledEdit
@@ -129,7 +128,7 @@ inherited frmFornecedor: TfrmFornecedor
         EditLabel.Height = 13
         EditLabel.Caption = 'Email'
         MaxLength = 100
-        TabOrder = 3
+        TabOrder = 5
       end
       object edtFornId: TLabeledEdit
         Tag = 1
@@ -142,14 +141,14 @@ inherited frmFornecedor: TfrmFornecedor
         EditLabel.Caption = 'C'#243'digo'
         MaxLength = 10
         NumbersOnly = True
-        TabOrder = 4
+        TabOrder = 0
       end
       object edtCnpj: TEdit
         Left = 629
         Top = 143
         Width = 254
         Height = 21
-        TabOrder = 5
+        TabOrder = 2
         OnChange = edtCnpjChange
       end
       object edtObservacao: TEdit
@@ -181,44 +180,37 @@ inherited frmFornecedor: TfrmFornecedor
     object f1ListagemfornId: TFDAutoIncField
       DisplayLabel = 'C'#243'digo'
       FieldName = 'fornId'
-      Origin = 'fornId'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
     object f2Listagemnome: TStringField
       DisplayLabel = 'Nome'
       FieldName = 'nome'
-      Origin = 'nome'
       Size = 50
     end
     object f2Listagemcnpj: TStringField
-      DisplayLabel = 'Cnpj'
+      DisplayLabel = 'CNPJ'
       FieldName = 'cnpj'
-      Origin = 'cnpj'
       Size = 18
     end
     object f2Listagemendereco: TStringField
       DisplayLabel = 'Endere'#231'o'
       FieldName = 'endereco'
-      Origin = 'endereco'
       Size = 50
     end
     object f2Listagemtelefone: TStringField
       DisplayLabel = 'Telefone'
       FieldName = 'telefone'
-      Origin = 'telefone'
       Size = 15
     end
     object f2Listagememail: TStringField
       DisplayLabel = 'Email'
       FieldName = 'email'
-      Origin = 'email'
       Size = 50
     end
     object f2Listagemobservacao: TStringField
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'observacao'
-      Origin = 'observacao'
       Size = 100
     end
   end

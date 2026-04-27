@@ -66,6 +66,7 @@ type
     procedure dsListagemDataChange(Sender: TObject; Field: TField);
     procedure btnIncluirFornecedorClick(Sender: TObject);
     procedure btnPesquisarFornecedorClick(Sender: TObject);
+    procedure mskPesquisarChange(Sender: TObject);
   private
     { Private declarations }
     oProduto:TProduto;
@@ -127,6 +128,12 @@ procedure TfrmCadProduto.mniLimparImagem1Click(Sender: TObject);
 begin
   inherited;
   TFuncao.LimparImagem(imgImagem);
+end;
+
+procedure TfrmCadProduto.mskPesquisarChange(Sender: TObject);
+begin
+  inherited;
+
 end;
 
 {$endregion}
@@ -268,6 +275,7 @@ procedure TfrmCadProduto.FormShow(Sender: TObject);
 begin
   inherited;
     QryCategoria.Open;
+    QryFornecedor.Open;
 end;
 
 end.

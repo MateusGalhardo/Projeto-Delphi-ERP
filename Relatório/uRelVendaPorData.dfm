@@ -389,7 +389,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
       FieldName = 'totalVenda'
       Origin = 'totalVenda'
       ReadOnly = True
-      DisplayFormat = '##,##0.00'
+      DisplayFormat = 'R$ #,##0.00'
       Precision = 18
       Size = 3
     end

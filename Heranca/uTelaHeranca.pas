@@ -55,7 +55,7 @@ type
     function RetornarCampoTraduzido(Campo: string): string;
     procedure ExibirLabelIndice(Campo: string; aLabel: TLabel);
     function ExisteCampoObrigatorio: Boolean;
-    function SomenteNumeros(const Texto:string):string;
+
     procedure DesablitarEditPK;
     procedure LimparEdits;
 
@@ -68,8 +68,10 @@ type
     procedure ControlarIndiceTab(pgcPrincipal: TPageControl; Indice: Integer);
     function Apagar:Boolean; virtual;
     function Gravar(EstadoDoCadastro:TEstadoDoCadastro):Boolean; virtual;
+    function GetColumnByFieldName(Grid: TDBGrid; const AFieldName: string): TColumn;
     procedure BloqueiaCTRL_DEL_DBGrid(var Key: Word; Shift: TShiftState);
     procedure GravarAuditoria(Acao, Tela, Descricao: string);
+    function SomenteNumeros(const Texto:string):string;
   end;
 
 var
@@ -258,6 +260,16 @@ begin
   btnGravar.Enabled:=not(Flag);
 end;
 
+function TfrmTelaHeranca.GetColumnByFieldName(Grid: TDBGrid; const AFieldName: string): TColumn;
+var I: Integer;
+begin
+  Result := nil;
+  for I := 0 to Grid.Columns.Count - 1 do
+  begin
+    if SameText(Grid.Columns[I].FieldName, AFieldName) then
+      Exit(Grid.Columns[I]);
+  end;
+end;
 
 procedure TfrmTelaHeranca.ControlarIndiceTab(pgcPrincipal:TPageControl; Indice: Integer);
 begin
@@ -358,23 +370,30 @@ end;
 {$endregion}
 
 procedure TfrmTelaHeranca.FormClose(Sender: TObject; var Action: TCloseAction);
-var ArquivoINI:TIniFile;
-    I: Integer;
+var ArquivoINI: TIniFile; I: Integer; Secao: string;
 begin
-  ExtractFilePath(Application.ExeName);
   ArquivoINI := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'PreferenciasGrid.ini');
-
   try
+    Secao := oUsuarioLogado.nome + '_' + Self.ClassName;
+
     for I := 0 to grdListagem.Columns.Count - 1 do
     begin
       ArquivoINI.WriteInteger(
-       oUsuarioLogado.nome, Self.Name + '_Coluna_' + IntToStr(I), grdListagem.Columns[I].Width);
+        Secao,
+        grdListagem.Columns[I].FieldName + '.Width',
+        grdListagem.Columns[I].Width
+      );
+
+      ArquivoINI.WriteInteger(
+        Secao,
+        grdListagem.Columns[I].FieldName + '.Index',
+        grdListagem.Columns[I].Index
+      );
     end;
+
   finally
     ArquivoINI.Free;
   end;
-
-  fdqryListagem.Close;
 end;
 
 procedure TfrmTelaHeranca.FormCreate(Sender: TObject);
@@ -388,39 +407,56 @@ begin
     grdListagem.Columns[I].Title.Alignment := taCenter;
 
   grdListagem.Options:=[dgTitles,dgIndicator,dgColumnResize,dgColLines,dgRowLines,
-                        dgTabs,dgRowSelect,dgAlwaysShowSelection,dgCancelOnExit,dgTitleClick,
+                        dgTabs,dgAlwaysShowSelection,dgCancelOnExit,dgTitleClick,
                         dgTitleHotTrack]
 end;
 
 procedure TfrmTelaHeranca.FormShow(Sender: TObject);
-var ArquivoINI: TIniFile ;
-    I:Integer;
+var ArquivoINI: TIniFile; I, NewIndex: Integer; Col: TColumn; Secao: string;
 begin
-
-  ArquivoINI := TIniFile.Create(ExtractFilePath(Application.ExeName)+ 'PreferenciasGrid.ini');
-
+  ArquivoINI := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'PreferenciasGrid.ini');
   try
-    for I := 0 to grdListagem.Columns.Count - 1 do
-    begin
-      grdListagem.Columns[I].Width := ArquivoINI.ReadInteger
-      (oUsuarioLogado.nome, Self.Name + '_Coluna_' + IntToStr(I), grdListagem.Columns[I].Width);
+    Secao := oUsuarioLogado.nome + '_' + Self.ClassName;
+
+    grdListagem.Columns.BeginUpdate;
+    try
+      for I := 0 to grdListagem.Columns.Count - 1 do
+      begin
+        Col := grdListagem.Columns[I];
+
+        NewIndex := ArquivoINI.ReadInteger(
+          Secao,
+          Col.FieldName + '.Index',
+          Col.Index
+        );
+
+        Col.Index := NewIndex;
+      end;
+
+      for I := 0 to grdListagem.Columns.Count - 1 do
+      begin
+        Col := grdListagem.Columns[I];
+
+        Col.Width := ArquivoINI.ReadInteger(
+          Secao,
+          Col.FieldName + '.Width',
+          Col.Width
+        );
+      end;
+
+    finally
+      grdListagem.Columns.EndUpdate;
     end;
+
   finally
     ArquivoINI.Free;
   end;
 
-
-  if (fdqryListagem.SQL.Text <> EmptyStr) then begin
-      fdqryListagem.IndexFieldNames:=IndiceAtual;
-      ExibirLabelIndice(IndiceAtual, lblIndice);
-      SelectOriginal:=fdqryListagem.SQL.Text;
-      fdqryListagem.Open;
-  end;
-        ControlarIndiceTab(pgcPrincipal, 0);
-        DesablitarEditPK;
-      ControlarBotoes(btnNovo, btnAlterar, btnCancelar, btnGravar, btnApagar,
-                      dbnvgrNavigator, pgcPrincipal,True);
-
+  ControlarIndiceTab(pgcPrincipal, 0);
+  DesablitarEditPK;
+  ControlarBotoes(btnNovo, btnAlterar, btnCancelar,
+                  btnGravar, btnApagar,
+                  dbnvgrNavigator, pgcPrincipal,True);
 end;
 
 procedure TfrmTelaHeranca.grdListagemDblClick(Sender: TObject);

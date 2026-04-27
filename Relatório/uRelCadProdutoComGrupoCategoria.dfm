@@ -410,7 +410,7 @@ object frmRelCadProdutoComGrupoCategoria: TfrmRelCadProdutoComGrupoCategoria
       FieldName = 'Valor'
       Origin = 'Valor'
       ReadOnly = True
-      DisplayFormat = '##,##0.000'
+      DisplayFormat = 'R$ #,##0.00'
       Precision = 18
       Size = 3
     end
@@ -418,7 +418,7 @@ object frmRelCadProdutoComGrupoCategoria: TfrmRelCadProdutoComGrupoCategoria
       FieldName = 'Quantidade'
       Origin = 'Quantidade'
       ReadOnly = True
-      DisplayFormat = '##,##0.000'
+      DisplayFormat = '##,##0.00'
       Precision = 18
       Size = 3
     end

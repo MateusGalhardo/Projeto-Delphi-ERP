@@ -9,7 +9,7 @@ inherited frmConFornecedor: TfrmConFornecedor
   inherited pnl1: TPanel
     Width = 1012
     ExplicitWidth = 1012
-    inherited edtPesquisa: TMaskEdit
+    inherited mskPesquisar: TMaskEdit
       Width = 1010
       ExplicitWidth = 1010
     end
@@ -71,6 +71,7 @@ inherited frmConFornecedor: TfrmConFornecedor
     end
   end
   inherited QryListagem: TFDQuery
+    Active = True
     SQL.Strings = (
       'select * from fornecedor')
     object f1QryListagemfornId: TFDAutoIncField

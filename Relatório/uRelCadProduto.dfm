@@ -240,6 +240,7 @@ object frmRelCadProduto: TfrmRelCadProduto
     end
   end
   object QryProdutos: TFDQuery
+    Active = True
     Connection = dtmConexao.ConexaoDB
     SQL.Strings = (
       'SELECT produtos.produtoId,'
@@ -264,7 +265,7 @@ object frmRelCadProduto: TfrmRelCadProduto
     object QryProdutosValor: TFMTBCDField
       FieldName = 'Valor'
       Origin = 'Valor'
-      DisplayFormat = '#0.00'
+      DisplayFormat = 'R$ #,##0.00'
       Precision = 18
       Size = 5
     end
