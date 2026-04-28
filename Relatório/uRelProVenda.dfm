@@ -395,6 +395,7 @@ object frmRelProVenda: TfrmRelProVenda
             Top = 3
             Width = 74
             Height = 16
+            Alignment = taRightJustify
             DataField = 'valorUnitario'
             DataSource = dtsVendasItens
             Text = ''
@@ -404,6 +405,7 @@ object frmRelProVenda: TfrmRelProVenda
             Top = 3
             Width = 74
             Height = 16
+            Alignment = taRightJustify
             DataField = 'totalProduto'
             DataSource = dtsVendasItens
             Text = ''

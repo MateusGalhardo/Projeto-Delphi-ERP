@@ -72,11 +72,11 @@ end;
 function TVenda.Apagar: Boolean;
 var Qry:TFDQuery;
 begin
-  if MessageDlg('Apagar o Registro: '+#13+#13+
-                'Venda Nro: '+IntToStr(VendaId),mtConfirmation,[mbYes, mbNo],0)<> mrYes then begin
-     Result:=false;
-     abort;
-  end;
+//  if MessageDlg('Apagar o Registro: '+#13+#13+
+//                'Venda Nro: '+IntToStr(VendaId),mtConfirmation,[mbYes, mbNo],0)<> mrYes then begin
+//     Result:=false;
+//     abort;
+//  end;
 
   try
     Result:=true;

@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
   Vcl.ExtCtrls, Vcl.ComCtrls, RxToolEdit, cCadCliente, uEnum, uDtmConexao, System.ImageList, Vcl.ImgList, cValidar,
-  System.JSON, System.Net.HttpClient, System.Net.URLClient, IdHTTP, IdSSLOpenSSL, Vcl.Imaging.pngimage, DateUtils;
+  System.JSON, System.Net.HttpClient, System.Net.URLClient, IdHTTP, IdSSLOpenSSL, Vcl.Imaging.pngimage, DateUtils, System.RegularExpressions;
 
 type
   TfrmCadCliente = class(TfrmTelaHeranca)
@@ -56,10 +56,13 @@ type
     lbl8: TLabel;
     lbl9: TLabel;
     img1: TImage;
-    img2: TImage;
     img3: TImage;
-    img4: TImage;
     img5: TImage;
+    edtCasa: TEdit;
+    lbl10: TLabel;
+    f2Listagemcasa: TStringField;
+    img2: TImage;
+    img4: TImage;
     procedure btnAlterarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -74,8 +77,8 @@ type
     procedure lkpStatusCloseUp(Sender: TObject);
     procedure edtEmailExit(Sender: TObject);
     procedure mskPesquisarChange(Sender: TObject);
-    procedure dtpDataNascimentoExit(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     oCliente:TCliente;
@@ -124,6 +127,7 @@ begin
   oCliente.documento      :=edtDoc.Text;
   oCliente.IDSituacao     :=lkpStatus.KeyValue;
   oCliente.cep            :=edtCEP.Text;
+  oCliente.casa           :=edtCasa.Text;
   oCliente.estado         :=edtEstado.Text;
   oCliente.endereco       :=edtEndereco.Text;
   oCliente.observacao     :=edtObservacao.Text;
@@ -248,16 +252,17 @@ begin
         lblDoc.Caption := 'CPF'
      else lblDoc.Caption := 'CNPJ';
 
-     edtDoc.Text      :=oCliente.documento;
+     edtDoc.Text       :=oCliente.documento;
      lkpStatus.KeyValue:=oCliente.IDSituacao;
-     edtCEP.Text      :=oCliente.cep;
-     edtEndereco.Text :=oCliente.endereco;
-     edtEstado.Text   :=oCliente.estado;
-     edtBairro.Text   :=oCliente.bairro;
-     edtCidade.Text   :=oCliente.cidade;
+     edtCEP.Text       :=oCliente.cep;
+     edtEndereco.Text  :=oCliente.endereco;
+     edtEstado.Text    :=oCliente.estado;
+     edtBairro.Text    :=oCliente.bairro;
+     edtCidade.Text    :=oCliente.cidade;
+     edtCasa.Text      :=oCliente.Casa;
      edtObservacao.Text:=oCliente.observacao;
-     edtTelefone.Text :=oCliente.telefone;
-     edtEmail.Text    :=oCliente.email;
+     edtTelefone.Text  :=oCliente.telefone;
+     edtEmail.Text     :=oCliente.email;
      dtpDataNascimento.Date:=oCliente.dataNascimento;
 
   end
@@ -300,6 +305,18 @@ end;
 procedure TfrmCadCliente.btnGravarClick(Sender: TObject);
 var Qry: TFDQuery;
 begin
+  if cbbPessoa.Text = '' then begin
+    ShowMessage('Informe o Tipo de Pessoa');
+    cbbPessoa.SetFocus;
+    Exit;
+  end;
+
+  if edtDoc.Text = '' then begin
+    ShowMessage('Informe o documento');
+    edtDoc.SetFocus;
+    Exit;
+  end;
+
   if cbbPessoa.Text = 'Física' then
  begin
   if not ValidarCPF(edtDoc.Text) then
@@ -334,12 +351,8 @@ end;
     Exit;
   end;
 
-  if dtpDataNascimento.Date > Date then begin
-    ShowMessage('Data inválida');
-    dtpDataNascimento.Date := date;
-    Exit;
-  end
-  else if YearsBetween(dtpDataNascimento.Date, Date) < 18 then
+
+  if YearsBetween(dtpDataNascimento.Date, Date) < 18 then
   begin
     ShowMessage('O Cliente deve ter 18 anos ou mais');
     dtpDataNascimento.SetFocus;
@@ -428,23 +441,6 @@ begin
   edtDoc.Clear
 end;
 
-procedure TfrmCadCliente.dtpDataNascimentoExit(Sender: TObject);
-begin
-  inherited;
-  dtpDataNascimento.MaxDate := Date;
-
-  if dtpDataNascimento.Date > Date then begin
-    ShowMessage('Data inválida');
-    dtpDataNascimento.Date := date;
-  end
-  else if YearsBetween(dtpDataNascimento.Date, Date) < 18 then
-  begin
-    ShowMessage('O Cliente deve ter 18 anos ou mais');
-    dtpDataNascimento.SetFocus;
-    dtpDataNascimento.Date := date
-  end;
-end;
-
 procedure TfrmCadCliente.edtCEPExit(Sender: TObject);
 begin
   if Trim(edtCEP.Text) <> '' then
@@ -487,15 +483,15 @@ begin
         TextoLimpo := Copy(TextoLimpo, 1, 14);
 
       if Length(TextoLimpo) > 12 then
-        T.Text := Copy(TextoLimpo,1,2)+'.'+Copy(TextoLimpo,3,3)+'.'+
-                  Copy(TextoLimpo,6,3)+'/'+Copy(TextoLimpo,9,4)+'-'+Copy(TextoLimpo,13,2)
+        T.Text := Copy(TextoLimpo,1,2)+ '.' +Copy(TextoLimpo,3,3)+'.' +
+                  Copy(TextoLimpo,6,3)+ '/' +Copy(TextoLimpo,9,4)+ '-' + Copy(TextoLimpo,13,2)
       else if Length(TextoLimpo) > 8 then
-        T.Text := Copy(TextoLimpo,1,2)+'.'+Copy(TextoLimpo,3,3)+'.'+
-                  Copy(TextoLimpo,6,3)+'/'+Copy(TextoLimpo,9)
+        T.Text := Copy(TextoLimpo,1,2)+ '.' +Copy(TextoLimpo,3,3)+'.' +
+                  Copy(TextoLimpo,6,3)+ '/' +Copy(TextoLimpo,9)
       else if Length(TextoLimpo) > 5 then
-        T.Text := Copy(TextoLimpo,1,2)+'.'+Copy(TextoLimpo,3,3)+'.'+Copy(TextoLimpo,6)
+        T.Text := Copy(TextoLimpo,1,2)+ '.' +Copy(TextoLimpo,3,3)+ '.' + Copy(TextoLimpo,6)
       else if Length(TextoLimpo) > 2 then
-        T.Text := Copy(TextoLimpo,1,2)+'.'+Copy(TextoLimpo,3)
+        T.Text := Copy(TextoLimpo,1,2)+ '.' +Copy(TextoLimpo,3)
       else
         T.Text := TextoLimpo;
     end;
@@ -504,28 +500,17 @@ begin
   finally
     T.Tag := 0;
   end;
+
 end;
 
 procedure TfrmCadCliente.edtEmailExit(Sender: TObject);
-var Email, Dominio: string; PosArroba: Integer;
+var Email: string;
 begin
-  Email := edtEmail.Text;
+  Email := Trim(edtEmail.Text);
 
-  if edtEmail.Text = '' then Exit;
-
-  if Pos('@', Email) = 0 then
+  if not TRegEx.IsMatch(Email, '^[^@\s]{2,}@[^@\s]{5,}.[^@\s]{2,}$') then
   begin
-    ShowMessage('O e-mail deve conter @ e domínio.');
-    edtEmail.SetFocus;
-    Exit;
-  end;
-
-  PosArroba := Pos('@', Email);
-  Dominio := Copy(Email, PosArroba + 1, Length(Email));
-
-  if (Dominio = '') or (Pos('.', Dominio) = 0) then
-  begin
-    ShowMessage('Informe um domínio válido (ex: @gmail.com).');
+    ShowMessage('Informe um e-mail válido');
     edtEmail.SetFocus;
     Exit;
   end;
@@ -544,7 +529,7 @@ begin
   if Texto = '' then Exit;
                                 //SE a primeira casinha for 0 é 0800
 
-  if Texto[1] = '0' then
+  if (Texto[1] = '0') and (Texto[3] = '0') and (Texto[4] = '0') then
   begin
     if Length(Texto) <= 4 then
       edtTelefone.Text := Copy(Texto, 1, Length(Texto))
@@ -596,5 +581,11 @@ begin
   LinhaZebrada:= 0;
 end;
 
+
+procedure TfrmCadCliente.FormShow(Sender: TObject);
+begin
+  inherited;
+  dtpDataNascimento.MaxDate := Date;
+end;
 
 end.

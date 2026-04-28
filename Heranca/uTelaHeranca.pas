@@ -412,7 +412,7 @@ begin
 end;
 
 procedure TfrmTelaHeranca.FormShow(Sender: TObject);
-var ArquivoINI: TIniFile; I, NewIndex: Integer; Col: TColumn; Secao: string;
+var ArquivoINI: TIniFile; I, NewIndex: Integer; Col: TColumn; Secao: string; J: Integer;
 begin
   ArquivoINI := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'PreferenciasGrid.ini');
   try
@@ -420,18 +420,22 @@ begin
 
     grdListagem.Columns.BeginUpdate;
     try
-      for I := 0 to grdListagem.Columns.Count - 1 do
-      begin
-        Col := grdListagem.Columns[I];
+      for J := 0 to grdListagem.Columns.Count - 1 do
+       begin
+        for I := 0 to grdListagem.Columns.Count - 1 do
+         begin
+            Col := grdListagem.Columns[I];
 
-        NewIndex := ArquivoINI.ReadInteger(
-          Secao,
-          Col.FieldName + '.Index',
-          Col.Index
-        );
+            NewIndex := ArquivoINI.ReadInteger(
+            Secao,
+            Col.FieldName + '.Index',
+            Col.Index
+            );
 
-        Col.Index := NewIndex;
-      end;
+          if Col.Index <> NewIndex then
+          Col.Index := NewIndex;
+         end;
+       end;
 
       for I := 0 to grdListagem.Columns.Count - 1 do
       begin
@@ -450,6 +454,13 @@ begin
 
   finally
     ArquivoINI.Free;
+  end;
+
+  if (fdqryListagem.SQL.Text <> EmptyStr) then begin
+    fdqryListagem.IndexFieldNames := IndiceAtual;
+    ExibirLabelIndice(IndiceAtual, lblIndice);
+    SelectOriginal := fdqryListagem.SQL.Text;
+    fdqryListagem.Open;
   end;
 
   ControlarIndiceTab(pgcPrincipal, 0);

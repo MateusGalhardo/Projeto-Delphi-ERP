@@ -38,6 +38,7 @@ type
     F_documento: string;
     F_observacao: string;
     F_IDSituacao: Integer;
+    F_casa: string;
 
     procedure Validar;
 
@@ -66,6 +67,7 @@ type
     property documento      :string     read F_documento      write F_documento;
     property IDSituacao     :integer    read F_IDSituacao     write F_IDSituacao;
     property observacao     :string     read F_observacao     write F_observacao;
+    property casa           :string     read F_casa           write F_casa;
   end;
 
 implementation
@@ -110,6 +112,7 @@ begin
   F_telefone := '';
   F_email := '';
   F_dataNascimento := 0;
+  F_casa := '';
 end;
 
 {$region 'CRUD'}
@@ -162,6 +165,7 @@ begin
                 '       ,cidade         =:cidade '+
                 '       ,IDSituacao     =:IDSituacao '+
                 '       ,bairro         =:bairro '+
+                '       ,casa           =:casa '+
                 '       ,observacao     =:observacao '+
                 '       ,estado         =:estado '+
                 '       ,cep            =:cep '+
@@ -176,6 +180,7 @@ begin
     Qry.ParamByName('endereco').AsString         :=Self.F_endereco;
     Qry.ParamByName('cidade').AsString           :=Self.F_cidade;
     Qry.ParamByName('bairro').AsString           :=Self.F_bairro;
+    Qry.ParamByName('casa').AsString             :=Self.F_casa;
     Qry.ParamByName('estado').AsString           :=Self.F_estado;
     Qry.ParamByName('cep').AsString              :=Self.F_cep;
     Qry.ParamByName('telefone').AsString         :=Self.F_telefone;
@@ -214,6 +219,7 @@ begin
                 '                      IDSituacao, '+
                 '                      cidade,  '+
                 '                      bairro,  '+
+                '                      casa,  '+
                 '                      observacao,  '+
                 '                      estado, '+
                 '                      cep, '+
@@ -226,6 +232,7 @@ begin
                 '                      :IDSituacao, '+
                 '                      :cidade,  '+
                 '                      :bairro,  '+
+                '                      :casa,  '+
                 '                      :observacao,  '+
                 '                      :estado, '+
                 '                      :cep, '+
@@ -239,6 +246,7 @@ begin
     Qry.ParamByName('endereco').AsString         :=Self.F_endereco;
     Qry.ParamByName('cidade').AsString           :=Self.F_cidade;
     Qry.ParamByName('bairro').AsString           :=Self.F_bairro;
+    Qry.ParamByName('casa').AsString             :=Self.F_casa;
     Qry.ParamByName('observacao').AsString       :=Self.F_observacao;
     Qry.ParamByName('estado').AsString           :=Self.F_estado;
     Qry.ParamByName('cep').AsString              :=Self.F_cep;
@@ -281,6 +289,7 @@ begin
                 '       cidade, '+
                 '       bairro, '+
                 '       estado, '+
+                '       casa, '+
                 '       cep, '+
                 '       telefone, '+
                 '       email, '+
@@ -299,6 +308,7 @@ begin
       Self.F_endereco      := Qry.FieldByName('endereco').AsString;
       Self.F_cidade        := Qry.FieldByName('cidade').AsString;
       Self.F_bairro        := Qry.FieldByName('bairro').AsString;
+      Self.F_casa          := Qry.FieldByName('casa').AsString;
       Self.F_estado        := Qry.FieldByName('estado').AsString;
       Self.F_cep           := Qry.FieldByName('cep').AsString;
       Self.F_telefone      := Qry.FieldByName('telefone').AsString;

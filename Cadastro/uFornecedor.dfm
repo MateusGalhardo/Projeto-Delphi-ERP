@@ -9,6 +9,7 @@ inherited frmFornecedor: TfrmFornecedor
   inherited pgcPrincipal: TPageControl
     Width = 1131
     Height = 537
+    ActivePage = tabManutencao
     ExplicitWidth = 1131
     ExplicitHeight = 537
     inherited tabListagem: TTabSheet
@@ -148,6 +149,7 @@ inherited frmFornecedor: TfrmFornecedor
         Top = 143
         Width = 254
         Height = 21
+        MaxLength = 18
         TabOrder = 2
         OnChange = edtCnpjChange
       end

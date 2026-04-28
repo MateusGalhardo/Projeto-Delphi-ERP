@@ -3,6 +3,7 @@ inherited frmCadUsuario: TfrmCadUsuario
   PixelsPerInch = 96
   TextHeight = 13
   inherited pgcPrincipal: TPageControl
+    ActivePage = tabManutencao
     inherited tabListagem: TTabSheet
       inherited grdListagem: TDBGrid
         Columns = <
@@ -19,6 +20,7 @@ inherited frmCadUsuario: TfrmCadUsuario
       end
     end
     inherited tabManutencao: TTabSheet
+      ExplicitLeft = 8
       object btnExibir: TSpeedButton
         Left = 231
         Top = 176

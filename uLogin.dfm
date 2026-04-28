@@ -18,6 +18,13 @@ object frmLogin: TfrmLogin
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object pb1: TPaintBox
+    Left = 232
+    Top = 0
+    Width = 361
+    Height = 265
+    OnPaint = pb1Paint
+  end
   object lbl1: TLabel
     Left = 376
     Top = 19
@@ -47,7 +54,7 @@ object frmLogin: TfrmLogin
     ParentFont = False
   end
   object btnFechar: TBitBtn
-    Left = 316
+    Left = 433
     Top = 191
     Width = 106
     Height = 25
@@ -79,13 +86,13 @@ object frmLogin: TfrmLogin
       2B8CB23192B53697B93C9CBC3FA0BF45A6C24AABC64FB0C954B5CD59BAD15FBF
       D363C4D7244E6EFF00FFFF00FF244E6E244E6E244E6E244E6E244E6E244E6E24
       4E6E244E6E244E6E244E6E244E6E244E6E244E6E244E6EFF00FF}
-    TabOrder = 0
+    TabOrder = 3
     OnClick = btnFecharClick
   end
   object btnAcessar: TBitBtn
-    Left = 442
+    Left = 316
     Top = 191
-    Width = 97
+    Width = 106
     Height = 25
     Caption = 'Acessar'
     Glyph.Data = {
@@ -115,7 +122,7 @@ object frmLogin: TfrmLogin
       C5C8C68EDDA862DF863FCC6637C76134C55D33C35B32C35835C35737C24F65C1
       75C3C7C4FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFBACEC089DBA268DB8959
       D97851D46F55CE7371C986AFC6B3FF00FFFF00FFFF00FFFF00FF}
-    TabOrder = 1
+    TabOrder = 2
     OnClick = btnAcessarClick
   end
   object edtUsuario: TEdit
@@ -129,7 +136,7 @@ object frmLogin: TfrmLogin
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 0
   end
   object edtSenha: TEdit
     Left = 316
@@ -143,7 +150,7 @@ object frmLogin: TfrmLogin
     Font.Style = []
     ParentFont = False
     PasswordChar = '*'
-    TabOrder = 3
+    TabOrder = 1
   end
   object pnl1: TPanel
     Left = 0
@@ -154,9 +161,8 @@ object frmLogin: TfrmLogin
     object img1: TImage
       Left = 1
       Top = 1
-      Width = 263
+      Width = 264
       Height = 319
-      Align = alClient
       Picture.Data = {
         0954506E67496D61676589504E470D0A1A0A0000000D49484452000004000000
         04000802000000F07FBCD40000FFFF4944415478DAECDD69B425D775D8F73354
@@ -6815,8 +6821,6 @@ object frmLogin: TfrmLogin
         10C83A00FC0982D2191DA3F71F320000000049454E44AE426082}
       Proportional = True
       Stretch = True
-      ExplicitTop = 24
-      ExplicitHeight = 296
     end
   end
 end
