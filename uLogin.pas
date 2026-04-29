@@ -5,24 +5,30 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, cCadUsuario, uDTMConexao, Vcl.Imaging.pngimage,
-  Vcl.ExtCtrls, Vcl.GraphUtil;
+  Vcl.ExtCtrls, Vcl.GraphUtil, JvExControls, JvButton, JvTransparentButton, PngSpeedButton, PngBitBtn, Vcl.Imaging.jpeg;
 
 type
   TfrmLogin = class(TForm)
-    btnFechar: TBitBtn;
-    btnAcessar: TBitBtn;
-    lbl1: TLabel;
+    pnl1: TPanel;
+    pnl2: TPanel;
+    img1: TImage;
     lbl2: TLabel;
+    pnl3: TPanel;
+    pnl4: TPanel;
+    lbl1: TLabel;
+    lbl3: TLabel;
+    lbl4: TLabel;
+    lbl5: TLabel;
     edtUsuario: TEdit;
     edtSenha: TEdit;
-    pb1: TPaintBox;
-    pnl1: TPanel;
-    img1: TImage;
+    btnFechar: TPngBitBtn;
+    btnAcessar: TPngBitBtn;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnAcessarClick(Sender: TObject);
-    procedure pb1Paint(Sender: TObject);
+    procedure lbl5Click(Sender: TObject);
+    procedure pnlFecharClick(Sender: TObject);
   private
     { Private declarations }
     bFechar:Boolean;
@@ -97,15 +103,21 @@ begin
   bFechar:=False;
 end;
 
-procedure TfrmLogin.pb1Paint(Sender: TObject);
+procedure TfrmLogin.lbl5Click(Sender: TObject);
 begin
-  GradientFillCanvas(
-    pb1.Canvas,
-    clWhite,
-    clNavy,
-    pb1.ClientRect,
-    gdHorizontal
-  );
+  if edtSenha.PasswordChar = '*' then
+  begin
+    edtSenha.PasswordChar := #0;
+  end
+  else begin
+    edtSenha.PasswordChar := '*';
+  end;
+end;
+
+procedure TfrmLogin.pnlFecharClick(Sender: TObject);
+begin
+  bFechar := True;
+  Close;
 end;
 
 end.

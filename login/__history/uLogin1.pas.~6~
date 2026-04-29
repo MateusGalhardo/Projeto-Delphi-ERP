@@ -1,0 +1,65 @@
+unit uLogin1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, cCadUsuario, uDTMConexao, Vcl.Imaging.pngimage,
+  Vcl.ExtCtrls, Vcl.GraphUtil, JvExControls, JvButton, JvTransparentButton;
+
+type
+  TfrmLogin1 = class(TForm)
+    pnl1: TPanel;
+    pnl2: TPanel;
+    pnl3: TPanel;
+    img1: TImage;
+    pnl4: TPanel;
+    lbl1: TLabel;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    lbl4: TLabel;
+    edtUsuario: TEdit;
+    edtSenha: TEdit;
+    lbl5: TLabel;
+    pnl5: TPanel;
+    btnAcessar: TJvTransparentButton;
+    pnl6: TPanel;
+    btnFechar: TJvTransparentButton;
+    procedure btnAcessarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmLogin1: TfrmLogin1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmLogin1.btnAcessarClick(Sender: TObject);
+var oUsuario:TUsuario;
+begin
+//  Try
+//    oUsuario:=TUsuario.Create(dtmConexao.ConexaoDB);
+//    if oUsuario.Logar(edtUsuario.Text,edtSenha.Text) then begin
+//       oUsuarioLogado.codigo := oUsuario.codigo;
+//       oUsuarioLogado.nome   := oUsuario.nome;
+//       oUsuarioLogado.senha  := oUsuario.senha;
+//       bFechar := True;
+//       ModalResult:=mrOk;
+//    end
+//    else begin
+//      MessageDlg('Usuário Inválido',mtInformation,[mbok],0);
+//      edtUsuario.SetFocus;
+//    end;
+//
+//  Finally
+//    if Assigned(oUsuario) then
+//       FreeAndNil(oUsuario);
+//  End;
+end;
+
+end.

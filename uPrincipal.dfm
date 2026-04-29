@@ -380,6 +380,9 @@ object frmPrincipal: TfrmPrincipal
         Caption = 'Resumo Financeiro'
         OnClick = mniFinanceiro1Click
       end
+      object mniteste1: TMenuItem
+        Caption = 'teste'
+      end
     end
   end
 end

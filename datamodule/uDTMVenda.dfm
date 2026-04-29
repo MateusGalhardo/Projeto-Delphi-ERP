@@ -13,22 +13,18 @@ object dtmVenda: TdtmVenda
     Top = 40
     object f1QryClienteclienteId: TFDAutoIncField
       FieldName = 'clienteId'
-      Origin = 'clienteId'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
     object f2QryClientenome: TStringField
       FieldName = 'nome'
-      Origin = 'nome'
       Size = 60
     end
     object intgrfldQryClienteIDSituacao: TIntegerField
       FieldName = 'IDSituacao'
-      Origin = 'IDSituacao'
     end
     object f2QryClienteobservacao: TStringField
       FieldName = 'observacao'
-      Origin = 'observacao'
       Size = 200
     end
   end
@@ -44,24 +40,20 @@ object dtmVenda: TdtmVenda
     Top = 40
     object f1QryProdutosprodutoId: TFDAutoIncField
       FieldName = 'produtoId'
-      Origin = 'produtoId'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
     object f2QryProdutosnome: TStringField
       FieldName = 'nome'
-      Origin = 'nome'
       Size = 60
     end
     object QryProdutosquantidade: TFMTBCDField
       FieldName = 'quantidade'
-      Origin = 'quantidade'
       Precision = 18
       Size = 5
     end
     object fmtbcdfldQryProdutosvalor: TFMTBCDField
       FieldName = 'valor'
-      Origin = 'valor'
       currency = True
       Precision = 18
       Size = 5

@@ -13,8 +13,8 @@ type
   TfrmConProduto = class(TfrmTelaHerancaConsulta)
     f1QryListagemprodutoId: TFDAutoIncField;
     f2QryListagemnome: TStringField;
-    fmtbcdfldQryListagemquantidade: TFMTBCDField;
     fmtbcdfldQryListagemvalor_final: TFMTBCDField;
+    fmtbcdfldQryListagemquantidade: TFMTBCDField;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
@@ -31,11 +31,9 @@ implementation
 
 procedure TfrmConProduto.FormCreate(Sender: TObject);
 begin
-
   aCampoId :='produtoId';
   IndiceAtual :='nome';
   inherited;
-
 end;
 
 end.

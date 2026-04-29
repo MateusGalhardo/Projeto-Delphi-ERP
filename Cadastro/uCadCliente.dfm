@@ -50,8 +50,8 @@ inherited frmCadCliente: TfrmCadCliente
           object lbl8: TLabel
             Left = 179
             Top = 8
-            Width = 53
-            Height = 14
+            Width = 50
+            Height = 13
             Caption = 'Bloqueado'
           end
           object lbl9: TLabel

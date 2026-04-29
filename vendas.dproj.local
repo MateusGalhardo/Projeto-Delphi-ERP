@@ -2,7 +2,15 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2026/04/20 14:11:07.000.037,=C:\Projeto Delphi\Unit1.pas</Transaction>
-    <Transaction>2026/04/20 14:26:44.000.219,C:\Projeto Delphi\Controle\uResFinanceiro.pas=C:\Projeto Delphi\Unit1.pas</Transaction>
-    <Transaction>2026/04/20 14:26:44.000.219,C:\Projeto Delphi\Controle\uResFinanceiro.dfm=C:\Projeto Delphi\Unit1.dfm</Transaction>
+    <Transaction>2026/04/20 14:26:44.000.219,C:\Projeto Delphi\Unit1.dfm=C:\Projeto Delphi\Controle\uResFinanceiro.dfm</Transaction>
+    <Transaction>2026/04/20 14:26:44.000.219,C:\Projeto Delphi\Unit1.pas=C:\Projeto Delphi\Controle\uResFinanceiro.pas</Transaction>
+    <Transaction>2026/04/29 09:18:33.716,=C:\Projeto Delphi\Unit1.pas</Transaction>
+    <Transaction>2026/04/29 09:19:07.715,=C:\Projeto Delphi\Unit1.pas</Transaction>
+    <Transaction>2026/04/29 09:20:16.250,=C:\Projeto Delphi\Unit1.pas</Transaction>
+    <Transaction>2026/04/29 10:00:00.265,=C:\Projeto Delphi\Unit1.pas</Transaction>
+    <Transaction>2026/04/29 10:08:46.024,=C:\Projeto Delphi\Unit1.pas</Transaction>
+    <Transaction>2026/04/29 10:29:37.687,C:\Projeto Delphi\login\uLogin1.pas=C:\Projeto Delphi\Unit1.pas</Transaction>
+    <Transaction>2026/04/29 10:29:37.687,C:\Projeto Delphi\login\uLogin1.dfm=C:\Projeto Delphi\Unit1.dfm</Transaction>
+    <Transaction>2026/04/29 13:12:10.521,C:\Projeto Delphi\login\uLogin1.pas=</Transaction>
   </Transactions>
 </BorlandProject>

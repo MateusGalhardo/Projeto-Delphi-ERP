@@ -1,0 +1,38 @@
+unit uLogin1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.Buttons, Vcl.StdCtrls;
+
+type
+  TForm1 = class(TForm)
+    pnl1: TPanel;
+    pnl2: TPanel;
+    pnl3: TPanel;
+    img1: TImage;
+    pnl4: TPanel;
+    lbl1: TLabel;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    lbl4: TLabel;
+    edt1: TEdit;
+    edt2: TEdit;
+    lbl5: TLabel;
+    pnl5: TPanel;
+    btn1: TSpeedButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+end.

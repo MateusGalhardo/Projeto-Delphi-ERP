@@ -94,7 +94,7 @@ begin
   if QryListagem.Active then
      QryListagem.Close;
      ExibirLabelIndice(IndiceAtual, lblIndice);
-   QryListagem.Open;
+    QryListagem.Open;
 end;
 
 procedure TfrmTelaHerancaConsulta.FormShow(Sender: TObject);
@@ -102,6 +102,7 @@ var ArquivoINI: TIniFile ;
     I:Integer;
 begin
   inherited;
+  SelectOriginal:= QryListagem.SQL.Text;
   ArquivoINI := TIniFile.Create(ExtractFilePath(Application.ExeName)+ 'PreferenciasGridConsulta.ini');
 
   try
@@ -187,13 +188,8 @@ begin
 end;
 
 procedure TfrmTelaHerancaConsulta.btnPesquisarClick(Sender: TObject);
-var I:Integer;
-    TipoCampo:TFieldType;
-    NomeCampo: string;
-    WhereOrAnd: string;
-    CondicaoSQL: string;
+var I:Integer; TipoCampo: TFieldType; NomeCampo: string; WhereOrAnd: string; CondicaoSQL: string;
 begin
-
   if mskPesquisar.Text='' then
   begin
     QryListagem.Close;

@@ -40,31 +40,26 @@ inherited frmConCliente: TfrmConCliente
     object f1QryListagemclienteId: TFDAutoIncField
       DisplayLabel = 'C'#243'digo do cliente'
       FieldName = 'clienteId'
-      Origin = 'clienteId'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
     object f2QryListagemnome: TStringField
       DisplayLabel = 'Nome'
       FieldName = 'nome'
-      Origin = 'nome'
       Size = 60
     end
     object intgrfldQryListagemIDSituacao: TIntegerField
       DisplayLabel = 'Status do cliente'
       FieldName = 'IDSituacao'
-      Origin = 'IDSituacao'
     end
     object f2QryListagemobservacao: TStringField
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'observacao'
-      Origin = 'observacao'
       Size = 200
     end
     object f2QryListagemdocumento: TStringField
       DisplayLabel = 'Documento'
       FieldName = 'documento'
-      Origin = 'documento'
       Size = 18
     end
   end

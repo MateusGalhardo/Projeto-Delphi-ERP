@@ -41,7 +41,7 @@ object frmTelaHerancaConsulta: TfrmTelaHerancaConsulta
     end
     object mskPesquisar: TMaskEdit
       Left = 1
-      Top = 27
+      Top = 24
       Width = 216
       Height = 24
       Font.Charset = DEFAULT_CHARSET

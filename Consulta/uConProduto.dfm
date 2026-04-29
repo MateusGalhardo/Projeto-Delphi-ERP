@@ -19,11 +19,13 @@ inherited frmConProduto: TfrmConProduto
           Expanded = False
           FieldName = 'valor_final'
           Title.Caption = 'Valor'
+          Width = 64
           Visible = True
         end
         item
           Expanded = False
           FieldName = 'quantidade'
+          Width = 64
           Visible = True
         end>
     end
@@ -31,38 +33,34 @@ inherited frmConProduto: TfrmConProduto
   inherited QryListagem: TFDQuery
     Active = True
     SQL.Strings = (
+      'select * from ('
       
-        'select produtoId, nome, ceiling (valor / 0.45) as valor_final, q' +
-        'uantidade from produtos')
+        '  select produtoId, nome, ceiling(valor / 0.45) as valor_final, ' +
+        'quantidade'
+      '  from produtos) t'
+      '')
     Left = 720
     Top = 272
     object f1QryListagemprodutoId: TFDAutoIncField
-      DisplayLabel = 'C'#243'digo do Produto'
       FieldName = 'produtoId'
-      Origin = 'produtoId'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
     object f2QryListagemnome: TStringField
-      DisplayLabel = 'Nome'
       FieldName = 'nome'
-      Origin = 'nome'
       Size = 60
-    end
-    object fmtbcdfldQryListagemquantidade: TFMTBCDField
-      DisplayLabel = 'Quantidade'
-      FieldName = 'quantidade'
-      Origin = 'quantidade'
-      Precision = 18
-      Size = 5
     end
     object fmtbcdfldQryListagemvalor_final: TFMTBCDField
       FieldName = 'valor_final'
-      Origin = 'valor_final'
       ReadOnly = True
       currency = True
       Precision = 23
       Size = 0
+    end
+    object fmtbcdfldQryListagemquantidade: TFMTBCDField
+      FieldName = 'quantidade'
+      Precision = 18
+      Size = 5
     end
   end
   inherited dtsListagem: TDataSource

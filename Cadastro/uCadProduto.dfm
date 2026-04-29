@@ -1,9 +1,9 @@
 inherited frmCadProduto: TfrmCadProduto
-  Align = alClient
   Caption = 'Cadastro de Produto'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pgcPrincipal: TPageControl
+    ActivePage = tabManutencao
     inherited tabListagem: TTabSheet
       inherited grdListagem: TDBGrid
         Width = 697
@@ -313,6 +313,7 @@ inherited frmCadProduto: TfrmCadProduto
         Top = 21
         Width = 151
         Height = 133
+        DragCursor = crHandPoint
         TabOrder = 7
         object imgImagem: TImage
           Left = 1
@@ -320,6 +321,7 @@ inherited frmCadProduto: TfrmCadProduto
           Width = 149
           Height = 131
           Align = alClient
+          DragCursor = crHandPoint
           PopupMenu = ppmImagem
           ExplicitLeft = 30
           ExplicitTop = 19

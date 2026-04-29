@@ -1,0 +1,158 @@
+﻿unit uConCliente;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaHerancaConsulta, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
+  FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
+  Vcl.ExtCtrls, System.ImageList, Vcl.ImgList;
+
+type
+  TfrmConCliente = class(TfrmTelaHerancaConsulta)
+    f1QryListagemclienteId: TFDAutoIncField;
+    f2QryListagemnome: TStringField;
+    imagemStatus: TImageList;
+    intgrfldQryListagemIDSituacao: TIntegerField;
+    f2QryListagemobservacao: TStringField;
+    f2QryListagemdocumento: TStringField;
+    procedure FormCreate(Sender: TObject);
+    procedure grdPesquisaDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+      State: TGridDrawState);
+    procedure btnPesquisarClick(Sender: TObject);
+  private
+    { Private declarations }
+    SelectOriginal:string;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmConCliente: TfrmConCliente;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmConCliente.btnPesquisarClick(Sender: TObject);
+var I:Integer; TipoCampo:TFieldType; NomeCampo: string; WhereOrAnd: string; CondicaoSQL: string;
+begin
+  if mskPesquisar.Text='' then
+  begin
+    QryListagem.Close;
+    QryListagem.SQL.Clear;
+    QryListagem.SQL.Add(SelectOriginal);
+    QryListagem.Open;
+    Abort;
+  end;
+
+  for I := 0 to QryListagem.FieldCount-1 do
+  begin
+    if QryListagem.Fields[i].FieldName=IndiceAtual then
+    begin
+      TipoCampo := QryListagem.Fields[i].DataType;
+      if QryListagem.Fields[i].Origin<>'' then
+      begin
+        if Pos('.',QryListagem.Fields[i].Origin) > 1 then
+        NomeCampo := QryListagem.Fields[i].Origin
+        else
+        NomeCampo := QryListagem.Fields[i].Origin+'.'+QryListagem.Fields[i].FieldName
+      end
+      else
+      NomeCampo := QryListagem.Fields[i].FieldName;
+      Break;
+    end;
+  end;
+
+  if Pos('where', LowerCase(SelectOriginal)) > 0 then
+  begin
+    WhereOrAnd := ' and ';
+  end
+  else
+  begin
+    WhereOrAnd := ' where ';
+  end;
+
+  if (TipoCampo=ftString) or (TipoCampo=ftWideString) then
+  begin
+    CondicaoSQL := WhereOrAnd+' '+ NomeCampo + ' LIKE '+QuotedStr('%'+mskPesquisar.Text+'%');
+  end
+  else if (TipoCampo in [ftInteger, ftSmallint, ftAutoInc]) then
+  begin
+    CondicaoSQL := WhereOrAnd+''+NomeCampo + '='+mskPesquisar.Text
+  end
+
+  //AUTORAL DO PEPPA, MATEUS E LEO
+
+  else if (TipoCampo in [ftDate, ftDateTime, ftdate, ftTimeStamp]) then
+  begin
+      CondicaoSQL := WhereOrAnd+' '+' CAST '+'('+NomeCampo +' as date)' + '='+QuotedStr(mskPesquisar.Text)
+  end
+
+
+ else if (TipoCampo in [ftFloat, ftCurrency, ftFMTBcd]) then
+ begin
+    CondicaoSQl := WhereOrAnd+''+NomeCampo + '='+StringReplace(mskPesquisar.Text,',','.',[rfReplaceAll]);
+ end;
+
+
+  QryListagem.Close;
+  QryListagem.SQL.Clear;
+  QryListagem.SQL.Add(SelectOriginal);
+  QryListagem.SQL.Add(CondicaoSQL);
+  QryListagem.Open;
+
+  mskPesquisar.Text:='';
+  mskPesquisar.SetFocus;
+
+end;
+
+procedure TfrmConCliente.FormCreate(Sender: TObject);
+begin
+
+  aCampoId :='clienteId';
+  IndiceAtual :='nome';
+
+  inherited;
+end;
+
+procedure TfrmConCliente.grdPesquisaDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+var
+  imgIndex: Integer;
+begin
+  if Column.FieldName = 'IDSituacao' then
+  begin
+    if gdSelected in State then
+      grdPesquisa.Canvas.Brush.Color := $00DFF0DF
+    else if not Odd(QryListagem.RecNo) then
+      grdPesquisa.Canvas.Brush.Color := clWebLightgrey
+    else
+      grdPesquisa.Canvas.Brush.Color := clWindow;
+
+    grdPesquisa.Canvas.FillRect(Rect);
+
+    case QryListagem.FieldByName('IDSituacao').AsInteger of
+      1: imgIndex := 0;
+      2: imgIndex := 2;
+      3: imgIndex := 1;
+      4: imgIndex := 3;
+      5: imgIndex := 4;
+    else
+      Exit;
+    end;
+
+    // desenha imagem centralizada
+    imagemStatus.Draw(grdPesquisa.Canvas,
+      Rect.Left + (Rect.Width div 2) - 8,
+      Rect.Top + (Rect.Height div 2) - 8,
+      imgIndex);
+
+    Exit;
+  end;
+
+  inherited;
+end;
+
+end.
