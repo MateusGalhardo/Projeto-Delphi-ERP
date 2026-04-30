@@ -21,8 +21,9 @@ type
     lbl5: TLabel;
     edtUsuario: TEdit;
     edtSenha: TEdit;
-    btnFechar: TPngBitBtn;
-    btnAcessar: TPngBitBtn;
+    btnAcessar: TBitBtn;
+    btnFechar: TBitBtn;
+    lbl6: TLabel;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);

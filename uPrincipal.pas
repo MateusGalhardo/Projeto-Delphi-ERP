@@ -41,7 +41,6 @@ type
     Series4: TFastLineSeries;
     btn1: TSpeedButton;
     mniFinanceiro1: TMenuItem;
-    mniteste1: TMenuItem;
     procedure mnuFecharClick(Sender: TObject);
     procedure categoria1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);

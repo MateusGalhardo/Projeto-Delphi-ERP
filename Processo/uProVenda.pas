@@ -151,28 +151,6 @@ begin
       ShowMessage('Cliente marcado como Atenção' +sLineBreak + 'Sem Observações');
   end;
 
-  if (dtmVenda.QryCliente.FieldByName('IDSituacao').AsInteger = 5)then
-  begin
-    if MessageDlg('Cliente selecionado é Prospecto, deseja tornar o cliente ativo?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
-    begin
-
-      with dtmVenda.QryUpdate do
-      begin
-        SQL.Text := 'UPDATE clientes SET IDSituacao = :IDSituacao WHERE clienteId = :id';
-        ParamByName('IDSituacao').AsInteger := 1;
-        ParamByName('id').AsInteger := dtmVenda.QryCliente.FieldByName('clienteId').AsInteger;
-        ExecSQL;
-      end;
-
-      ShowMessage('Cliente atualizado para ATIVO!');
-
-      dtmVenda.QryCliente.Close;
-      dtmVenda.QryCliente.Open;
-    end
-    else
-      lkpCliente.KeyValue:='';
-  end;
-
    if(dtmVenda.QryCliente.FieldByName('IDSituacao').AsInteger = 4) then
   begin
     ShowMessage('Cliente Inativo!');
@@ -325,6 +303,28 @@ end;
 
 procedure TfrmProVenda.btnGravarClick(Sender: TObject);
 begin
+  if (dtmVenda.QryCliente.FieldByName('IDSituacao').AsInteger = 5)then
+  begin
+    if MessageDlg('Cliente selecionado é Prospecto, deseja tornar o cliente ativo?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    begin
+
+      with dtmVenda.QryUpdate do
+      begin
+        SQL.Text := 'UPDATE clientes SET IDSituacao = :IDSituacao WHERE clienteId = :id';
+        ParamByName('IDSituacao').AsInteger := 1;
+        ParamByName('id').AsInteger := dtmVenda.QryCliente.FieldByName('clienteId').AsInteger;
+        ExecSQL;
+      end;
+
+      ShowMessage('Cliente atualizado para ATIVO!');
+
+      dtmVenda.QryCliente.Close;
+      dtmVenda.QryCliente.Open;
+    end
+    else
+      lkpCliente.KeyValue:='';
+  end;
+
   if MessageDlg('Tem certeza que deseja realizar esta venda?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
   begin
     if dtmVenda.cdsItensVenda.IsEmpty then

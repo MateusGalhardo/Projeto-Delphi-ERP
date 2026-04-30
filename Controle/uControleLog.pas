@@ -183,10 +183,6 @@ begin
      end
        else QryListagem.Locate(IndiceAtual, TMaskEdit(Sender).Text, []);
 
-
-
-
-
   s := StringReplace(mskPesquisar.Text, '/', '', [rfReplaceAll]);
 
   if Length(s) <= 2 then begin
