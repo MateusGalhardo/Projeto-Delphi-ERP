@@ -41,6 +41,7 @@ type
     Series4: TFastLineSeries;
     btn1: TSpeedButton;
     mniFinanceiro1: TMenuItem;
+    mniChat1: TMenuItem;
     procedure mnuFecharClick(Sender: TObject);
     procedure categoria1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -65,6 +66,7 @@ type
     procedure mniFornecedor1Click(Sender: TObject);
     procedure mniLog1Click(Sender: TObject);
     procedure mniFinanceiro1Click(Sender: TObject);
+    procedure mniChat1Click(Sender: TObject);
   private
     { Private declarations }
     TeclaEnter: TMREnter;
@@ -87,7 +89,7 @@ implementation
 {$R *.dfm}
 
 uses uCadCategoria, uCadCliente, uCadProduto, uProVenda, uRelCategoria, uRelCadCliente, uRelCadClienteFicha, uRelCadProduto, uSelecionarData,
-uRelCadProdutoComGrupoCategoria, uRelVendaPorData, uAlterarSenha, uUsuarioVsAcoes, uTelaHeranca, uFornecedor, uDTMGrafico, uControleLog, uDTMVenda, uResFinanceiro;
+uRelCadProdutoComGrupoCategoria, uRelVendaPorData, uAlterarSenha, uUsuarioVsAcoes, uTelaHeranca, uFornecedor, uDTMGrafico, uControleLog, uDTMVenda, uResFinanceiro, uChatBot;
 
 procedure TfrmPrincipal.categoria1Click(Sender: TObject);
 begin
@@ -144,6 +146,7 @@ begin
   TAcaoAcesso.CriarAcoes(TfrmFornecedor, dtmConexao.ConexaoDB);
   TAcaoAcesso.CriarAcoes(TfrmControleLog, dtmConexao.ConexaoDB);
   TAcaoAcesso.CriarAcoes(TfrmResFinanceiro, dtmConexao.ConexaoDB);
+  TAcaoAcesso.CriarAcoes(TfrmChat, dtmConexao.ConexaoDB);
   TAcaoAcesso.PreencherUsuariosVsAcoes(dtmConexao.ConexaoDB);
 
 
@@ -181,6 +184,11 @@ end;
 procedure TfrmPrincipal.mniCategoria2Click(Sender: TObject);
 begin
   TFuncao.CriarRelatorio(TfrmRelCategoria, oUsuarioLogado, dtmConexao.ConexaoDB);
+end;
+
+procedure TfrmPrincipal.mniChat1Click(Sender: TObject);
+begin
+ TFuncao.CriarForm(TfrmChat, oUsuarioLogado, dtmConexao.ConexaoDB);
 end;
 
 procedure TfrmPrincipal.mniFichadeCliente1Click(Sender: TObject);

@@ -1,0 +1,194 @@
+unit uChatBot;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
+  FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+
+type
+  TfrmChat = class(TForm)
+    pnl1: TPanel;
+    pnl2: TPanel;
+    cbbPerguntas: TComboBox;
+    btnEnviar: TButton;
+    QryResposta: TFDQuery;
+    tmrResposta: TTimer;
+    ScrollBox1: TScrollBox;
+    procedure FormCreate(Sender: TObject);
+    procedure btnEnviarClick(Sender: TObject);
+    procedure tmrRespostaTimer(Sender: TObject);
+
+  private
+    FAlturaChat: Integer;
+    FRespostaPendente: string;
+    procedure AdicionarMensagemUsuario(const Texto: string);
+    procedure AdicionarMensagemBot(const Texto: string);
+    { Private declarations }
+
+  public
+    { Public declarations }
+  end;
+
+var
+  frmChat: TfrmChat;
+
+implementation
+
+uses
+  uDTMconexao;
+
+{$R *.dfm}
+
+procedure TfrmChat.FormCreate(Sender: TObject);
+begin
+
+ cbbPerguntas.Items.Add('Qual a Quantidade do meu estoque total atualmente?');
+ cbbPerguntas.Items.Add('Quantos Usuários tenho cadastrados?');
+ cbbPerguntas.Items.Add('Qual o Valor do meu estoque atualmente?');
+ cbbPerguntas.Items.Add('Quantos Clientes temos cadastrados?');
+ cbbPerguntas.Items.Add('Quantos Fornecedores temos cadastrados?');
+ cbbPerguntas.Items.Add('Quantas Vendas temos atualmente?');
+end;
+
+procedure TfrmChat.btnEnviarClick(Sender: TObject);
+var
+  Pergunta: string;
+  i: Integer;
+begin
+  ScrollBox1.DestroyComponents;
+  FAlturaChat := 10;
+
+  Pergunta := cbbPerguntas.Text;
+
+  AdicionarMensagemUsuario('Você: ' + Pergunta);
+
+  FRespostaPendente := '';
+
+  if Pergunta = 'Qual a Quantidade do meu estoque total atualmente?' then
+  begin
+    QryResposta.Close;
+    QryResposta.SQL.Text := 'select sum(quantidade) from produtos';
+    QryResposta.Open;
+
+    i := QryResposta.Fields[0].AsInteger;
+
+    FRespostaPendente := 'Temos no estoque atualmente: ' + IntToStr(i);
+  end
+  else if Pergunta = 'Quantos Usuários tenho cadastrados?' then
+  begin
+    QryResposta.Close;
+    QryResposta.SQL.Text := 'select count(usuarioId) from usuarios';
+    QryResposta.Open;
+
+    i := QryResposta.Fields[0].AsInteger;
+
+    FRespostaPendente := 'Temos usuários cadastrados: ' + IntToStr(i);
+  end
+  else if Pergunta = 'Qual o Valor do meu estoque atualmente?' then
+  begin
+    QryResposta.Close;
+    QryResposta.SQL.Text := 'select sum(valor * quantidade) from produtos';
+    QryResposta.Open;
+
+    i := QryResposta.Fields[0].AsInteger;
+
+    FRespostaPendente := 'O valor total do estoque é: ' + IntToStr(i);
+  end
+  else if Pergunta = 'Quantos Clientes temos cadastrados?' then
+  begin
+    QryResposta.Close;
+    QryResposta.SQL.Text := 'select count(clienteId) from clientes';
+    QryResposta.Open;
+
+    i := QryResposta.Fields[0].AsInteger;
+
+    FRespostaPendente := 'O total de clientes cadastrados é: ' + IntToStr(i);
+  end
+  else if Pergunta = 'Quantos Fornecedores temos cadastrados?' then
+  begin
+    QryResposta.Close;
+    QryResposta.SQL.Text := 'select count(fornId) from fornecedor';
+    QryResposta.Open;
+
+    i := QryResposta.Fields[0].AsInteger;
+
+    FRespostaPendente := 'O total de fornecedores cadastrados é: ' + IntToStr(i);
+  end
+  else if Pergunta = 'Quantas Vendas temos atualmente?' then
+  begin
+    QryResposta.Close;
+    QryResposta.SQL.Text := 'select count(vendaId) from vendas';
+    QryResposta.Open;
+
+    i := QryResposta.Fields[0].AsInteger;
+
+    FRespostaPendente := 'O total de vendas feitas é: ' + IntToStr(i);
+  end
+  else
+    FRespostaPendente := 'Não entendi sua pergunta.';
+
+  tmrResposta.Enabled := False;
+  tmrResposta.Interval := 800;
+  tmrResposta.Enabled := True;
+
+  ScrollBox1.Realign;
+  ScrollBox1.Update;
+  ScrollBox1.VertScrollBar.Position := 0;
+end;
+
+
+procedure TfrmChat.tmrRespostaTimer(Sender: TObject);
+begin
+  tmrResposta.Enabled := False;
+
+  AdicionarMensagemBot('Bot: ' + FRespostaPendente);
+end;
+
+procedure TfrmChat.AdicionarMensagemUsuario(const Texto: string);
+var
+  MsgPanel: TPanel;
+begin
+  MsgPanel := TPanel.Create(ScrollBox1);
+  MsgPanel.Parent := ScrollBox1;
+
+  MsgPanel.Width := 400;
+  MsgPanel.Left := ScrollBox1.Width - MsgPanel.Width - 10;
+  MsgPanel.Top := FAlturaChat;
+
+  MsgPanel.Caption := Texto;
+  MsgPanel.Alignment := taRightJustify;
+
+  MsgPanel.Color := $00D2F8D2;
+  MsgPanel.BevelOuter := bvNone;
+
+  MsgPanel.Height := 60;
+
+  FAlturaChat := FAlturaChat + MsgPanel.Height + 10;
+end;
+
+
+procedure TfrmChat.AdicionarMensagemBot(const Texto: string);
+var
+  MsgPanel: TPanel;
+begin
+  MsgPanel := TPanel.Create(ScrollBox1);
+  MsgPanel.Parent := ScrollBox1;
+
+  MsgPanel.Width := 400;
+  MsgPanel.Left := 10;
+  MsgPanel.Top := FAlturaChat;
+
+  MsgPanel.Caption := Texto;
+  MsgPanel.Alignment := taLeftJustify;
+
+  MsgPanel.Color := clWhite;
+  MsgPanel.BevelOuter := bvNone;
+
+  MsgPanel.Height := 60;
+
+  FAlturaChat := FAlturaChat + MsgPanel.Height + 10;
+end;
+end.

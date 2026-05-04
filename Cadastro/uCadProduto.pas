@@ -67,6 +67,7 @@ type
     procedure btnIncluirFornecedorClick(Sender: TObject);
     procedure btnPesquisarFornecedorClick(Sender: TObject);
     procedure mskPesquisarChange(Sender: TObject);
+    procedure imgImagemMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
     { Private declarations }
     oProduto:TProduto;
@@ -118,6 +119,16 @@ begin
   else if (EstadoDoCadastro=ecAlterar) then
      Result:=oProduto.Atualizar;
 end;
+procedure TfrmCadProduto.imgImagemMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var P: TPoint;
+begin
+  if Button = mbLeft then
+  begin
+    P := imgImagem.ClientToScreen(Point(X, Y));
+    ppmImagem.Popup(P.X, P.Y);
+  end;
+end;
+
 procedure TfrmCadProduto.mniCarregarImagem1Click(Sender: TObject);
 begin
   inherited;
@@ -133,7 +144,6 @@ end;
 procedure TfrmCadProduto.mskPesquisarChange(Sender: TObject);
 begin
   inherited;
-
 end;
 
 {$endregion}

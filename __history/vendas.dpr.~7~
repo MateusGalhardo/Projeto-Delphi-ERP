@@ -1,0 +1,69 @@
+program vendas;
+
+uses
+  Vcl.Forms,
+  uPrincipal in 'uPrincipal.pas' {frmPrincipal},
+  uTelaHeranca in 'Heranca\uTelaHeranca.pas' {frmTelaHeranca},
+  uCadCategoria in 'Cadastro\uCadCategoria.pas' {frmCadCategoria},
+  Enter in 'Terceiros\Enter.pas',
+  uEnum in 'Heranca\uEnum.pas',
+  cCadCategoria in 'Classes\cCadCategoria.pas',
+  cCadCliente in 'Classes\cCadCliente.pas',
+  uCadProduto in 'Cadastro\uCadProduto.pas' {frmCadProduto},
+  cCadProduto in 'Classes\cCadProduto.pas',
+  uDTMVenda in 'datamodule\uDTMVenda.pas' {dtmVenda: TDataModule},
+  cControleEstoque in 'Classes\cControleEstoque.pas',
+  uRelCadClienteFicha in 'Relatório\uRelCadClienteFicha.pas' {frmRelCadClienteFicha},
+  uRelCadProduto in 'Relatório\uRelCadProduto.pas' {frmRelCadProduto},
+  uRelCategoria in 'Relatório\uRelCategoria.pas' {frmRelCategoria},
+  uRelCadCliente in 'Relatório\uRelCadCliente.pas' {frmRelCadCliente},
+  uDTMconexao in 'datamodule\uDTMconexao.pas' {dtmConexao: TDataModule},
+  uCadCliente in 'Cadastro\uCadCliente.pas' {frmCadCliente},
+  uSelecionarData in 'Relatório\uSelecionarData.pas' {frmSelecionarData},
+  uRelProVenda in 'Relatório\uRelProVenda.pas' {frmRelProVenda},
+  uRelCadProdutoComGrupoCategoria in 'Relatório\uRelCadProdutoComGrupoCategoria.pas' {frmRelCadProdutoComGrupoCategoria},
+  uRelVendaPorData in 'Relatório\uRelVendaPorData.pas' {frmRelVendaPorData},
+  uProVenda in 'Processo\uProVenda.pas' {frmProVenda},
+  CProVenda in 'Classes\CProVenda.pas',
+  uFuncaoCriptografia in 'Heranca\uFuncaoCriptografia.pas',
+  uFrmAtualizaDB in 'datamodule\uFrmAtualizaDB.pas' {frmAtualizaDB},
+  uCadUsuario in 'Cadastro\uCadUsuario.pas' {frmCadUsuario},
+  cCadUsuario in 'Classes\cCadUsuario.pas',
+  uLogin in 'uLogin.pas' {frmLogin},
+  uAlterarSenha in 'login\uAlterarSenha.pas' {frmAlterarSenha},
+  cUsuarioLogado in 'login\cUsuarioLogado.pas',
+  cAtualizacaoBancoDeDados in 'Classes\cAtualizacaoBancoDeDados.pas',
+  cAtualizacaoTabelaMSSQL in 'Classes\cAtualizacaoTabelaMSSQL.pas',
+  cAtualizacaoCampoMSSQL in 'Classes\cAtualizacaoCampoMSSQL.pas',
+  cArquivoIni in 'Classes\cArquivoIni.pas',
+  cAcaoAcesso in 'Classes\cAcaoAcesso.pas',
+  uCadAcaoAcesso in 'Cadastro\uCadAcaoAcesso.pas' {frmCadAcaoAcesso},
+  uUsuarioVsAcoes in 'login\uUsuarioVsAcoes.pas' {frmUsuarioVsAcoes},
+  cFuncao in 'Classes\cFuncao.pas',
+  uDTMGrafico in 'datamodule\uDTMGrafico.pas' {DTMGrafico: TDataModule},
+  uTelaHerancaConsulta in 'Heranca\uTelaHerancaConsulta.pas' {frmTelaHerancaConsulta},
+  uConCategoria in 'Consulta\uConCategoria.pas' {frmConCategoria},
+  uConCliente in 'Consulta\uConCliente.pas' {frmConCliente},
+  uConProduto in 'Consulta\uConProduto.pas' {frmConProduto},
+  cValidar in 'Classes\cValidar.pas',
+  uFornecedor in 'Cadastro\uFornecedor.pas' {frmFornecedor},
+  cFornecedor in 'Classes\cFornecedor.pas',
+  uConFornecedor in 'Consulta\uConFornecedor.pas' {frmConFornecedor},
+  uControleLog in 'Controle\uControleLog.pas' {frmControleLog},
+  uResFinanceiro in 'Controle\uResFinanceiro.pas' {frmResFinanceiro};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.CreateForm(TdtmConexao, dtmConexao);
+  Application.CreateForm(TfrmConCliente, frmConCliente);
+  Application.CreateForm(TfrmConProduto, frmConProduto);
+  // Crie os forms de relatório somente quando precisar abrir
+  // Application.CreateForm(TfrmSelecionarData, frmSelecionarData);
+  // Application.CreateForm(TfrmRelCadProdutoComGrupoCategoria, frmRelCadProdutoComGrupoCategoria);
+
+  Application.Run;
+end.

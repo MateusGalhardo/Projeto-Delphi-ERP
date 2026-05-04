@@ -50,7 +50,8 @@ uses
   cFornecedor in 'Classes\cFornecedor.pas',
   uConFornecedor in 'Consulta\uConFornecedor.pas' {frmConFornecedor},
   uControleLog in 'Controle\uControleLog.pas' {frmControleLog},
-  uResFinanceiro in 'Controle\uResFinanceiro.pas' {frmResFinanceiro};
+  uResFinanceiro in 'Controle\uResFinanceiro.pas' {frmResFinanceiro},
+  uChatBot in 'Controle\uChatBot.pas' {frmChat};
 
 {$R *.res}
 
@@ -61,6 +62,7 @@ begin
   Application.CreateForm(TdtmConexao, dtmConexao);
   Application.CreateForm(TfrmConCliente, frmConCliente);
   Application.CreateForm(TfrmConProduto, frmConProduto);
+  Application.CreateForm(TfrmChat, frmChat);
   // Crie os forms de relatório somente quando precisar abrir
   // Application.CreateForm(TfrmSelecionarData, frmSelecionarData);
   // Application.CreateForm(TfrmRelCadProdutoComGrupoCategoria, frmRelCadProdutoComGrupoCategoria);

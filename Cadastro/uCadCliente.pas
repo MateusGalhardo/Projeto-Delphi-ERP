@@ -61,7 +61,7 @@ type
     edtCasa: TEdit;
     lbl10: TLabel;
     f2Listagemcasa: TStringField;
-    img2: TImage;
+    img6: TImage;
     img4: TImage;
     procedure btnAlterarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -225,6 +225,13 @@ end;
 
 procedure TfrmCadCliente.mskPesquisarChange(Sender: TObject);
 begin
+  if IndiceAtual = 'IDSituacao' then begin
+    if mskPesquisar.Text <> '' then begin
+      mskPesquisar.Text := '';
+      ShowMessage('Não é possivel realizar pesquisas nesse campo');
+      mskPesquisar.SetFocus;
+    end;
+  end;
   inherited;
 end;
 
@@ -235,7 +242,6 @@ var
   I:Integer;
 begin
   Result:='';
-
   for I:= 1 to Length(Texto) do
     if Texto[I] in ['0'..'9'] then
     Result:= Result+Texto[I];
