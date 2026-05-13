@@ -9,6 +9,7 @@ inherited frmCadCliente: TfrmCadCliente
   inherited pgcPrincipal: TPageControl
     Width = 1336
     Height = 560
+    ActivePage = tabManutencao
     ExplicitWidth = 1336
     ExplicitHeight = 560
     inherited tabListagem: TTabSheet
@@ -441,6 +442,8 @@ inherited frmCadCliente: TfrmCadCliente
       end
     end
     inherited tabManutencao: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 1328
       ExplicitHeight = 532
       object lbl1: TLabel
@@ -570,7 +573,6 @@ inherited frmCadCliente: TfrmCadCliente
         EditLabel.Caption = 'Email'
         MaxLength = 100
         TabOrder = 10
-        OnExit = edtEmailExit
       end
       object edtNome: TLabeledEdit
         Tag = 2
@@ -749,7 +751,7 @@ inherited frmCadCliente: TfrmCadCliente
     object f2Listagemtelefone: TStringField
       DisplayLabel = 'Telefone'
       FieldName = 'telefone'
-      Size = 15
+      Size = 14
     end
     object f2Listagememail: TStringField
       FieldName = 'email'

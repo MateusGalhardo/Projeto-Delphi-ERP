@@ -1,0 +1,260 @@
+unit cFornecedor;
+
+interface
+
+uses
+   System.Classes,
+   Vcl.Controls,
+   Vcl.ExtCtrls,
+  FireDAC.Comp.Client,
+  Vcl.Dialogs,
+  System.SysUtils,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+   FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+   FireDAC.DatS,
+    FireDAC.Phys.Intf,
+     FireDAC.DApt.Intf,
+      FireDAC.Stan.Async,
+       FireDAC.DApt,
+  FireDAC.Comp.DataSet,
+  uDTMconexao;
+
+type
+  TFornecedor = class
+
+  private
+  ConexaoDB:TFDConnection;
+  F_fornId: Integer;
+  F_nome: string;
+  F_cnpj: string;
+  F_endereco: string;
+  F_telefone: string;
+  F_email: string;
+  F_observacao: string;
+
+  procedure Validar;
+
+  public
+    constructor Create(aConexao:TFDConnection);
+    destructor Destroy; override;
+
+    procedure Limpar;
+
+    function Inserir:Boolean;
+    function Atualizar:Boolean;
+    function Apagar:Boolean;
+    function Selecionar(id:Integer):Boolean;
+
+  published
+    property codigo         :Integer    read F_fornId         write F_fornId;
+    property nome           :string     read F_nome           write F_nome;
+    property endereco       :string     read F_endereco       write F_endereco;
+    property telefone       :string     read F_telefone       write F_telefone;
+    property email          :string     read F_email          write F_email;
+    property cnpj           :string     read F_cnpj           write F_cnpj;
+    property observacao     :string     read F_observacao     write F_observacao;
+
+  end;
+
+implementation
+
+{$region 'Constructor and Destructor'}
+constructor TFornecedor.Create(aConexao:TFDConnection);
+begin
+  ConexaoDB:=aConexao;
+  Limpar;
+end;
+
+destructor TFornecedor.Destroy;
+begin
+  inherited;
+end;
+{$endRegion}
+
+procedure TFornecedor.Validar;
+begin
+  if Trim(F_nome) = '' then
+    raise Exception.Create('Nome é obrigatório');
+
+  if F_cnpj = '' then
+    raise Exception.Create('CNPJ é um campo obrigatório');
+end;
+
+procedure TFornecedor.Limpar;
+begin
+  F_fornId := 0;
+  F_nome := '';
+  F_cnpj := '';
+  F_observacao := '';
+  F_endereco := '';
+  F_telefone := '';
+  F_email := '';
+end;
+
+{$region 'CRUD'}
+function TFornecedor.Apagar: Boolean;
+var Qry:TFDQuery;
+begin
+  if MessageDlg('Apagar o Registro: '+#13+#13+
+                'Codigo: '+IntToStr(F_fornId)+#13+
+                'Descrição: '+F_nome,mtConfirmation,[mbYes, mbNo],0)<> mrYes then begin
+     Result:=false;
+     abort;
+  end;
+
+  try
+    Result:=true;
+    Qry:=TFDQuery.Create(nil);
+    Qry.Connection:=ConexaoDB;
+    Qry.SQL.Clear;
+    Qry.SQL.Add('DELETE FROM fornecedor '+
+                ' WHERE fornId=:fornId ');
+    Qry.ParamByName('fornId').AsInteger :=F_fornId;
+   try
+    ConexaoDB.StartTransaction;
+    Qry.ExecSQL;
+    ConexaoDB.Commit;
+  except
+    ConexaoDB.Rollback;
+    Result:=False;
+  end;
+
+  finally
+    if Assigned(Qry) then
+       FreeAndNil(Qry);
+  end;
+end;
+
+function TFornecedor.Atualizar: Boolean;
+var Qry:TFDQuery;
+begin
+ Validar;
+  try
+    Result:=true;
+    Qry:=TFDQuery.Create(nil);
+    Qry.Connection:=ConexaoDB;
+    Qry.SQL.Clear;
+    Qry.SQL.Add('UPDATE fornecedor '+
+                '   SET nome            =:nome '+
+                '       ,cnpj           =:cnpj '+
+                '       ,endereco       =:endereco '+
+                '       ,observacao     =:observacao '+
+                '       ,telefone       =:telefone '+
+                '       ,email          =:email '+
+                ' WHERE fornId=:fornId ');
+    Qry.ParamByName('fornId').AsInteger          :=Self.F_fornId;
+    Qry.ParamByName('nome').AsString             :=Self.F_nome;
+    Qry.ParamByName('cnpj').AsString             :=Self.F_cnpj;
+    Qry.ParamByName('endereco').AsString         :=Self.F_endereco;
+    Qry.ParamByName('telefone').AsString         :=Self.F_telefone;
+    Qry.ParamByName('email').AsString            :=Self.F_email;
+    Qry.ParamByName('observacao').AsString       :=Self.F_observacao;
+
+
+    try
+    ConexaoDB.StartTransaction;
+    Qry.ExecSQL;
+    ConexaoDB.Commit;
+  except
+    ConexaoDB.Rollback;
+    Result:=False;
+  end;
+
+  finally
+    if Assigned(Qry) then
+       FreeAndNil(Qry);
+  end;
+end;
+
+function TFornecedor.Inserir: Boolean;
+var Qry:TFDQuery;
+begin
+ Validar;
+  try
+    Result:=true;
+    Qry:=TFDQuery.Create(nil);
+    Qry.Connection:=ConexaoDB;
+    Qry.SQL.Clear;
+    Qry.SQL.Add('INSERT INTO fornecedor (nome, '+
+                '                      cnpj, '+
+                '                      endereco, '+
+                '                      observacao,  '+
+                '                      telefone, '+
+                '                      email) '+
+                ' VALUES              (:nome, '+
+                '                      :cnpj, '+
+                '                      :endereco, '+
+                '                      :observacao,  '+
+                '                      :telefone, '+
+                '                      :email)' );
+
+    Qry.ParamByName('nome').AsString             :=Self.F_nome;
+    Qry.ParamByName('cnpj').AsString             :=Self.F_cnpj;
+    Qry.ParamByName('endereco').AsString         :=Self.F_endereco;
+    Qry.ParamByName('observacao').AsString       :=Self.F_observacao;
+    Qry.ParamByName('telefone').AsString         :=Self.F_telefone;
+    Qry.ParamByName('email').AsString            :=Self.F_email;
+
+
+
+    try
+    ConexaoDB.StartTransaction;
+    Qry.ExecSQL;
+    ConexaoDB.Commit;
+  except
+    ConexaoDB.Rollback;
+    Result:=False;
+  end;
+
+  finally
+    if Assigned(Qry) then
+       FreeAndNil(Qry);
+  end;
+end;
+
+function TFornecedor.Selecionar(id: Integer): Boolean;
+var Qry:TFDQuery;
+begin
+ Limpar;
+  try
+    Result:=true;
+    Qry:=TFDQuery.Create(nil);
+    Qry.Connection:=ConexaoDB;
+    Qry.SQL.Clear;
+    Qry.SQL.Add('SELECT fornId,'+
+                '       nome, '+
+                '       cnpj, '+
+                '       observacao, '+
+                '       endereco, '+
+                '       telefone, '+
+                '       email '+
+                '  FROM fornecedor '+
+                ' WHERE fornId=:fornId');
+    Qry.ParamByName('fornId').AsInteger:=id;
+    Try
+      Qry.Open;
+
+      Self.F_fornId        := Qry.FieldByName('fornId').AsInteger;
+      Self.F_nome          := Qry.FieldByName('nome').AsString;
+      Self.F_cnpj          := Qry.FieldByName('cnpj').AsString;
+      Self.F_observacao    := Qry.FieldByName('observacao').AsString;
+      Self.F_endereco      := Qry.FieldByName('endereco').AsString;
+      Self.F_telefone      := Qry.FieldByName('telefone').AsString;
+      Self.F_email         := Qry.FieldByName('email').AsString;
+
+    Except
+      Result:=false;
+    End;
+
+  finally
+    if Assigned(Qry) then
+       FreeAndNil(Qry);
+  end;
+
+end;
+
+{$endregion}
+
+end.

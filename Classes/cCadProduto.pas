@@ -69,7 +69,7 @@ begin
                 'Codigo: '+IntToStr(F_produtoId)+#13+
                 'Descricao: '+F_nome,mtConfirmation,[mbYes, mbNo],0)<> mrYes then begin
      Result:=false;
-     abort;
+     Exit;;
   end;
 
   try
@@ -80,13 +80,23 @@ begin
     Qry.SQL.Add('DELETE FROM produtos '+
                 ' WHERE produtoId=:produtoId ');
     Qry.ParamByName('produtoId').AsInteger :=F_produtoId;
+
     try
     ConexaoDB.StartTransaction;
     Qry.ExecSQL;
     ConexaoDB.Commit;
   except
-    ConexaoDB.Rollback;
-    Result:=False;
+    on e: Exception do begin
+      ConexaoDB.Rollback;
+
+       if Pos('FK_VendasItensProdutos', E.Message) > 0 then
+          ShowMessage('Não é possível excluir este produto pois ele já está vinculado a vendas.')
+        else
+          ShowMessage('Erro ao excluir produto: ' + E.Message);
+          Exit;
+
+      Result:=False;
+    end;
   end;
 
   finally

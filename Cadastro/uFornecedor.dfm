@@ -9,10 +9,11 @@ inherited frmFornecedor: TfrmFornecedor
   inherited pgcPrincipal: TPageControl
     Width = 1131
     Height = 537
-    ActivePage = tabManutencao
     ExplicitWidth = 1131
     ExplicitHeight = 537
     inherited tabListagem: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 1123
       ExplicitHeight = 509
       inherited pnlListagemTopo: TPanel
@@ -31,19 +32,16 @@ inherited frmFornecedor: TfrmFornecedor
           item
             Expanded = False
             FieldName = 'nome'
-            Width = 206
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'cnpj'
-            Width = 109
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'endereco'
-            Width = 242
             Visible = True
           end
           item
@@ -53,32 +51,38 @@ inherited frmFornecedor: TfrmFornecedor
           end
           item
             Expanded = False
-            FieldName = 'email'
-            Width = 143
+            FieldName = 'observacao'
             Visible = True
           end
           item
             Expanded = False
-            FieldName = 'observacao'
+            FieldName = 'estado'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'cidade'
             Visible = True
           end>
       end
     end
     inherited tabManutencao: TTabSheet
+      ExplicitLeft = 8
+      ExplicitTop = 24
       ExplicitWidth = 1123
       ExplicitHeight = 509
       object lblTelefone: TLabel
-        Left = 629
-        Top = 197
+        Left = 580
+        Top = 242
         Width = 42
         Height = 13
         Caption = 'Telefone'
       end
       object lblCnpj: TLabel
-        Left = 629
-        Top = 124
+        Left = 580
+        Top = 139
         Width = 25
-        Height = 26
+        Height = 12
         Caption = 'CNPJ'#13#10
       end
       object lblObservacao: TLabel
@@ -87,6 +91,41 @@ inherited frmFornecedor: TfrmFornecedor
         Width = 58
         Height = 13
         Caption = 'Observa'#231#227'o'
+      end
+      object lblCEP: TLabel
+        Left = 579
+        Top = 189
+        Width = 19
+        Height = 13
+        Caption = 'CEP'
+      end
+      object lblCEP1: TLabel
+        Left = 214
+        Top = 189
+        Width = 28
+        Height = 13
+        Caption = 'Bairro'
+      end
+      object lblCEP2: TLabel
+        Left = 56
+        Top = 189
+        Width = 33
+        Height = 13
+        Caption = 'Cidade'
+      end
+      object lblCEP3: TLabel
+        Left = 371
+        Top = 189
+        Width = 33
+        Height = 13
+        Caption = 'Estado'
+      end
+      object lbl10: TLabel
+        Left = 493
+        Top = 141
+        Width = 12
+        Height = 13
+        Caption = 'N'#186
       end
       object edtNome: TLabeledEdit
         Tag = 2
@@ -102,7 +141,7 @@ inherited frmFornecedor: TfrmFornecedor
       end
       object edtEndereco: TLabeledEdit
         Left = 56
-        Top = 176
+        Top = 156
         Width = 430
         Height = 21
         EditLabel.Width = 45
@@ -112,9 +151,9 @@ inherited frmFornecedor: TfrmFornecedor
         TabOrder = 3
       end
       object edtTelefone: TEdit
-        Left = 629
-        Top = 216
-        Width = 254
+        Left = 580
+        Top = 256
+        Width = 125
         Height = 21
         TabOrder = 4
         OnChange = edtTelefoneChange
@@ -122,7 +161,7 @@ inherited frmFornecedor: TfrmFornecedor
       object edtEmail: TLabeledEdit
         Tag = 2
         Left = 56
-        Top = 248
+        Top = 256
         Width = 430
         Height = 21
         EditLabel.Width = 24
@@ -135,7 +174,7 @@ inherited frmFornecedor: TfrmFornecedor
         Tag = 1
         Left = 56
         Top = 48
-        Width = 121
+        Width = 58
         Height = 21
         EditLabel.Width = 33
         EditLabel.Height = 13
@@ -144,14 +183,14 @@ inherited frmFornecedor: TfrmFornecedor
         NumbersOnly = True
         TabOrder = 0
       end
-      object edtCnpj: TEdit
-        Left = 629
-        Top = 143
-        Width = 254
+      object edtCNPJ: TEdit
+        Left = 579
+        Top = 156
+        Width = 126
         Height = 21
         MaxLength = 18
         TabOrder = 2
-        OnChange = edtCnpjChange
+        OnChange = edtCNPJChange
       end
       object edtObservacao: TEdit
         Left = 56
@@ -160,6 +199,49 @@ inherited frmFornecedor: TfrmFornecedor
         Height = 97
         AutoSize = False
         TabOrder = 6
+      end
+      object edtBairro: TEdit
+        Left = 214
+        Top = 206
+        Width = 145
+        Height = 21
+        TabOrder = 7
+        OnChange = edtTelefoneChange
+      end
+      object edtCidade: TEdit
+        Left = 56
+        Top = 206
+        Width = 145
+        Height = 21
+        TabOrder = 8
+        OnChange = edtTelefoneChange
+      end
+      object edtEstado: TEdit
+        Left = 371
+        Top = 206
+        Width = 115
+        Height = 21
+        TabOrder = 9
+        OnChange = edtTelefoneChange
+      end
+      object edtNumero: TEdit
+        Left = 492
+        Top = 156
+        Width = 53
+        Height = 21
+        TabOrder = 10
+        OnChange = edtTelefoneChange
+      end
+      object mskCEP: TMaskEdit
+        Left = 579
+        Top = 206
+        Width = 126
+        Height = 21
+        EditMask = '99.999-999;1;_'
+        MaxLength = 10
+        TabOrder = 11
+        Text = '  .   -   '
+        OnExit = mskCEPExit
       end
     end
   end
@@ -214,6 +296,33 @@ inherited frmFornecedor: TfrmFornecedor
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'observacao'
       Size = 100
+    end
+    object f2Listagemnumero: TStringField
+      FieldName = 'numero'
+      Origin = 'numero'
+      Size = 10
+    end
+    object f2Listagembairro: TStringField
+      FieldName = 'bairro'
+      Origin = 'bairro'
+      Size = 50
+    end
+    object f2Listagemcidade: TStringField
+      DisplayLabel = 'Cidade'
+      FieldName = 'cidade'
+      Origin = 'cidade'
+      Size = 50
+    end
+    object f2Listagemestado: TStringField
+      DisplayLabel = 'Estado'
+      FieldName = 'estado'
+      Origin = 'estado'
+      Size = 3
+    end
+    object f2Listagemcep: TStringField
+      FieldName = 'cep'
+      Origin = 'cep'
+      Size = 10
     end
   end
 end

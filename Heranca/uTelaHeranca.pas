@@ -418,7 +418,6 @@ end;
 procedure TfrmTelaHeranca.FormCreate(Sender: TObject);
 var I: Integer;
 begin
-
   grdListagem.TitleFont.Color:=clWhite;
 
                                                                //centraliza todos os titulos
@@ -543,7 +542,6 @@ begin
   IndiceAtual:=Column.FieldName;
   fdqryListagem.IndexFieldNames:=IndiceAtual;
   ExibirLabelIndice(IndiceAtual,lblIndice);
-
 end;
 
 procedure TfrmTelaHeranca.btnAlterarClick(Sender: TObject);

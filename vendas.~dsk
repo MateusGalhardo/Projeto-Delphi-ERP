@@ -12,44 +12,50 @@ File_9=TSourceModule,'C:\Projeto Delphi\Classes\cAtualizacaoTabelaMSSQL.pas',0,1
 File_10=TSourceModule,'C:\Projeto Delphi\login\cUsuarioLogado.pas',0,1,16,18,32,0,0,,
 
 [Modules]
-Module0=C:\Projeto Delphi\Processo\uProVenda.pas
-Module1=C:\Projeto Delphi\Heranca\uTelaHeranca.pas
-Module2=C:\Projeto Delphi\Cadastro\uCadCliente.pas
-Module3=C:\Projeto Delphi\Classes\cCadCliente.pas
-Module4=C:\Projeto Delphi\Consulta\uConProduto.pas
-Module5=C:\Projeto Delphi\uLogin.pas
-Module6=C:\Projeto Delphi\Cadastro\uFornecedor.pas
-Module7=C:\Projeto Delphi\uPrincipal.pas
-Module8=C:\Projeto Delphi\login\uUsuarioVsAcoes.pas
-Module9=C:\Projeto Delphi\Cadastro\uCadUsuario.pas
-Module10=C:\Projeto Delphi\Controle\uControleLog.pas
-Module11=C:\Projeto Delphi\Controle\uResFinanceiro.pas
-Module12=C:\Projeto Delphi\Cadastro\uCadProduto.pas
+Module0=C:\Projeto Delphi\Cadastro\uCadProduto.pas
+Module1=C:\Projeto Delphi\Consulta\uConProduto.pas
+Module2=C:\Projeto Delphi\uPrincipal.pas
+Module3=C:\Projeto Delphi\Cadastro\uCadCliente.pas
+Module4=C:\Projeto Delphi\uLogin.pas
+Module5=C:\Projeto Delphi\Processo\uProVenda.pas
+Module6=C:\Projeto Delphi\Controle\uControleLog.pas
+Module7=C:\Projeto Delphi\Heranca\uTelaHeranca.pas
+Module8=C:\Projeto Delphi\Classes\cCadCliente.pas
+Module9=C:\Projeto Delphi\Cadastro\uFornecedor.pas
+Module10=C:\Projeto Delphi\login\uUsuarioVsAcoes.pas
+Module11=C:\Projeto Delphi\Cadastro\uCadUsuario.pas
+Module12=C:\Projeto Delphi\Controle\uResFinanceiro.pas
 Count=13
 EditWindowCount=1
 
-[C:\Projeto Delphi\Processo\uProVenda.pas]
-ModuleType=TSourceModule
-
-[C:\Projeto Delphi\Heranca\uTelaHeranca.pas]
-ModuleType=TSourceModule
-
-[C:\Projeto Delphi\Cadastro\uCadCliente.pas]
-ModuleType=TSourceModule
-
-[C:\Projeto Delphi\Classes\cCadCliente.pas]
+[C:\Projeto Delphi\Cadastro\uCadProduto.pas]
 ModuleType=TSourceModule
 
 [C:\Projeto Delphi\Consulta\uConProduto.pas]
 ModuleType=TSourceModule
 
+[C:\Projeto Delphi\uPrincipal.pas]
+ModuleType=TSourceModule
+
+[C:\Projeto Delphi\Cadastro\uCadCliente.pas]
+ModuleType=TSourceModule
+
 [C:\Projeto Delphi\uLogin.pas]
 ModuleType=TSourceModule
 
-[C:\Projeto Delphi\Cadastro\uFornecedor.pas]
+[C:\Projeto Delphi\Processo\uProVenda.pas]
 ModuleType=TSourceModule
 
-[C:\Projeto Delphi\uPrincipal.pas]
+[C:\Projeto Delphi\Controle\uControleLog.pas]
+ModuleType=TSourceModule
+
+[C:\Projeto Delphi\Heranca\uTelaHeranca.pas]
+ModuleType=TSourceModule
+
+[C:\Projeto Delphi\Classes\cCadCliente.pas]
+ModuleType=TSourceModule
+
+[C:\Projeto Delphi\Cadastro\uFornecedor.pas]
 ModuleType=TSourceModule
 
 [C:\Projeto Delphi\login\uUsuarioVsAcoes.pas]
@@ -58,18 +64,12 @@ ModuleType=TSourceModule
 [C:\Projeto Delphi\Cadastro\uCadUsuario.pas]
 ModuleType=TSourceModule
 
-[C:\Projeto Delphi\Controle\uControleLog.pas]
-ModuleType=TSourceModule
-
 [C:\Projeto Delphi\Controle\uResFinanceiro.pas]
-ModuleType=TSourceModule
-
-[C:\Projeto Delphi\Cadastro\uCadProduto.pas]
 ModuleType=TSourceModule
 
 [EditWindow0]
 ViewCount=13
-CurrentEditView=C:\Projeto Delphi\Processo\uProVenda.pas
+CurrentEditView=C:\Projeto Delphi\Cadastro\uCadProduto.pas
 View0=0
 View1=1
 View2=2
@@ -99,45 +99,47 @@ ClientHeight=8889
 DockedToMainForm=1
 BorlandEditorCodeExplorer=BorlandEditorCodeExplorer@EditWindow0
 TopPanelSize=0
-LeftPanelSize=0
+LeftPanelSize=1911
+LeftPanelClients=PropertyInspector
+LeftPanelData=00000800010000000000B8180000000000000000000000000000000100000000B81800001100000050726F7065727479496E73706563746F72FFFFFFFF
 RightPanelSize=0
-BottomPanelSize=0
+BottomPanelSize=195
 BottomPanelClients=MessageView,DockSite1
-BottomPanelData=000008000102020000000F0000004D65737361676556696577466F726D09000000446F636B53697465311534000000000000022806000000000000FFFFFFFF
+BottomPanelData=0000080001020100000009000000446F636B5369746531AF4500000000000002C3000000000000000100000000AF4500000F0000004D65737361676556696577466F726DFFFFFFFF
 BottomMiddlePanelSize=0
 BottomMiddlePanelClients=DockSite0,GraphDrawingModel
 BottomMiddelPanelData=0000080001020200000009000000446F636B536974653010000000477261706844726177696E67566965779A1D00000000000002F806000000000000FFFFFFFF
-TabDockLeftClients=PropertyInspector=0,DockSite3=1
+TabDockLeftClients=DockSite3=0
 TabDockRightClients=DockSite2=0,DockSite4=1
 
 [View0]
 CustomEditViewType=TEditView
 Module=C:\Projeto Delphi\Cadastro\uCadProduto.pas
-CursorX=1
-CursorY=136
-TopLine=133
+CursorX=57
+CursorY=133
+TopLine=122
 LeftCol=1
 Elisions=
-Bookmarks={1,94,1}
-EditViewName=Borland.FormDesignerView
+Bookmarks={1,95,1}
+EditViewName=C:\Projeto Delphi\Cadastro\uCadProduto.pas
 
 [View1]
 CustomEditViewType=TEditView
 Module=C:\Projeto Delphi\uPrincipal.pas
-CursorX=67
-CursorY=141
-TopLine=130
+CursorX=26
+CursorY=99
+TopLine=97
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=C:\Projeto Delphi\uPrincipal.pas
+EditViewName=Borland.FormDesignerView
 
 [View2]
 CustomEditViewType=TEditView
 Module=C:\Projeto Delphi\Controle\uControleLog.pas
-CursorX=7
-CursorY=204
-TopLine=177
+CursorX=73
+CursorY=184
+TopLine=1
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -168,18 +170,18 @@ EditViewName=C:\Projeto Delphi\Cadastro\uCadUsuario.pas
 [View5]
 CustomEditViewType=TEditView
 Module=C:\Projeto Delphi\Processo\uProVenda.pas
-CursorX=42
-CursorY=361
-TopLine=338
+CursorX=56
+CursorY=304
+TopLine=302
 LeftCol=1
-Elisions={{91,0},{205,11},{'Override'}}
+Elisions=
 Bookmarks=
 EditViewName=C:\Projeto Delphi\Processo\uProVenda.pas
 
 [View6]
 CustomEditViewType=TEditView
 Module=C:\Projeto Delphi\Heranca\uTelaHeranca.pas
-CursorX=15
+CursorX=12
 CursorY=433
 TopLine=419
 LeftCol=1
@@ -201,13 +203,13 @@ EditViewName=Borland.FormDesignerView
 [View8]
 CustomEditViewType=TEditView
 Module=C:\Projeto Delphi\uLogin.pas
-CursorX=28
-CursorY=29
-TopLine=19
+CursorX=1
+CursorY=90
+TopLine=88
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=C:\Projeto Delphi\uLogin.pas
+EditViewName=Borland.FormDesignerView
 
 [View9]
 CustomEditViewType=TEditView
@@ -223,13 +225,13 @@ EditViewName=Borland.FormDesignerView
 [View10]
 CustomEditViewType=TEditView
 Module=C:\Projeto Delphi\Cadastro\uCadCliente.pas
-CursorX=49
-CursorY=313
-TopLine=297
+CursorX=3
+CursorY=14
+TopLine=64
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=C:\Projeto Delphi\Cadastro\uCadCliente.pas
+EditViewName=Borland.FormDesignerView
 
 [View11]
 CustomEditViewType=TEditView
@@ -270,11 +272,11 @@ State=0
 Left=0
 Top=0
 Width=3821
-Height=1069
+Height=1458
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3821
-ClientHeight=1069
+ClientHeight=1458
 TBDockHeight=208
 LRDockWidth=13602
 Dockable=1
@@ -334,12 +336,12 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=1999
-Height=8667
+Width=1881
+Height=8125
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1999
-ClientHeight=8667
+ClientWidth=1881
+ClientHeight=8125
 TBDockHeight=5903
 LRDockWidth=2350
 Dockable=1
@@ -348,18 +350,18 @@ StayOnTop=0
 [MessageView]
 PercentageSizes=1
 Create=1
-Visible=0
+Visible=1
 Docked=1
 State=0
 Left=0
-Top=0
-Width=2767
-Height=1417
+Top=18
+Width=10029
+Height=0
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2767
-ClientHeight=1417
-TBDockHeight=1417
+ClientWidth=10029
+ClientHeight=0
+TBDockHeight=1806
 LRDockWidth=2767
 Dockable=1
 StayOnTop=0
@@ -372,12 +374,12 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=1999
-Height=9014
+Width=1911
+Height=8472
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1999
-ClientHeight=9014
+ClientWidth=1911
+ClientHeight=8472
 TBDockHeight=7153
 LRDockWidth=1999
 Dockable=1
@@ -424,22 +426,27 @@ StayOnTop=0
 [PropertyInspector]
 PercentageSizes=1
 Create=1
-Visible=0
+Visible=1
 Docked=1
 State=0
 Left=0
-Top=0
-Width=1896
-Height=9014
+Top=18
+Width=1911
+Height=8347
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1896
-ClientHeight=9014
+ClientWidth=1911
+ClientHeight=8347
 TBDockHeight=9014
-LRDockWidth=1896
+LRDockWidth=1911
 Dockable=1
 StayOnTop=0
 SplitPos=111
+
+[PropInspDesignerSelection]
+ArrangeBy=Name
+SelectedItem=Align,OnMouseDown
+ExpandedItems=Anchors=0,BevelEdges=0,Constraints=0,Font=1,LiveBindings=0,"LiveBindings Designer=0",Margins=0,Font.Style=0,StyleElements=0,BorderIcons=0,Touch=1,MenuAnimation=1,PopupMenu=0,Touch.InteractiveGestureOptions=0,Touch.InteractiveGestures=0,Touch.TabletOptions=0,PopupMenu.LiveBindings=0,"PopupMenu.LiveBindings Designer=0",PopupMenu.MenuAnimation=0
 
 [ClassBrowserTool]
 PercentageSizes=1
@@ -447,8 +454,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-8
-Top=-8
+Left=-16
+Top=-39
 Width=1845
 Height=3139
 MaxLeft=-1
@@ -506,12 +513,12 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=1999
-Height=8667
+Width=1881
+Height=8125
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1999
-ClientHeight=8667
+ClientWidth=1881
+ClientHeight=8125
 TBDockHeight=5958
 LRDockWidth=2511
 Dockable=1
@@ -523,8 +530,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-8
-Top=-8
+Left=-1293
+Top=-52
 Width=2848
 Height=6208
 MaxLeft=-1
@@ -542,8 +549,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=0
-Top=0
+Left=-16
+Top=217
 Width=278
 Height=361
 MaxLeft=-1
@@ -567,11 +574,11 @@ State=0
 Left=0
 Top=0
 Width=3821
-Height=1069
+Height=1458
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3821
-ClientHeight=1069
+ClientHeight=1458
 TBDockHeight=417
 LRDockWidth=4949
 Dockable=1
@@ -586,11 +593,11 @@ State=0
 Left=0
 Top=0
 Width=3821
-Height=1069
+Height=1458
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3821
-ClientHeight=1069
+ClientHeight=1458
 TBDockHeight=208
 LRDockWidth=7408
 Dockable=1
@@ -609,11 +616,11 @@ State=0
 Left=0
 Top=0
 Width=3821
-Height=1069
+Height=1458
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3821
-ClientHeight=1069
+ClientHeight=1458
 TBDockHeight=1542
 LRDockWidth=3485
 Dockable=1
@@ -628,11 +635,11 @@ State=0
 Left=0
 Top=0
 Width=3821
-Height=1069
+Height=1458
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3821
-ClientHeight=1069
+ClientHeight=1458
 TBDockHeight=2069
 LRDockWidth=3485
 Dockable=1
@@ -647,11 +654,11 @@ State=0
 Left=0
 Top=0
 Width=2335
-Height=1125
+Height=861
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2335
-ClientHeight=1125
+ClientHeight=861
 TBDockHeight=2500
 LRDockWidth=3397
 Dockable=1
@@ -666,11 +673,11 @@ State=0
 Left=0
 Top=0
 Width=2335
-Height=1125
+Height=889
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2335
-ClientHeight=1125
+ClientHeight=889
 TBDockHeight=2319
 LRDockWidth=2826
 Dockable=1
@@ -704,11 +711,11 @@ State=0
 Left=0
 Top=0
 Width=2335
-Height=861
+Height=1125
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2335
-ClientHeight=861
+ClientHeight=1125
 TBDockHeight=1153
 LRDockWidth=3675
 Dockable=1
@@ -730,12 +737,12 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=1999
-Height=8667
+Width=1881
+Height=8125
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1999
-ClientHeight=8667
+ClientWidth=1881
+ClientHeight=8125
 TBDockHeight=4889
 LRDockWidth=7152
 Dockable=1
@@ -747,8 +754,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=0
-Top=0
+Left=263
+Top=568
 Width=2855
 Height=3208
 MaxLeft=-1
@@ -769,11 +776,11 @@ State=0
 Left=0
 Top=0
 Width=3821
-Height=1069
+Height=1458
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3821
-ClientHeight=1069
+ClientHeight=1458
 TBDockHeight=1542
 LRDockWidth=8741
 Dockable=1
@@ -794,12 +801,12 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=1896
-Height=9014
+Width=1779
+Height=8472
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1896
-ClientHeight=9014
+ClientWidth=1779
+ClientHeight=8472
 TBDockHeight=3681
 LRDockWidth=1896
 Dockable=1
@@ -813,12 +820,12 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=1999
-Height=8667
+Width=1881
+Height=8125
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1999
-ClientHeight=8667
+ClientWidth=1881
+ClientHeight=8125
 TBDockHeight=4889
 LRDockWidth=5307
 Dockable=1
@@ -878,15 +885,15 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=8
-Top=8
+Left=0
+Top=18
 Width=3821
-Height=1417
+Height=306
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3821
-ClientHeight=1417
-TBDockHeight=1417
+ClientHeight=306
+TBDockHeight=306
 LRDockWidth=3821
 Dockable=1
 StayOnTop=0
@@ -902,14 +909,14 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=8
-Top=8
+Left=1368
+Top=82
 Width=1999
 Height=9014
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1999
-ClientHeight=9014
+ClientWidth=1881
+ClientHeight=8472
 TBDockHeight=9014
 LRDockWidth=1999
 Dockable=1
@@ -932,8 +939,8 @@ Width=1896
 Height=9014
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1896
-ClientHeight=9014
+ClientWidth=1779
+ClientHeight=8472
 TBDockHeight=9014
 LRDockWidth=1896
 Dockable=1
@@ -952,14 +959,14 @@ Docked=1
 State=0
 Left=8
 Top=8
-Width=1999
+Width=2028
 Height=9014
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1999
-ClientHeight=9014
+ClientWidth=1911
+ClientHeight=8472
 TBDockHeight=9014
-LRDockWidth=1999
+LRDockWidth=2028
 Dockable=1
 StayOnTop=0
 TabPosition=1

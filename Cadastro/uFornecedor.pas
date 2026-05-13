@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaHeranca, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
-  Vcl.ExtCtrls, Vcl.ComCtrls, uEnum, cFornecedor, uDTMconexao, cValidar;
+  Vcl.ExtCtrls, Vcl.ComCtrls, uEnum, cFornecedor, uDTMconexao, cValidar, IdSSLOpenSSL, IdHTTP, System.JSON;
 
 type
   TfrmFornecedor = class(TfrmTelaHeranca)
@@ -24,17 +24,33 @@ type
     lblTelefone: TLabel;
     edtEmail: TLabeledEdit;
     edtFornId: TLabeledEdit;
-    edtCnpj: TEdit;
+    edtCNPJ: TEdit;
     lblCnpj: TLabel;
     edtObservacao: TEdit;
     lblObservacao: TLabel;
+    lblCEP: TLabel;
+    edtBairro: TEdit;
+    lblCEP1: TLabel;
+    edtCidade: TEdit;
+    lblCEP2: TLabel;
+    edtEstado: TEdit;
+    lblCEP3: TLabel;
+    edtNumero: TEdit;
+    lbl10: TLabel;
+    f2Listagemnumero: TStringField;
+    f2Listagembairro: TStringField;
+    f2Listagemcidade: TStringField;
+    f2Listagemestado: TStringField;
+    f2Listagemcep: TStringField;
+    mskCEP: TMaskEdit;
     procedure grdListagemDblClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
-    procedure edtCnpjChange(Sender: TObject);
+    procedure edtCNPJChange(Sender: TObject);
     procedure edtTelefoneChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure mskCEPExit(Sender: TObject);
   private
     { Private declarations }
     oFornecedor: TFornecedor;
@@ -42,6 +58,8 @@ type
     function Gravar(EstadoDoCadastro: TEstadoDoCadastro):Boolean; override;
     procedure CarregarItensSelecionados;
     function GetDesc: string; override;
+    procedure PreencherEndereco(const CEP: string);
+    function BuscarCEP(const CEP: string): TJSONObject;
   public
     { Public declarations }
     procedure LimparComponenteItem;
@@ -80,16 +98,20 @@ begin
   end;
 end;
 
-
 procedure TfrmFornecedor.CarregarItensSelecionados;
 begin
-  edtNome.Text := fdqryListagem.FieldByName('nome').AsString;
-  edtTelefone.Text:= fdqryListagem.FieldByName('telefone').AsString;
-  edtCnpj.Text:= fdqryListagem.FieldByName('cnpj').AsString;
-  edtFornId.Text := fdqryListagem.FieldByName('fornId').AsString;
-  edtEmail.Text:= fdqryListagem.FieldByName('email').AsString;
-  edtEndereco.Text:= fdqryListagem.FieldByName('endereco').AsString;
+  edtNome.Text :=      fdqryListagem.FieldByName('nome').AsString;
+  edtTelefone.Text:=   fdqryListagem.FieldByName('telefone').AsString;
+  edtCnpj.Text:=       fdqryListagem.FieldByName('cnpj').AsString;
+  edtFornId.Text :=    fdqryListagem.FieldByName('fornId').AsString;
+  edtEmail.Text:=      fdqryListagem.FieldByName('email').AsString;
+  edtEndereco.Text:=   fdqryListagem.FieldByName('endereco').AsString;
   edtObservacao.Text:= fdqryListagem.FieldByName('observacao').AsString;
+  edtNumero.Text :=    fdqryListagem.FieldByName('numero').AsString;
+  edtBairro.Text :=    fdqryListagem.FieldByName('bairro').AsString;
+  edtCidade.Text :=    fdqryListagem.FieldByName('cidade').AsString;
+  edtEstado.Text :=    fdqryListagem.FieldByName('estado').AsString;
+  mskCEP.Text :=       fdqryListagem.FieldByName('cep').AsString;
 end;
 
 procedure TfrmFornecedor.grdListagemDblClick(Sender: TObject);
@@ -124,6 +146,11 @@ begin
   oFornecedor.email                  :=edtEmail.Text;
   oFornecedor.cnpj                   :=edtCnpj.Text;
   oFornecedor.observacao             :=edtObservacao.Text;
+  oFornecedor.numero                 := edtNumero.Text;
+  oFornecedor.bairro                 := edtBairro.Text;
+  oFornecedor.cidade                 := edtCidade.Text;
+  oFornecedor.estado                 := edtEstado.Text;
+  oFornecedor.cep                    := mskCEP.Text;
 
   if (EstadoDoCadastro=ecInserir) then
     result:=oFornecedor.Inserir
@@ -140,18 +167,31 @@ begin
   edtEmail.Text := '';
   edtCnpj.Text := '';
   edtObservacao.Text := '';
+  edtNumero.Text := '';
+  edtNumero.Text := '';
+  edtBairro.Text := '';
+  edtCidade.Text := '';
+  edtEstado.Text := '';
+  mskCEP.Text := '';
 end;
 
 procedure TfrmFornecedor.btnAlterarClick(Sender: TObject);
 begin
   if oFornecedor.Selecionar(fdqryListagem.FieldByName('fornId').AsInteger) then begin
-     edtFornId.Text:=IntToStr(oFornecedor.codigo);
-     edtNome.Text:=oFornecedor.nome;
-     edtEndereco.Text:=oFornecedor.endereco;
-     edtTelefone.Text:=oFornecedor.telefone;
-     edtEmail.Text:=oFornecedor.email;
-     edtCnpj.Text:=oFornecedor.cnpj;
-     edtObservacao.Text:=oFornecedor.observacao;
+     edtFornId.Text:= IntToStr(oFornecedor.codigo);
+
+     edtNome.Text:=       oFornecedor.nome;
+     edtEndereco.Text:=   oFornecedor.endereco;
+     edtTelefone.Text:=   oFornecedor.telefone;
+     edtEmail.Text:=      oFornecedor.email;
+     edtCnpj.Text:=       oFornecedor.cnpj;
+     edtObservacao.Text:= oFornecedor.observacao;
+     edtNumero.Text:=     oFornecedor.numero;
+     edtBairro.Text:=     oFornecedor.bairro;
+     edtCidade.Text:=     oFornecedor.cidade;
+     edtEstado.Text:=     oFornecedor.estado;
+     mskCEP.Text :=       oFornecedor.cep;
+
   end
   else begin
     btnCancelar.Click;
@@ -172,7 +212,14 @@ begin
 inherited;
 end;
 
-procedure TfrmFornecedor.edtCnpjChange(Sender: TObject);
+procedure TfrmFornecedor.mskCEPExit(Sender: TObject);
+begin
+  inherited;
+  if Trim(mskCEP.Text) <> '' then
+    PreencherEndereco(mskCEP.Text);
+end;
+
+procedure TfrmFornecedor.edtCNPJChange(Sender: TObject);
 var
   Texto, N: string;
   PosCursor: Integer;
@@ -196,6 +243,53 @@ begin
   finally
     edtCnpj.OnChange := edtCnpjChange;
   end;
+end;
+
+function TfrmFornecedor.BuscarCEP(const CEP: string): TJSONObject;
+var IdHTTP: TIdHTTP; SSL: TIdSSLIOHandlerSocketOpenSSL; Response: string; CEPLimpo: string;
+begin
+  Result := nil;
+  CEPLimpo := SomenteNumeros(CEP);
+  if Length(CEPLimpo) <> 8 then
+    Exit;
+
+  IdHTTP := TIdHTTP.Create(nil);
+  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+  try
+    SSL.SSLOptions.Method := sslvTLSv1_2;
+    SSL.SSLOptions.Mode := sslmClient;
+
+    IdHTTP.IOHandler := SSL;
+
+    Response := IdHTTP.Get('https://viacep.com.br/ws/' + CEPLimpo + '/json/');
+    Result := TJSONObject.ParseJSONValue(Response) as TJSONObject;
+  finally
+    SSL.Free;
+    IdHTTP.Free;
+  end;
+end;
+
+procedure TfrmFornecedor.PreencherEndereco(const CEP: string);
+var JSON: TJSONObject;
+begin
+  JSON := BuscarCEP(CEP);
+  if Assigned(JSON) then
+  try
+    if JSON.GetValue('erro') <> nil then
+    begin
+      ShowMessage('CEP inválido!');
+      Exit;
+    end;
+
+    edtEndereco.Text := JSON.GetValue('logradouro').Value;
+    edtBairro.Text   := JSON.GetValue('bairro').Value;
+    edtCidade.Text   := JSON.GetValue('localidade').Value;
+    edtEstado.Text   := JSON.GetValue('uf').Value;
+  finally
+    JSON.Free;
+  end
+  else
+    ShowMessage('Não foi possível consultar o CEP.');
 end;
 
 procedure TfrmFornecedor.edtTelefoneChange(Sender: TObject);

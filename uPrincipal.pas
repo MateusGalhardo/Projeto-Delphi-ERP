@@ -42,6 +42,7 @@ type
     btn1: TSpeedButton;
     mniFinanceiro1: TMenuItem;
     mniChat1: TMenuItem;
+    tmrAtualizacaoDashBoard: TTimer;
     procedure mnuFecharClick(Sender: TObject);
     procedure categoria1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -108,6 +109,7 @@ end;
 
 procedure TfrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  tmrAtualizacaoDashBoard.Enabled := False;
   FreeAndNil(TeclaEnter);
   FreeAndNil(dtmConexao);
   FreeAndNil(DTMGrafico);
@@ -169,6 +171,8 @@ begin
    frmLogin.Release;
    stbPrincipal.Panels[0].Text:='USUÁRIO: '+oUsuarioLogado.nome;
  end;
+
+ tmrAtualizacaoDashBoard.Enabled := True;
 end;
 
 procedure TfrmPrincipal.mniAlterarSenha1Click(Sender: TObject);
@@ -318,7 +322,13 @@ end;
 
 procedure TfrmPrincipal.tmrAtualizacaoDashBoardTimer(Sender: TObject);
 begin
-  AtualizarDashBoard;
+  tmrAtualizacaoDashBoard.Enabled := False;
+
+  try
+    AtualizarDashBoard;
+  finally
+    tmrAtualizacaoDashBoard.Enabled := True;
+  end;
 end;
 
 procedure TfrmPrincipal.Vendapordata1Click(Sender: TObject);
@@ -370,26 +380,31 @@ end;
 procedure TfrmPrincipal.AtualizarDashBoard;
 begin
   try
-    Screen.Cursor:=crSQLWait;
+    Screen.Cursor := crSQLWait;
+
     if DTMGrafico.QryProdutoEstoque.Active then
-     DTMGrafico.QryProdutoEstoque.Close;
+      DTMGrafico.QryProdutoEstoque.Refresh
+    else DTMGrafico.QryProdutoEstoque.Open;
 
-  if DTMGrafico.QryValorVendaPorCliente.Active then
-     DTMGrafico.QryValorVendaPorCliente.Close;
+    if DTMGrafico.QryValorVendaPorCliente.Active then
+      DTMGrafico.QryValorVendaPorCliente.Refresh
+    else DTMGrafico.QryValorVendaPorCliente.Open;
 
-  if DTMGrafico.QryVendasUltimasSemana.Active then
-     DTMGrafico.QryVendasUltimasSemana.Close;
+    if DTMGrafico.QryVendasUltimasSemana.Active then
+      DTMGrafico.QryVendasUltimasSemana.Refresh
+    else DTMGrafico.QryVendasUltimasSemana.Open;
 
-  if DTMGrafico.Qry10ProdutosMaisVendidos.Active then
-     DTMGrafico.Qry10ProdutosMaisVendidos.Close;
+    if DTMGrafico.Qry10ProdutosMaisVendidos.Active then
+      DTMGrafico.Qry10ProdutosMaisVendidos.Refresh
+    else DTMGrafico.Qry10ProdutosMaisVendidos.Open;
 
-  DTMGrafico.QryProdutoEstoque.Open;
-  DTMGrafico.QryValorVendaPorCliente.Open;
-  DTMGrafico.QryVendasUltimasSemana.Open;
-  DTMGrafico.Qry10ProdutosMaisVendidos.Open;
+    dbcht1.RefreshData;
+    dbcht2.RefreshData;
+    dbcht3.RefreshData;
+    dbcht4.RefreshData;
+
   finally
-    Screen.Cursor:=crDefault;
+    Screen.Cursor := crDefault;
   end;
-
 end;
 end.

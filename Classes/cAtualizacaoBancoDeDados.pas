@@ -62,9 +62,7 @@ end;
 { TAtualizaBancoDadosMSSQL }
 
 function TAtualizaBancoDadosMSSQL.AtualizarBancoDeDadosMSSQL: Boolean;
-var oAtualizarDB:TAtualizaBancoDados;
-    oTabela: TAtualizacaoTableMSSQL;
-    oCampo: TAtualizacaoCampoMSSQL;
+var oAtualizarDB:TAtualizaBancoDados; oTabela: TAtualizacaoTableMSSQL; oCampo: TAtualizacaoCampoMSSQL;
 begin
   try
     oAtualizarDB := TAtualizaBancoDados.Create(ConexaoDB);

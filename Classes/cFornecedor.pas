@@ -30,6 +30,11 @@ type
   F_nome: string;
   F_cnpj: string;
   F_endereco: string;
+  F_numero: string;
+  F_bairro: string;
+  F_cidade: string;
+  F_estado: string;
+  F_cep: string;
   F_telefone: string;
   F_email: string;
   F_observacao: string;
@@ -51,6 +56,11 @@ type
     property codigo         :Integer    read F_fornId         write F_fornId;
     property nome           :string     read F_nome           write F_nome;
     property endereco       :string     read F_endereco       write F_endereco;
+    property numero         :string     read F_numero         write F_numero;
+    property bairro         :string     read F_bairro         write F_bairro;
+    property cidade         :string     read F_cidade         write F_cidade;
+    property estado         :string     read F_estado         write F_estado;
+    property cep            :string     read F_cep            write F_cep;
     property telefone       :string     read F_telefone       write F_telefone;
     property email          :string     read F_email          write F_email;
     property cnpj           :string     read F_cnpj           write F_cnpj;
@@ -89,6 +99,11 @@ begin
   F_cnpj := '';
   F_observacao := '';
   F_endereco := '';
+  F_numero := '';
+  F_bairro := '';
+  F_cidade := '';
+  F_estado := '';
+  F_cep := '';
   F_telefone := '';
   F_email := '';
 end;
@@ -140,10 +155,16 @@ begin
                 '   SET nome            =:nome '+
                 '       ,cnpj           =:cnpj '+
                 '       ,endereco       =:endereco '+
+                '       ,numero         =:numero '+
+                '       ,bairro         =:bairro '+
+                '       ,cidade         =:cidade '+
+                '       ,estado         =:estado '+
+                '       ,cep            =:cep '+
                 '       ,observacao     =:observacao '+
                 '       ,telefone       =:telefone '+
                 '       ,email          =:email '+
                 ' WHERE fornId=:fornId ');
+
     Qry.ParamByName('fornId').AsInteger          :=Self.F_fornId;
     Qry.ParamByName('nome').AsString             :=Self.F_nome;
     Qry.ParamByName('cnpj').AsString             :=Self.F_cnpj;
@@ -151,6 +172,11 @@ begin
     Qry.ParamByName('telefone').AsString         :=Self.F_telefone;
     Qry.ParamByName('email').AsString            :=Self.F_email;
     Qry.ParamByName('observacao').AsString       :=Self.F_observacao;
+    Qry.ParamByName('numero').AsString           := Self.F_numero;
+    Qry.ParamByName('bairro').AsString           := Self.F_bairro;
+    Qry.ParamByName('cidade').AsString           := Self.F_cidade;
+    Qry.ParamByName('estado').AsString           := Self.F_estado;
+    Qry.ParamByName('cep').AsString              := Self.F_cep;
 
 
     try
@@ -180,12 +206,22 @@ begin
     Qry.SQL.Add('INSERT INTO fornecedor (nome, '+
                 '                      cnpj, '+
                 '                      endereco, '+
+                '                      numero, '+
+                '                      bairro, '+
+                '                      cidade, '+
+                '                      estado, '+
+                '                      cep, '+
                 '                      observacao,  '+
                 '                      telefone, '+
                 '                      email) '+
                 ' VALUES              (:nome, '+
                 '                      :cnpj, '+
                 '                      :endereco, '+
+                '                      :numero, '+
+                '                      :bairro, '+
+                '                      :cidade, '+
+                '                      :estado, '+
+                '                      :cep, '+
                 '                      :observacao,  '+
                 '                      :telefone, '+
                 '                      :email)' );
@@ -196,6 +232,11 @@ begin
     Qry.ParamByName('observacao').AsString       :=Self.F_observacao;
     Qry.ParamByName('telefone').AsString         :=Self.F_telefone;
     Qry.ParamByName('email').AsString            :=Self.F_email;
+    Qry.ParamByName('numero').AsString           := Self.F_numero;
+    Qry.ParamByName('bairro').AsString           := Self.F_bairro;
+    Qry.ParamByName('cidade').AsString           := Self.F_cidade;
+    Qry.ParamByName('estado').AsString           := Self.F_estado;
+    Qry.ParamByName('cep').AsString              := Self.F_cep;
 
 
 
@@ -223,11 +264,16 @@ begin
     Qry:=TFDQuery.Create(nil);
     Qry.Connection:=ConexaoDB;
     Qry.SQL.Clear;
-    Qry.SQL.Add('SELECT fornId,'+
+    Qry.SQL.Add('SELECT fornId, '+
                 '       nome, '+
                 '       cnpj, '+
-                '       observacao, '+
                 '       endereco, '+
+                '       numero, '+
+                '       bairro, '+
+                '       cidade, '+
+                '       estado, '+
+                '       cep, '+
+                '       observacao, '+
                 '       telefone, '+
                 '       email '+
                 '  FROM fornecedor '+
@@ -243,6 +289,11 @@ begin
       Self.F_endereco      := Qry.FieldByName('endereco').AsString;
       Self.F_telefone      := Qry.FieldByName('telefone').AsString;
       Self.F_email         := Qry.FieldByName('email').AsString;
+      Self.F_numero        := Qry.FieldByName('numero').AsString;
+      Self.F_bairro        := Qry.FieldByName('bairro').AsString;
+      Self.F_cidade        := Qry.FieldByName('cidade').AsString;
+      Self.F_estado        := Qry.FieldByName('estado').AsString;
+      Self.F_cep           := Qry.FieldByName('cep').AsString;
 
     Except
       Result:=false;

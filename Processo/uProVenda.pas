@@ -660,6 +660,8 @@ procedure TfrmProVenda.FormCreate(Sender: TObject);
 var i: Integer;
 begin
   inherited;
+  QryExcel.Active := True;
+  fdqryListagem.Active:= True;
     dbGridItensVenda.TitleFont.Color:=clWhite;
 
     for i := 0 to dbGridItensVenda.Columns.Count - 1 do

@@ -75,7 +75,6 @@ type
     procedure btnGravarClick(Sender: TObject);
     procedure edtCEPExit(Sender: TObject);
     procedure lkpStatusCloseUp(Sender: TObject);
-    procedure edtEmailExit(Sender: TObject);
     procedure mskPesquisarChange(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -309,8 +308,10 @@ begin
 end;
 
 procedure TfrmCadCliente.btnGravarClick(Sender: TObject);
-var Qry: TFDQuery;
+var Qry: TFDQuery; Email: string;
 begin
+  Email := Trim(edtEmail.Text);
+
   if cbbPessoa.Text = '' then begin
     ShowMessage('Informe o Tipo de Pessoa');
     cbbPessoa.SetFocus;
@@ -357,6 +358,12 @@ end;
     Exit;
   end;
 
+  if not TRegEx.IsMatch(Email, '^[^@\s]{2,}@[^@\s]{5,}.[^@\s]{2,}$') then
+  begin
+    ShowMessage('Informe um e-mail válido');
+    edtEmail.SetFocus;
+    Exit;
+  end;
 
   if YearsBetween(dtpDataNascimento.Date, Date) < 18 then
   begin
@@ -507,19 +514,6 @@ begin
     T.Tag := 0;
   end;
 
-end;
-
-procedure TfrmCadCliente.edtEmailExit(Sender: TObject);
-var Email: string;
-begin
-  Email := Trim(edtEmail.Text);
-
-  if not TRegEx.IsMatch(Email, '^[^@\s]{2,}@[^@\s]{5,}.[^@\s]{2,}$') then
-  begin
-    ShowMessage('Informe um e-mail válido');
-    edtEmail.SetFocus;
-    Exit;
-  end;
 end;
 
 procedure TfrmCadCliente.edtTelefoneChange(Sender: TObject);
