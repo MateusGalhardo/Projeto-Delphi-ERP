@@ -205,6 +205,10 @@ end;
 {$endregion}
 procedure TfrmProVenda.btnAlterarClick(Sender: TObject);
 begin
+  if fdqryListagem.FieldByName('vendaId').AsInteger = 0 then begin
+    Exit;
+  end;
+
   if oVenda.Selecionar(fdqryListagem.FieldByName('vendaId').AsInteger, dtmVenda.cdsItensVenda) then begin
      edtVendaId.Text     :=IntToStr(oVenda.VendaId);
      lkpCliente.KeyValue :=oVenda.ClienteId;
@@ -227,6 +231,10 @@ end;
 procedure TfrmProVenda.btnApagarClick(Sender: TObject);
 var QrySelect, QryUpdate: TFDQuery;
 begin
+  if fdqryListagem.FieldByName('vendaId').AsInteger = 0 then begin
+    Exit;
+  end;
+
   if MessageDlg('Apagar o Registro?', mtConfirmation,[mbYes, mbNo],0) = mrYes then
   begin
   if MessageDlg('Deseja retornar os produtos ao estoque?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
@@ -517,6 +525,10 @@ end;
 
 procedure TfrmProVenda.dbGridItensVendaDblClick(Sender: TObject);
 begin
+  if fdqryListagem.FieldByName('vendaId').AsInteger = 0 then begin
+    Exit;
+  end;
+
   inherited;
   CarregarRegistroSelecionado;
 end;

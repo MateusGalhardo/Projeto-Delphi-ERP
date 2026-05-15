@@ -6,13 +6,9 @@ inherited frmProVenda: TfrmProVenda
   TextHeight = 13
   inherited pgcPrincipal: TPageControl
     Width = 913
-    ActivePage = tabManutencao
     ExplicitWidth = 913
     inherited tabListagem: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 905
-      ExplicitHeight = 457
       inherited pnlListagemTopo: TPanel
         Width = 905
         ExplicitWidth = 905
@@ -95,10 +91,7 @@ inherited frmProVenda: TfrmProVenda
       end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 905
-      ExplicitHeight = 457
       object lbl1: TLabel
         Left = 152
         Top = 21

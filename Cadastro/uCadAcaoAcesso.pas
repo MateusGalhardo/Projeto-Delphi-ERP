@@ -21,6 +21,8 @@ type
     procedure btnNovoClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
+    procedure grdListagemDblClick(Sender: TObject);
+    procedure btnApagarClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -48,6 +50,10 @@ end;
 
 procedure TfrmCadAcaoAcesso.btnAlterarClick(Sender: TObject);
 begin
+  if fdqryListagem.FieldByName('acaoAcessoId').AsInteger = 0 then begin
+    Exit;
+  end;
+
   if oAcaoAcesso.Selecionar(fdqryListagem.FieldByName('acaoAcessoId').AsInteger) then begin
     edtAcaoAcessoId.Text:=oAcaoAcesso.codigo.ToString;
     edtDescricao.Text   :=oAcaoAcesso.descricao;
@@ -56,6 +62,14 @@ begin
   else begin
     btnCancelar.Click;
     Abort;
+  end;
+  inherited;
+end;
+
+procedure TfrmCadAcaoAcesso.btnApagarClick(Sender: TObject);
+begin
+  if fdqryListagem.FieldByName('acaoAcessoId').AsInteger = 0 then begin
+    Exit;
   end;
   inherited;
 end;
@@ -103,6 +117,14 @@ begin
      result:= oAcaoAcesso.Inserir
   else if EstadoDoCadastro=ecAlterar then
      result:= oAcaoAcesso.Atualizar;
+end;
+
+procedure TfrmCadAcaoAcesso.grdListagemDblClick(Sender: TObject);
+begin
+  if fdqryListagem.FieldByName('acaoAcessoId').AsInteger = 0 then begin
+    Exit;
+  end;
+  inherited;
 end;
 
 end.

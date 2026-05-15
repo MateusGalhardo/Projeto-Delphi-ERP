@@ -68,6 +68,9 @@ type
     procedure btnPesquisarFornecedorClick(Sender: TObject);
     procedure mskPesquisarChange(Sender: TObject);
     procedure imgImagemMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure btnGravarClick(Sender: TObject);
+    procedure btnApagarClick(Sender: TObject);
+    procedure grdListagemDblClick(Sender: TObject);
   private
     { Private declarations }
     oProduto:TProduto;
@@ -108,6 +111,7 @@ begin
   oProduto.categoriaId    :=lkpCategoria.KeyValue;
   oProduto.valor          :=edtValor.Value;
   oProduto.quantidade     :=edtQuantidade.Value;
+  oProduto.fornId         :=lkpFornecedor.KeyValue;
 
     if imgImagem.picture.BitMap.Empty then
      oProduto.Foto.Assign(nil)
@@ -119,6 +123,14 @@ begin
   else if (EstadoDoCadastro=ecAlterar) then
      Result:=oProduto.Atualizar;
 end;
+procedure TfrmCadProduto.grdListagemDblClick(Sender: TObject);
+begin
+  if fdqryListagem.FieldByName('produtoId').AsInteger = 0 then begin
+    Exit;
+  end;
+  inherited;
+end;
+
 procedure TfrmCadProduto.imgImagemMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var P: TPoint;
 begin
@@ -170,6 +182,10 @@ end;
 
 procedure TfrmCadProduto.btnAlterarClick(Sender: TObject);
 begin
+  if fdqryListagem.FieldByName('produtoId').AsInteger = 0 then begin
+    Exit;
+  end;
+
   if oProduto.Selecionar(fdqryListagem.FieldByName('produtoId').AsInteger) then begin
      edtProdutoId.Text         :=IntToStr(oProduto.codigo);
      edtNome.Text              :=oProduto.nome;
@@ -177,6 +193,7 @@ begin
      lkpCategoria.KeyValue     :=oProduto.categoriaId;
      edtValor.Value            :=oProduto.valor;
      edtQuantidade.Value       :=oProduto.quantidade;
+     lkpFornecedor.KeyValue    :=oProduto.fornId;
      imgImagem.Picture.Assign(oProduto.foto);
   end
   else begin
@@ -185,6 +202,62 @@ begin
   end;
   inherited;
 
+end;
+
+procedure TfrmCadProduto.btnApagarClick(Sender: TObject);
+begin
+  if fdqryListagem.FieldByName('produtoId').AsInteger = 0 then begin
+    Exit;
+  end;
+  inherited;
+end;
+
+procedure TfrmCadProduto.btnGravarClick(Sender: TObject);
+var Qry: TFDQuery;
+begin
+  Qry := TFDQuery.Create(nil);
+  try
+    Qry.Connection := dtmConexao.ConexaoDB;
+
+    Qry.SQL.Text :=
+      'SELECT produtoId ' +
+      'FROM produtos ' +
+      'WHERE UPPER(nome) = :nome ' +
+      'AND fornId = :fornId';
+
+    //se estiver alterando, ignora o próprio registro
+    if edtProdutoId.Text <> '' then
+      Qry.SQL.Add('AND produtoId <> :produtoId');
+
+    Qry.ParamByName('nome').AsString :=
+      UpperCase(Trim(edtNome.Text));
+
+    if VarIsNull(lkpFornecedor.KeyValue) then begin
+      showMessage('Selecione o fornecedor');
+      Exit;
+    end;
+
+    Qry.ParamByName('fornId').AsInteger :=
+      lkpFornecedor.KeyValue;
+
+    if edtProdutoId.Text <> '' then
+      Qry.ParamByName('produtoId').AsInteger :=
+        StrToInt(edtProdutoId.Text);
+
+    Qry.Open;
+
+    if not Qry.IsEmpty then
+    begin
+      ShowMessage('Já existe um produto com esse nome para este fornecedor!');
+      edtNome.SetFocus;
+      Exit;
+    end;
+
+  finally
+    Qry.Free;
+  end;
+
+  inherited;
 end;
 
 procedure TfrmCadProduto.btnNovoClick(Sender: TObject);

@@ -19,6 +19,7 @@ type
     F_quantidade: Double;
     F_categoriaId: Integer;
     F_Foto: TBitMap;
+    F_fornId: Integer;
 
   public
   constructor Create(aConexao:TFDConnection);
@@ -36,6 +37,7 @@ type
     property quantidade    :Double     read F_quantidade     write F_quantidade;
     property categoriaId   :Integer    read F_categoriaId    write F_categoriaId;
     property foto          :TBitmap    read F_Foto           write F_Foto;
+    property fornId        :Integer    read F_fornId         write F_fornId;
 
   end;
 
@@ -120,9 +122,11 @@ begin
                 '       ,valor         =:valor '+
                 '       ,quantidade    =:quantidade '+
                 '       ,foto          =:foto '+
+                '       ,fornId        =:fornId '+
                 '       ,categoriaId   =:categoriaId '+
                 ' WHERE produtoId=:produtoId ');
     Qry.ParamByName('produtoId').AsInteger       :=Self.F_produtoId;
+    Qry.ParamByName('fornId').AsInteger          :=Self.F_fornId;
     Qry.ParamByName('nome').AsString             :=Self.F_nome;
     Qry.ParamByName('descricao').AsString        :=Self.F_descricao;
     Qry.ParamByName('valor').AsFloat             :=Self.F_valor;
@@ -173,12 +177,14 @@ begin
     Qry.SQL.Clear;
     Qry.SQL.Add('INSERT INTO produtos (nome, '+
                 '                      descricao, '+
+                '                      fornId,  '+
                 '                      valor,  '+
                 '                      quantidade,  '+
                 '                      categoriaId, DataProduto, '+
                 '                      foto ) '+
                 ' VALUES              (:nome, '+
                 '                      :descricao, '+
+                '                      :fornId,  '+
                 '                      :valor,  '+
                 '                      :quantidade,  '+
                 '                      :categoriaId, :DataProduto, '+
@@ -189,6 +195,7 @@ begin
     Qry.ParamByName('valor').AsFloat             :=Self.F_valor;
     Qry.ParamByName('quantidade').AsFloat        :=Self.F_quantidade;
     Qry.ParamByName('categoriaId').AsInteger     :=Self.F_categoriaId;
+    Qry.ParamByName('fornId').AsInteger          :=Self.F_fornId;
     Qry.ParamByName('DataProduto').AsDateTime    := TDateTime(Now);
 
     if (Self.F_foto = nil) or Self.F_foto.Empty then
@@ -234,6 +241,7 @@ begin
     Qry.SQL.Clear;
     Qry.SQL.Add('SELECT produtoId,'+
                 '       nome, '+
+                '       fornId, '+
                 '       descricao, '+
                 '       valor, '+
                 '       quantidade, '+
@@ -246,6 +254,7 @@ begin
       Qry.Open;
 
       Self.F_produtoId     := Qry.FieldByName('produtoId').AsInteger;
+      Self.F_fornId        := Qry.FieldByName('fornId').AsInteger;
       Self.F_nome          := Qry.FieldByName('nome').AsString;
       Self.F_descricao     := Qry.FieldByName('descricao').AsString;
       Self.F_valor         := Qry.FieldByName('valor').AsFloat;

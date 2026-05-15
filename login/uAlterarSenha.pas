@@ -37,6 +37,22 @@ implementation
 procedure TfrmAlterarSenha.btnAlterarClick(Sender: TObject);
 Var oUsuario:TUsuario;
 begin
+  if Trim(edtSenhaNova.Text) = '' then begin
+    ShowMessage('Insira sua nova senha');
+    edtSenhaNova.Text := '';
+    edtSenhaAtual.Text := '';
+    edtRepetirNovaSenha.Text := '';
+    Exit;
+  end;
+
+  if Trim(edtSenhaAtual.Text) = '' then begin
+     ShowMessage('Insira sua senha atual');
+     edtSenhaAtual.Text := '';
+     edtSenhaNova.Text := '';
+     edtRepetirNovaSenha.Text := '';
+     Exit;
+  end;
+
   if (edtSenhaAtual.Text=oUsuarioLogado.senha) then begin
     if (edtSenhaNova.Text=edtRepetirNovaSenha.Text) then begin
       try

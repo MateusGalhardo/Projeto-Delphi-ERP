@@ -67,37 +67,52 @@ end;
 {$REGION 'CRUD'}
 
 function TCategoria.Apagar: Boolean;
-var Qry:TFDQuery;
+var Qry: TFDQuery;
 begin
-  if MessageDlg('Apagar o Registro: '+#13+#13+
-                'Código: '+IntToStr(F_categoriaId)+#13+
-                'Descrição: '+F_descricao, mtConfirmation, [mbYes, mbNo],0)<> mrYes then begin
-     Result:=False;
-     Abort ;
+  Result := False;
+  if MessageDlg('Apagar o Registro:' + #13#13 + 'Código: ' + IntToStr(F_categoriaId) + #13 + 'Descrição: ' + F_descricao,
+                mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
+  begin
+    Exit;
   end;
 
+  Qry := TFDQuery.Create(nil);
+
   try
-    Result:=True;
-    Qry:=TFDQuery.Create(nil);
-    Qry.Connection:=ConexaoDB;
+    Qry.Connection := ConexaoDB;
+
     Qry.SQL.Clear;
-    Qry.SQL.Add('DELETE FROM categorias '+
-                'WHERE categoriaId=:categoriaId ');
-    Qry.ParamByName('categoriaId').AsInteger:= F_categoriaId;
-  try
-    ConexaoDB.StartTransaction;
-    Qry.ExecSQL;
-    ConexaoDB.Commit;
-  except
-    ConexaoDB.Rollback;
-    Result:=False;
-  end;
+    Qry.SQL.Add(
+      'DELETE FROM categorias ' +
+      'WHERE categoriaId = :categoriaId');
+
+    Qry.ParamByName('categoriaId').AsInteger := F_categoriaId;
+
+    try
+      ConexaoDB.StartTransaction;
+
+      Qry.ExecSQL;
+
+      ConexaoDB.Commit;
+
+      Result := True;
+
+    except
+      on E: Exception do
+      begin
+        if ConexaoDB.InTransaction then
+          ConexaoDB.Rollback;
+
+        ShowMessage('Essa categoria não pode ser excluída porque está sendo utilizada em um ou mais produtos.');
+
+        Result := False;
+        Abort;
+      end;
+    end;
 
   finally
-    if Assigned(Qry) then
-       FreeAndNil(Qry);
+    FreeAndNil(Qry);
   end;
-
 end;
 
 function TCategoria.Atualizar: Boolean;
@@ -165,13 +180,12 @@ begin
    Qry:=TFDQuery.Create(nil);
    Qry.Connection:=ConexaoDB;
    Qry.SQL.Clear;
-   Qry.SQL.Add('SELECT categoriaId, +' +
-               '       descricao '+
+   Qry.SQL.Add('SELECT categoriaId, descricao '+
                '  FROM categorias '+
                ' WHERE categoriaId=:categoriaId');
    Qry.ParamByName('categoriaId').AsInteger:=id;
+   Qry.Open;
   try
-    Qry.Open;
 
     Self.F_categoriaId:= Qry.FieldByName('categoriaId').asInteger;
     Self.F_descricao:= Qry.FieldByName('descricao').AsString;

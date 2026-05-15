@@ -1,13 +1,10 @@
 inherited frmCadUsuario: TfrmCadUsuario
   Caption = 'Cadastro de Usu'#225'rio'
+  ExplicitTop = -150
   PixelsPerInch = 96
   TextHeight = 13
   inherited pgcPrincipal: TPageControl
     inherited tabListagem: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 882
-      ExplicitHeight = 457
       inherited grdListagem: TDBGrid
         Columns = <
           item
@@ -23,10 +20,6 @@ inherited frmCadUsuario: TfrmCadUsuario
       end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 882
-      ExplicitHeight = 457
       object btnExibir: TSpeedButton
         Left = 231
         Top = 176

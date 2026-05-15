@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaHeranca, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
-  Vcl.ExtCtrls, Vcl.ComCtrls, uEnum, cFornecedor, uDTMconexao, cValidar, IdSSLOpenSSL, IdHTTP, System.JSON;
+  Vcl.ExtCtrls, Vcl.ComCtrls, uEnum, cFornecedor, uDTMconexao, cValidar, IdSSLOpenSSL, IdHTTP, System.JSON, System.RegularExpressions;
 
 type
   TfrmFornecedor = class(TfrmTelaHeranca)
@@ -43,6 +43,10 @@ type
     f2Listagemestado: TStringField;
     f2Listagemcep: TStringField;
     mskCEP: TMaskEdit;
+    lbl12: TLabel;
+    lbl13: TLabel;
+    lbl14: TLabel;
+    lbl15: TLabel;
     procedure grdListagemDblClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
@@ -50,7 +54,8 @@ type
     procedure edtCNPJChange(Sender: TObject);
     procedure edtTelefoneChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure mskCEPExit(Sender: TObject);
+    procedure mskCEPChange(Sender: TObject);
+    procedure btnApagarClick(Sender: TObject);
   private
     { Private declarations }
     oFornecedor: TFornecedor;
@@ -116,6 +121,10 @@ end;
 
 procedure TfrmFornecedor.grdListagemDblClick(Sender: TObject);
 begin
+  if fdqryListagem.FieldByName('fornId').AsInteger = 0 then begin
+    Exit;
+  end;
+
   inherited;
   CarregarItensSelecionados;
 end;
@@ -177,6 +186,10 @@ end;
 
 procedure TfrmFornecedor.btnAlterarClick(Sender: TObject);
 begin
+  if fdqryListagem.FieldByName('fornId').AsInteger = 0 then begin
+    Exit;
+  end;
+
   if oFornecedor.Selecionar(fdqryListagem.FieldByName('fornId').AsInteger) then begin
      edtFornId.Text:= IntToStr(oFornecedor.codigo);
 
@@ -202,21 +215,64 @@ begin
 
 end;
 
-procedure TfrmFornecedor.btnGravarClick(Sender: TObject);
+procedure TfrmFornecedor.btnApagarClick(Sender: TObject);
 begin
+  if fdqryListagem.FieldByName('fornId').AsInteger = 0 then begin
+    Exit;
+  end;
+  inherited;
+end;
+
+procedure TfrmFornecedor.btnGravarClick(Sender: TObject);
+var Email: string;
+begin
+  Email := Trim(edtEmail.Text);
+
   if not cValidar.ValidarCNPJ(edtCnpj.Text) then
   begin
     ShowMessage('CNPJ Inválido');
     Exit;
   end;
+
+  if not TRegEx.IsMatch(Email, '^[^@\s]{2,}@[^@\s]{5,}.[^@\s]{2,}$') then
+  begin
+    ShowMessage('Informe um e-mail válido');
+    edtEmail.SetFocus;
+    Exit;
+  end;
+
+  if Trim(edtNumero.Text) = '' then begin
+    ShowMessage('Preencha o Número');
+    Exit;
+  end;
+
+  if Trim(edtTelefone.Text) = '' then begin
+    ShowMessage('Preencha o Telefone');
+    Exit;
+  end;
+
 inherited;
 end;
 
-procedure TfrmFornecedor.mskCEPExit(Sender: TObject);
+procedure TfrmFornecedor.mskCEPChange(Sender: TObject);
+var CEP: string;
 begin
   inherited;
-  if Trim(mskCEP.Text) <> '' then
-    PreencherEndereco(mskCEP.Text);
+  CEP:= SomenteNumeros(mskCEP.Text);
+
+  if Length(CEP) = 8 then begin
+   lbl12.Visible := False;
+   lbl13.Visible := False;
+   lbl14.Visible := False;
+   lbl15.Visible := False;
+   PreencherEndereco(mskCEP.Text);
+  end
+  else begin
+   lbl12.Visible := True;
+   lbl13.Visible := True;
+   lbl14.Visible := True;
+   lbl15.Visible := True;
+  end;
 end;
 
 procedure TfrmFornecedor.edtCNPJChange(Sender: TObject);
@@ -273,23 +329,47 @@ procedure TfrmFornecedor.PreencherEndereco(const CEP: string);
 var JSON: TJSONObject;
 begin
   JSON := BuscarCEP(CEP);
+
   if Assigned(JSON) then
   try
     if JSON.GetValue('erro') <> nil then
     begin
+      edtEndereco.Clear;
+      edtBairro.Clear;                              //se o CEP não for encontrado
+      edtCidade.Clear;
+      edtEstado.Clear;
+
+      edtEndereco.ReadOnly := False;
+      edtEstado.ReadOnly := False;
+      edtBairro.ReadOnly := False;
+      edtCidade.ReadOnly := False;
+
       ShowMessage('CEP inválido!');
       Exit;
     end;
 
     edtEndereco.Text := JSON.GetValue('logradouro').Value;
-    edtBairro.Text   := JSON.GetValue('bairro').Value;
+    edtBairro.Text   := JSON.GetValue('bairro').Value;       //se o CEP for encontrado
     edtCidade.Text   := JSON.GetValue('localidade').Value;
     edtEstado.Text   := JSON.GetValue('uf').Value;
+
+    edtEndereco.ReadOnly := True;
+    edtEstado.ReadOnly := True;
+    edtBairro.ReadOnly := True;
+    edtCidade.ReadOnly := True;
+
   finally
     JSON.Free;
   end
   else
+  begin
     ShowMessage('Não foi possível consultar o CEP.');
+
+    edtEndereco.ReadOnly := False;
+    edtEstado.ReadOnly := False;
+    edtBairro.ReadOnly := False;
+    edtCidade.ReadOnly := False;
+  end;
 end;
 
 procedure TfrmFornecedor.edtTelefoneChange(Sender: TObject);
@@ -303,9 +383,9 @@ begin
   Texto := SomenteNumeros(edtTelefone.Text);
 
   if Texto = '' then Exit;
+                                //SE a primeira casinha for 0 é 0800
 
-
-  if Texto[1] = '0' then
+  if (Texto[1] = '0') and (Texto[3] = '0') and (Texto[4] = '0') then
   begin
     if Length(Texto) <= 4 then
       edtTelefone.Text := Copy(Texto, 1, Length(Texto))
@@ -316,22 +396,25 @@ begin
 
     edtTelefone.SelStart := Length(edtTelefone.Text);
   end
-  else if Length(Texto) <= 10 then
-  begin
-    if Length(Texto) <= 2 then
-       edtTelefone.Text := '(' + Copy(Texto,1,Length(Texto))
-    else if Length(Texto) <= 6 then
-      edtTelefone.Text := '(' + Copy(Texto, 1,2) + ')' + Copy(Texto,3,Length(Texto)-2)
-    else
-      edtTelefone.Text := '(' + Copy(Texto,1,2) + ')' + Copy(Texto,3,4) + '-' + Copy(Texto,7,4);
-  end
   else
   begin
-     edtTelefone.MaxLength:= 14;
-     edtTelefone.Text := '(' + Copy(Texto,1,2) + ')' + Copy(Texto,3,5) + '-' + Copy(Texto,8,Length(Texto)-7);
+    if Length(Texto) <= 10 then
+    begin
+      if Length(Texto) <= 2 then
+        edtTelefone.Text := '(' + Copy(Texto,1,Length(Texto))
+      else if Length(Texto) <= 6 then
+        edtTelefone.Text := '(' + Copy(Texto,1,2) + ')' + Copy(Texto,3,Length(Texto)-2)
+      else
+        edtTelefone.Text := '(' + Copy(Texto,1,2) + ')' + Copy(Texto,3,4) + '-' + Copy(Texto,7,Length(Texto)-6);
+    end
+  else
+    begin
+    edtTelefone.MaxLength:= 14;
+      edtTelefone.Text := '(' + Copy(Texto,1,2) + ')' + Copy(Texto,3,5) + '-' + Copy(Texto,8,Length(Texto)-7);
+    end;
   end;
 
-    edtTelefone.SelStart := Length(edtTelefone.Text);
+  edtTelefone.SelStart := Length(edtTelefone.Text);
 end;
 end;
 end.

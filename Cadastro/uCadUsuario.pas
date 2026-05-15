@@ -99,6 +99,10 @@ end;
 
 procedure TfrmCadUsuario.btnAlterarClick(Sender: TObject);
 begin
+  if fdqryListagem.FieldByName('usuarioId').AsInteger = 0 then begin
+    Exit;
+  end;
+
   if oUsuario.Selecionar(fdqryListagem.FieldByName('usuarioID').AsInteger) then
   begin
     edtUsuarioId.Text := IntToStr(oUsuario.codigo);
@@ -122,6 +126,10 @@ end;
 
 procedure TfrmCadUsuario.btnApagarClick(Sender: TObject);
 begin
+  if fdqryListagem.FieldByName('usuarioId').AsInteger = 0 then begin
+    Exit;
+  end;
+
   if fdqryListagem.FieldByName('usuarioId').AsInteger < 4 then begin
     ShowMessage('Esse usuário não pode ser deletado');
     Abort;
@@ -281,6 +289,10 @@ end;
 
 procedure TfrmCadUsuario.grdListagemDblClick(Sender: TObject);
 begin
+  if fdqryListagem.FieldByName('usuarioId').AsInteger = 0 then begin
+    Exit;
+  end;
+
   RetornarInfos;
   inherited;
 end;

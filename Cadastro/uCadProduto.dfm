@@ -3,12 +3,7 @@ inherited frmCadProduto: TfrmCadProduto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pgcPrincipal: TPageControl
-    ActivePage = tabManutencao
     inherited tabListagem: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 882
-      ExplicitHeight = 457
       inherited grdListagem: TDBGrid
         Width = 697
         Columns = <

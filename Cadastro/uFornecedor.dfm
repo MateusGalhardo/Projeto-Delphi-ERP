@@ -2,6 +2,7 @@ inherited frmFornecedor: TfrmFornecedor
   Caption = 'Cadastro de Fornecedor'
   ClientHeight = 581
   ClientWidth = 1131
+  ExplicitTop = -51
   ExplicitWidth = 1137
   ExplicitHeight = 610
   PixelsPerInch = 96
@@ -12,8 +13,6 @@ inherited frmFornecedor: TfrmFornecedor
     ExplicitWidth = 1131
     ExplicitHeight = 537
     inherited tabListagem: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 1123
       ExplicitHeight = 509
       inherited pnlListagemTopo: TPanel
@@ -67,12 +66,10 @@ inherited frmFornecedor: TfrmFornecedor
       end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitLeft = 8
-      ExplicitTop = 24
       ExplicitWidth = 1123
       ExplicitHeight = 509
       object lblTelefone: TLabel
-        Left = 580
+        Left = 579
         Top = 242
         Width = 42
         Height = 13
@@ -82,7 +79,7 @@ inherited frmFornecedor: TfrmFornecedor
         Left = 580
         Top = 139
         Width = 25
-        Height = 12
+        Height = 26
         Caption = 'CNPJ'#13#10
       end
       object lblObservacao: TLabel
@@ -94,7 +91,7 @@ inherited frmFornecedor: TfrmFornecedor
       end
       object lblCEP: TLabel
         Left = 579
-        Top = 189
+        Top = 87
         Width = 19
         Height = 13
         Caption = 'CEP'
@@ -127,6 +124,58 @@ inherited frmFornecedor: TfrmFornecedor
         Height = 13
         Caption = 'N'#186
       end
+      object lbl12: TLabel
+        Left = 95
+        Top = 187
+        Width = 84
+        Height = 13
+        Caption = '(Preencha o CEP)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl13: TLabel
+        Left = 248
+        Top = 189
+        Width = 84
+        Height = 13
+        Caption = '(Preencha o CEP)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl14: TLabel
+        Left = 409
+        Top = 189
+        Width = 84
+        Height = 13
+        Caption = '(Preencha o CEP)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl15: TLabel
+        Left = 106
+        Top = 140
+        Width = 84
+        Height = 13
+        Caption = '(Preencha o CEP)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
       object edtNome: TLabeledEdit
         Tag = 2
         Left = 56
@@ -148,14 +197,15 @@ inherited frmFornecedor: TfrmFornecedor
         EditLabel.Height = 13
         EditLabel.Caption = 'Endere'#231'o'
         MaxLength = 60
+        ReadOnly = True
         TabOrder = 3
       end
       object edtTelefone: TEdit
-        Left = 580
+        Left = 579
         Top = 256
         Width = 125
         Height = 21
-        TabOrder = 4
+        TabOrder = 10
         OnChange = edtTelefoneChange
       end
       object edtEmail: TLabeledEdit
@@ -168,7 +218,7 @@ inherited frmFornecedor: TfrmFornecedor
         EditLabel.Height = 13
         EditLabel.Caption = 'Email'
         MaxLength = 100
-        TabOrder = 5
+        TabOrder = 9
       end
       object edtFornId: TLabeledEdit
         Tag = 1
@@ -189,7 +239,7 @@ inherited frmFornecedor: TfrmFornecedor
         Width = 126
         Height = 21
         MaxLength = 18
-        TabOrder = 2
+        TabOrder = 5
         OnChange = edtCNPJChange
       end
       object edtObservacao: TEdit
@@ -198,13 +248,14 @@ inherited frmFornecedor: TfrmFornecedor
         Width = 615
         Height = 97
         AutoSize = False
-        TabOrder = 6
+        TabOrder = 11
       end
       object edtBairro: TEdit
-        Left = 214
-        Top = 206
+        Left = 220
+        Top = 208
         Width = 145
         Height = 21
+        ReadOnly = True
         TabOrder = 7
         OnChange = edtTelefoneChange
       end
@@ -213,7 +264,8 @@ inherited frmFornecedor: TfrmFornecedor
         Top = 206
         Width = 145
         Height = 21
-        TabOrder = 8
+        ReadOnly = True
+        TabOrder = 6
         OnChange = edtTelefoneChange
       end
       object edtEstado: TEdit
@@ -221,7 +273,8 @@ inherited frmFornecedor: TfrmFornecedor
         Top = 206
         Width = 115
         Height = 21
-        TabOrder = 9
+        ReadOnly = True
+        TabOrder = 8
         OnChange = edtTelefoneChange
       end
       object edtNumero: TEdit
@@ -229,19 +282,20 @@ inherited frmFornecedor: TfrmFornecedor
         Top = 156
         Width = 53
         Height = 21
-        TabOrder = 10
+        MaxLength = 6
+        TabOrder = 4
         OnChange = edtTelefoneChange
       end
       object mskCEP: TMaskEdit
         Left = 579
-        Top = 206
+        Top = 104
         Width = 126
         Height = 21
         EditMask = '99.999-999;1;_'
         MaxLength = 10
-        TabOrder = 11
+        TabOrder = 2
         Text = '  .   -   '
-        OnExit = mskCEPExit
+        OnChange = mskCEPChange
       end
     end
   end

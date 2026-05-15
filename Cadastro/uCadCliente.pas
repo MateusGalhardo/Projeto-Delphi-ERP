@@ -63,6 +63,10 @@ type
     f2Listagemcasa: TStringField;
     img6: TImage;
     img4: TImage;
+    lbl11: TLabel;
+    lbl12: TLabel;
+    lbl13: TLabel;
+    lbl14: TLabel;
     procedure btnAlterarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -73,11 +77,13 @@ type
     procedure grdListagemDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
       State: TGridDrawState);
     procedure btnGravarClick(Sender: TObject);
-    procedure edtCEPExit(Sender: TObject);
     procedure lkpStatusCloseUp(Sender: TObject);
     procedure mskPesquisarChange(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure edtCEPChange(Sender: TObject);
+    procedure btnApagarClick(Sender: TObject);
+    procedure grdListagemDblClick(Sender: TObject);
   private
     { Private declarations }
     oCliente:TCliente;
@@ -140,6 +146,14 @@ begin
      Result:=oCliente.Inserir
   else if (EstadoDoCadastro=ecAlterar) then
      Result:=oCliente.Atualizar;
+end;
+
+procedure TfrmCadCliente.grdListagemDblClick(Sender: TObject);
+begin
+  if fdqryListagem.FieldByName('clienteId').AsInteger = 0 then begin
+    Exit;
+  end;
+  inherited;
 end;
 
 procedure TfrmCadCliente.grdListagemDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
@@ -248,6 +262,10 @@ end;
 
 procedure TfrmCadCliente.btnAlterarClick(Sender: TObject);
 begin
+  if fdqryListagem.FieldByName('clienteId').AsInteger = 0 then begin
+    Exit;
+  end;
+
   if oCliente.Selecionar(fdqryListagem.FieldByName('clienteId').AsInteger) then begin
      edtClienteId.Text:=IntToStr(oCliente.codigo);
      edtNome.Text     :=oCliente.nome;
@@ -257,18 +275,18 @@ begin
         lblDoc.Caption := 'CPF'
      else lblDoc.Caption := 'CNPJ';
 
-     edtDoc.Text       :=oCliente.documento;
-     lkpStatus.KeyValue:=oCliente.IDSituacao;
-     edtCEP.Text       :=oCliente.cep;
-     edtEndereco.Text  :=oCliente.endereco;
-     edtEstado.Text    :=oCliente.estado;
-     edtBairro.Text    :=oCliente.bairro;
-     edtCidade.Text    :=oCliente.cidade;
-     edtCasa.Text      :=oCliente.Casa;
-     edtObservacao.Text:=oCliente.observacao;
-     edtTelefone.Text  :=oCliente.telefone;
-     edtEmail.Text     :=oCliente.email;
-     dtpDataNascimento.Date:=oCliente.dataNascimento;
+     edtDoc.Text            :=oCliente.documento;
+     lkpStatus.KeyValue     :=oCliente.IDSituacao;
+     edtCEP.Text            :=oCliente.cep;
+     edtEndereco.Text       :=oCliente.endereco;
+     edtEstado.Text         :=oCliente.estado;
+     edtBairro.Text         :=oCliente.bairro;
+     edtCidade.Text         :=oCliente.cidade;
+     edtCasa.Text           :=oCliente.Casa;
+     edtObservacao.Text     :=oCliente.observacao;
+     edtTelefone.Text       :=oCliente.telefone;
+     edtEmail.Text          :=oCliente.email;
+     dtpDataNascimento.Date :=oCliente.dataNascimento;
 
   end
   else begin
@@ -285,6 +303,15 @@ begin
   begin
     edtObservacao.Visible:=False;
     lblObs.Visible:=False;
+  end;
+
+  inherited;
+end;
+
+procedure TfrmCadCliente.btnApagarClick(Sender: TObject);
+begin
+  if fdqryListagem.FieldByName('clienteId').AsInteger = 0 then begin
+    Exit;
   end;
 
   inherited;
@@ -308,23 +335,36 @@ begin
 end;
 
 procedure TfrmCadCliente.btnGravarClick(Sender: TObject);
-var Qry: TFDQuery; Email: string;
+var Qry: TFDQuery; Email, CEP: string;
 begin
   Email := Trim(edtEmail.Text);
+  CEP := SomenteNumeros(edtCEP.Text);
 
-  if cbbPessoa.Text = '' then begin
+  if Trim(cbbPessoa.Text) = '' then begin
     ShowMessage('Informe o Tipo de Pessoa');
     cbbPessoa.SetFocus;
     Exit;
   end;
 
-  if edtDoc.Text = '' then begin
+  if Trim(edtDoc.Text) = '' then begin
     ShowMessage('Informe o documento');
     edtDoc.SetFocus;
     Exit;
   end;
 
-  if cbbPessoa.Text = 'Física' then
+  if Length(CEP) <> 8 then begin
+    ShowMessage('Informe o CEP');
+    edtCEP.SetFocus;
+    Exit;
+  end;
+
+  if Trim(edtEndereco.Text) = '' then begin
+    ShowMessage('Informe o endereço');
+    edtDoc.SetFocus;
+    Exit;
+  end;
+
+  if Trim(cbbPessoa.Text) = 'Física' then
  begin
   if not ValidarCPF(edtDoc.Text) then
   begin
@@ -334,7 +374,7 @@ begin
   end;
  end;
 
- if cbbPessoa.Text = 'Jurídica' then
+ if Trim(cbbPessoa.Text) = 'Jurídica' then
 begin
   if not ValidarCNPJ(edtDoc.Text) then
   begin
@@ -344,28 +384,28 @@ begin
   end;
 end;
 
-  if Trim(edtNome.Text) = '' then
+if Trim(edtNome.Text) = '' then
   begin
-    ShowMessage('Informe o nome do cliente');
-    edtNome.SetFocus;
-    Exit;
+  ShowMessage('Informe o nome do cliente');
+  edtNome.SetFocus;
+  Exit;
+end;
+
+if VarIsNull(lkpStatus.KeyValue) then
+   begin
+   ShowMessage('Selecione o status do cliente');
+   lkpStatus.SetFocus;
+   Exit;
   end;
 
-  if VarIsNull(lkpStatus.KeyValue) then
-  begin
-    ShowMessage('Selecione o status do cliente');
-    lkpStatus.SetFocus;
-    Exit;
-  end;
-
-  if not TRegEx.IsMatch(Email, '^[^@\s]{2,}@[^@\s]{5,}.[^@\s]{2,}$') then
+if not TRegEx.IsMatch(Email, '^[^@\s]{2,}@[^@\s]{5,}.[^@\s]{2,}$') then
   begin
     ShowMessage('Informe um e-mail válido');
     edtEmail.SetFocus;
     Exit;
   end;
 
-  if YearsBetween(dtpDataNascimento.Date, Date) < 18 then
+if YearsBetween(dtpDataNascimento.Date, Date) < 18 then
   begin
     ShowMessage('O Cliente deve ter 18 anos ou mais');
     dtpDataNascimento.SetFocus;
@@ -389,12 +429,12 @@ begin
   edtDoc.Clear;
   dtpDataNascimento.date:=Date;
   lkpStatus.KeyValue := Null;
-  edtNome.SetFocus;
   cbbPessoa.Refresh;
 
   LimparComponenteItem;
 
   oCliente.Limpar;
+  cbbPessoa.SetFocus;
 end;
 
 function BuscarCEP(const CEP: string): TJSONObject;
@@ -425,23 +465,47 @@ procedure TfrmCadCliente.PreencherEndereco(const CEP: string);
 var JSON: TJSONObject;
 begin
   JSON := BuscarCEP(CEP);
+
   if Assigned(JSON) then
   try
     if JSON.GetValue('erro') <> nil then
     begin
+      edtEndereco.Clear;
+      edtBairro.Clear;                              //se o CEP não for encontrado
+      edtCidade.Clear;
+      edtEstado.Clear;
+
+      edtEndereco.ReadOnly := False;
+      edtEstado.ReadOnly := False;
+      edtBairro.ReadOnly := False;
+      edtCidade.ReadOnly := False;
+
       ShowMessage('CEP inválido!');
       Exit;
     end;
 
     edtEndereco.Text := JSON.GetValue('logradouro').Value;
-    edtBairro.Text   := JSON.GetValue('bairro').Value;
+    edtBairro.Text   := JSON.GetValue('bairro').Value;       //se o CEP for encontrado
     edtCidade.Text   := JSON.GetValue('localidade').Value;
     edtEstado.Text   := JSON.GetValue('uf').Value;
+
+    edtEndereco.ReadOnly := True;
+    edtEstado.ReadOnly := True;
+    edtBairro.ReadOnly := True;
+    edtCidade.ReadOnly := True;
+
   finally
     JSON.Free;
   end
   else
+  begin
     ShowMessage('Não foi possível consultar o CEP.');
+
+    edtEndereco.ReadOnly := False;
+    edtEstado.ReadOnly := False;
+    edtBairro.ReadOnly := False;
+    edtCidade.ReadOnly := False;
+  end;
 end;
 
 procedure TfrmCadCliente.cbbPessoaChange(Sender: TObject);
@@ -454,11 +518,25 @@ begin
   edtDoc.Clear
 end;
 
-procedure TfrmCadCliente.edtCEPExit(Sender: TObject);
+procedure TfrmCadCliente.edtCEPChange(Sender: TObject);
+var CEP: string;
 begin
-  if Trim(edtCEP.Text) <> '' then
-    PreencherEndereco(edtCEP.Text);
   inherited;
+  CEP:= SomenteNumeros(edtCEP.Text);
+
+  if Length(CEP) = 8 then begin
+   lbl11.Visible := False;
+   lbl12.Visible := False;
+   lbl13.Visible := False;
+   lbl14.Visible := False;
+   PreencherEndereco(edtCEP.Text);
+  end
+  else begin
+   lbl11.Visible := True;
+   lbl12.Visible := True;
+   lbl13.Visible := True;
+   lbl14.Visible := True;
+  end;
 end;
 
 procedure TfrmCadCliente.edtDocChange(Sender: TObject);
@@ -559,8 +637,6 @@ begin
   end;
 
   edtTelefone.SelStart := Length(edtTelefone.Text);
-
-
 end;
 end;
 
